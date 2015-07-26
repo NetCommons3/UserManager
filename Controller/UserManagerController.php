@@ -31,7 +31,9 @@ class UserManagerController extends UserManagerAppController {
  *
  * @var array
  */
-	//public $components = array();
+	public $components = array(
+		'ControlPanel.ControlPanelLayout'
+	);
 
 /**
  * index
