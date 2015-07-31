@@ -12,7 +12,3 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-
-#: UserManager/Config/Migration/001_plugin_records.ctp
-msgid "User Manager"
-msgstr ""
