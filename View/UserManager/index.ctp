@@ -10,8 +10,6 @@
  */
 ?>
 
-<?php $this->assign('title', __d('user_manager', 'User Manager')); ?>
-
 <div>
 
 </div>
