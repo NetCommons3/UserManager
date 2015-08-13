@@ -16,14 +16,7 @@
     },
     "require-dev": {
         "mustangostang/spyc":           "dev-master",
-        "netcommons/auth":              "dev-master",
-        "netcommons/frames":            "dev-master",
-        "netcommons/m17n":              "dev-master",
         "netcommons/net-commons":       "dev-master",
-        "netcommons/pages":             "dev-master",
-        "netcommons/plugin-manager":    "dev-master",
-        "netcommons/roles":             "dev-master",
-        "netcommons/users":             "dev-master",
         "satooshi/php-coveralls":       "dev-master"
     },
     "license": "NetCommons License",
