@@ -32,7 +32,20 @@ class UserManagerController extends UserManagerAppController {
  * @var array
  */
 	public $components = array(
-		'ControlPanel.ControlPanelLayout'
+		'ControlPanel.ControlPanelLayout',
+		'M17n.SwitchLanguage',
+		'Users.UsersSearch',
+		'UserAttributes.UserAttributeLayouts',
+	);
+
+/**
+ * use component
+ *
+ * @var array
+ */
+	public $helpers = array(
+		'Users.UserSearchForm',
+		'Users.UserEditForm',
 	);
 
 /**
@@ -41,6 +54,8 @@ class UserManagerController extends UserManagerAppController {
  * @return void
  */
 	public function index() {
+CakeLog::debug(print_r($this->viewVars['userAttributes'], true));
+
 	}
 
 /**
@@ -48,7 +63,7 @@ class UserManagerController extends UserManagerAppController {
  *
  * @return void
  */
-	public function view() {
+	public function search() {
 	}
 
 /**
@@ -57,21 +72,26 @@ class UserManagerController extends UserManagerAppController {
  * @return void
  */
 	public function add() {
+		$this->view = 'edit';
+
+		$this->set('userName', '');
 	}
 
 /**
  * edit
  *
+ * @param int $userId users.id
  * @return void
  */
-	public function edit() {
+	public function edit($userId = null) {
 	}
 
 /**
  * delete
  *
+ * @param int $userId users.id
  * @return void
  */
-	public function delete() {
+	public function delete($userId = null) {
 	}
 }
