@@ -15,13 +15,6 @@
 
 <div class="col-xs-12 col-sm-<?php echo (12 / $layout['UserAttributeLayout']['col']); ?>">
 	<?php foreach ($userAttributes[$row][$col] as $userAttribute) : ?>
-		<ul class="user-attribute-edit">
-			<li class="list-group-item">
-				<?php echo h($userAttribute['UserAttribute']['name']); ?>
-				<?php if ($userAttribute['UserAttributeSetting']['required']) : ?>
-					<?php echo $this->element('NetCommons.required'); ?>
-				<?php endif; ?>
-			</li>
-		</ul>
+		<?php echo $this->UserEditForm->userEditInput($userAttribute); ?>
 	<?php endforeach; ?>
 </div>

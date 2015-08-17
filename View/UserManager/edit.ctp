@@ -11,7 +11,8 @@
 
 echo $this->Html->css(
 	array(
-		'/user_attributes/css/style.css'
+		'/user_attributes/css/style.css',
+		'/data_types/css/style.css',
 	),
 	array('plugin' => false)
 );
@@ -30,8 +31,14 @@ echo $this->Html->css(
 	<div class="panel-body">
 		<?php echo $this->SwitchLanguage->tablist('user-manager-'); ?>
 		<br>
-		
+
 		<div class="tab-content">
+			<?php echo $this->Form->hidden('User.id'); ?>
+			<?php foreach (array_keys($this->data['UsersLanguage']) as $index) : ?>
+				<?php echo $this->Form->hidden('UsersLanguage.' . $index . '.id'); ?>
+				<?php echo $this->Form->hidden('UsersLanguage.' . $index . '.language_id'); ?>
+			<?php endforeach; ?>
+
 			<?php foreach ($userAttributeLayouts as $layout) : ?>
 				<?php $row = $layout['UserAttributeLayout']['id']; ?>
 

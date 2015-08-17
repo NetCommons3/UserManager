@@ -24,7 +24,11 @@ class UserManagerController extends UserManagerAppController {
  *
  * @var array
  */
-	//public $uses = array();
+	public $uses = array(
+		'Users.User',
+		'Users.UsersLanguage',
+		'UserRoles.UserRole',
+	);
 
 /**
  * use component
@@ -39,23 +43,15 @@ class UserManagerController extends UserManagerAppController {
 	);
 
 /**
- * use component
- *
- * @var array
- */
-	public $helpers = array(
-		'Users.UserSearchForm',
-		'Users.UserEditForm',
-	);
-
-/**
  * index
  *
  * @return void
  */
 	public function index() {
+		$this->helpers[] = 'Users.UserSearchForm';
 CakeLog::debug(print_r($this->viewVars['userAttributes'], true));
 
+		//unset();
 	}
 
 /**
@@ -64,6 +60,7 @@ CakeLog::debug(print_r($this->viewVars['userAttributes'], true));
  * @return void
  */
 	public function search() {
+		$this->helpers[] = 'Users.UserSearchForm';
 	}
 
 /**
@@ -73,6 +70,42 @@ CakeLog::debug(print_r($this->viewVars['userAttributes'], true));
  */
 	public function add() {
 		$this->view = 'edit';
+		$this->helpers[] = 'Users.UserEditForm';
+
+		if ($this->request->isPost()) {
+			//不要パラメータ除去
+			$data = $this->data;
+			unset($data['save'], $data['active_lang_id']);
+
+			//登録処理
+			if ($user = $this->User->saveUser($data, true)) {
+				//正常の場合
+				$this->redirect('/user_manager/users_roles_rooms/edit/' . $user['User']['id'] . '/');
+				return;
+			}
+			$this->handleValidationError($this->User->validationErrors);
+
+			$this->request->data = $data;
+
+		} else {
+			//表示処理
+			$this->request->data['UsersLanguage'] = array();
+			foreach (array_keys($this->viewVars['languages']) as $langId) {
+				$index = count($this->request->data['UsersLanguage']);
+
+				$usersLanguage = $this->UsersLanguage->create(array(
+					'id' => null,
+					'language_id' => $langId,
+				));
+				$this->request->data['UsersLanguage'][$index] = $usersLanguage['UsersLanguage'];
+			}
+			$this->request->data = Hash::merge($this->request->data,
+				$this->User->create(array(
+					'id' => null,
+					'role_key' => UserRole::USER_ROLE_KEY_COMMON_USER
+				))
+			);
+		}
 
 		$this->set('userName', '');
 	}
@@ -84,6 +117,8 @@ CakeLog::debug(print_r($this->viewVars['userAttributes'], true));
  * @return void
  */
 	public function edit($userId = null) {
+		$this->helpers[] = 'Users.UserEditForm';
+		
 	}
 
 /**
