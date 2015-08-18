@@ -118,7 +118,8 @@ CakeLog::debug(print_r($this->viewVars['userAttributes'], true));
  */
 	public function edit($userId = null) {
 		$this->helpers[] = 'Users.UserEditForm';
-		
+
+		$this->set('activeUserId', $userId);
 	}
 
 /**

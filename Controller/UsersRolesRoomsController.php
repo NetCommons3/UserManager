@@ -59,6 +59,8 @@ class UsersRolesRoomsController extends UsersAppController {
 
 			$this->request->data = $data;
 		}
+
+		$this->set('activeUserId', $userId);
 	}
 
 }
