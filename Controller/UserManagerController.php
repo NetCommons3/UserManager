@@ -89,22 +89,7 @@ CakeLog::debug(print_r($this->viewVars['userAttributes'], true));
 
 		} else {
 			//表示処理
-			$this->request->data['UsersLanguage'] = array();
-			foreach (array_keys($this->viewVars['languages']) as $langId) {
-				$index = count($this->request->data['UsersLanguage']);
-
-				$usersLanguage = $this->UsersLanguage->create(array(
-					'id' => null,
-					'language_id' => $langId,
-				));
-				$this->request->data['UsersLanguage'][$index] = $usersLanguage['UsersLanguage'];
-			}
-			$this->request->data = Hash::merge($this->request->data,
-				$this->User->create(array(
-					'id' => null,
-					'role_key' => UserRole::USER_ROLE_KEY_COMMON_USER
-				))
-			);
+			$this->request->data = $this->User->createUser();
 		}
 
 		$this->set('userName', '');
@@ -119,6 +104,30 @@ CakeLog::debug(print_r($this->viewVars['userAttributes'], true));
 	public function edit($userId = null) {
 		$this->helpers[] = 'Users.UserEditForm';
 
+		if ($this->request->isPut()) {
+			//不要パラメータ除去
+			$data = $this->data;
+			unset($data['save'], $data['active_lang_id']);
+
+			//登録処理
+			if ($user = $this->User->saveUser($data, false)) {
+				//正常の場合
+				$this->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
+				$this->redirect('/user_manager/user_manager/edit/' . $user['User']['id'] . '/');
+				return;
+			}
+
+			var_dump($this->User->validationErrors);
+			$this->handleValidationError($this->User->validationErrors);
+
+			$this->request->data = $data;
+
+		} else {
+			//表示処理
+			$this->request->data = $this->User->getUser($userId);
+		}
+
+		$this->set('userName', $this->request->data['User']['handlename']);
 		$this->set('activeUserId', $userId);
 	}
 
