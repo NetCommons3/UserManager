@@ -32,11 +32,11 @@ echo $this->Html->css(
 <?php $this->end(); ?>
 
 <div class="text-center">
-	<!-- 対象会員の絞込み -->
-	<?php echo $this->Form->button('<span class="glyphicon glyphicon-search"></span> ' . __d('users', 'Search for the members'), array(
-			'class' => 'btn btn-info btn-workflow',
-			'name' => 'search',
-		)); ?>
+	<a class="btn btn-info" href="<?php echo $this->Html->url('/user_manager/user_manager/search/'); ?>">
+		<span class="glyphicon glyphicon-search"></span>
+		<!-- 対象会員の絞込み -->
+		<?php echo __d('users', 'Search for the members'); ?>
+	</a>
 </div>
 
 <div class="text-right">

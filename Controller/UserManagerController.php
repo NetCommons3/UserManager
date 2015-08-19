@@ -68,6 +68,15 @@ class UserManagerController extends UserManagerAppController {
 	}
 
 /**
+ * search
+ *
+ * @return void
+ */
+	public function search() {
+		$this->helpers[] = 'Users.UserSearchForm';
+	}
+
+/**
  * add
  *
  * @return void
