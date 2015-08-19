@@ -26,6 +26,7 @@ class UsersRolesRoomsController extends UsersAppController {
  */
 	public $uses = array(
 		'Pages.Page',
+		'Roles.Role',
 		'Rooms.RolesRoomsUser',
 		'Rooms.RoomsLanguage',
 		'Rooms.Room',
