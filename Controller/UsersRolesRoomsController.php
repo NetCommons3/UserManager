@@ -25,7 +25,10 @@ class UsersRolesRoomsController extends UsersAppController {
  * @var array
  */
 	public $uses = array(
+		'Pages.Page',
 		'Rooms.RolesRoomsUser',
+		'Rooms.RoomsLanguage',
+		'Rooms.Room',
 		'Users.User',
 	);
 
@@ -36,6 +39,8 @@ class UsersRolesRoomsController extends UsersAppController {
  */
 	public $components = array(
 		'ControlPanel.ControlPanelLayout',
+		'Rooms.RoomsUtility',
+		'Rooms.SpacesUtility',
 	);
 
 /**
@@ -44,10 +49,15 @@ class UsersRolesRoomsController extends UsersAppController {
  * @param int $userId users.id
  * @return void
  */
-	public function edit($userId = null) {
+	public function edit($userId = null, $spaceId = null) {
 		//登録処理の場合、URLよりPOSTパラメータでチェックする
 		if ($this->request->isPost()) {
 			$userId = $this->data['User']['id'];
+		}
+
+		//スペースデータチェック＆セット
+		if (! $this->SpacesUtility->validSpace($spaceId)) {
+			return;
 		}
 
 		if ($this->request->isPost()) {
@@ -60,6 +70,23 @@ class UsersRolesRoomsController extends UsersAppController {
 			$this->request->data = $data;
 		}
 
+		//ルームデータ取得
+		$rooms = $this->RoomsUtility->getRoomsForPaginator($spaceId, $this->viewVars['space']['Room']['id']);
+		$this->set('rooms', $rooms);
+
+		//ロールデータ取得
+		$roomRoles = $this->Role->find('list', array(
+			'fields' => array('key', 'name'),
+			'conditions' => array(
+				'is_systemized' => true,
+				'language_id' => Configure::read('Config.languageId'),
+				'type' => Role::ROLE_TYPE_ROOM
+			),
+			'order' => array('id' => 'asc')
+		));
+		$this->set('roomRoles', $roomRoles);
+
+		//ユーザデータ取得
 		$user = $this->User->getUser($userId);
 		$this->set('userName', $user['User']['handlename']);
 
