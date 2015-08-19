@@ -26,6 +26,7 @@ class UsersRolesRoomsController extends UsersAppController {
  */
 	public $uses = array(
 		'Rooms.RolesRoomsUser',
+		'Users.User',
 	);
 
 /**
@@ -49,7 +50,6 @@ class UsersRolesRoomsController extends UsersAppController {
 			$userId = $this->data['User']['id'];
 		}
 
-
 		if ($this->request->isPost()) {
 			//登録処理
 			$data = $this->data;
@@ -59,6 +59,9 @@ class UsersRolesRoomsController extends UsersAppController {
 
 			$this->request->data = $data;
 		}
+
+		$user = $this->User->getUser($userId);
+		$this->set('userName', $user['User']['handlename']);
 
 		$this->set('activeUserId', $userId);
 	}

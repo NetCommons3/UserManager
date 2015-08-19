@@ -14,13 +14,15 @@ echo $this->Html->css(
 		'/user_attributes/css/style.css',
 		'/data_types/css/style.css',
 	),
-	array('plugin' => false)
+	array(
+		'plugin' => false,
+		'once' => true,
+		'inline' => false
+	)
 );
 ?>
 
 <?php echo $this->element('UserManager.subtitle'); ?>
-
-<?php echo $this->element('UserManager.tabs', array('activeTab' => 'setting')); ?>
 
 <?php echo $this->element('UserManager.setting_tabs'); ?>
 

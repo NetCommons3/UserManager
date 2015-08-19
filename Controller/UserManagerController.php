@@ -38,7 +38,8 @@ class UserManagerController extends UserManagerAppController {
 	public $components = array(
 		'ControlPanel.ControlPanelLayout',
 		'M17n.SwitchLanguage',
-		'Users.UsersSearch',
+		'Paginator',
+		//'Users.UserSearch',
 		'UserAttributes.UserAttributeLayouts',
 	);
 
@@ -48,19 +49,22 @@ class UserManagerController extends UserManagerAppController {
  * @return void
  */
 	public function index() {
-		$this->helpers[] = 'Users.UserSearchForm';
-CakeLog::debug(print_r($this->viewVars['userAttributes'], true));
+		$this->helpers['Users.UserValue'] = array(
+			'userAttributes' => $this->viewVars['userAttributes']
+		);
 
-		//unset();
-	}
+		$this->Paginator->settings = array(
+			'recursive' => -1,
+			'fields' => $this->User->searchFields(),
+			'conditions' => $this->User->searchConditions(),
+			'joins' => $this->User->searchJoinTables(),
+			'order' => array($this->User->alias . '.modified' => 'desc'),
+			//'limit' => 1
+		);
+		$results = $this->Paginator->paginate('User');
 
-/**
- * view
- *
- * @return void
- */
-	public function search() {
-		$this->helpers[] = 'Users.UserSearchForm';
+		$this->set('users', $results);
+		$this->set('displayFields', $this->User->dispayFields($this->params['plugin'] . '/' . $this->params['controller']));
 	}
 
 /**
@@ -89,6 +93,7 @@ CakeLog::debug(print_r($this->viewVars['userAttributes'], true));
 
 		} else {
 			//表示処理
+			$this->User->languages = $this->viewVars['languages'];
 			$this->request->data = $this->User->createUser();
 		}
 
@@ -124,6 +129,7 @@ CakeLog::debug(print_r($this->viewVars['userAttributes'], true));
 
 		} else {
 			//表示処理
+			$this->User->languages = $this->viewVars['languages'];
 			$this->request->data = $this->User->getUser($userId);
 		}
 

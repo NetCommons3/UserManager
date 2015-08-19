@@ -11,27 +11,70 @@
 
 echo $this->Html->css(
 	array(
-		'/user_attributes/css/style.css'
+		'/user_attributes/css/style.css',
 	),
-	array('plugin' => false)
+	array(
+		'plugin' => false,
+		'once' => true,
+		'inline' => false
+	)
 );
 ?>
 
-<?php echo $this->element('UserManager.tabs', array('activeTab' => 'search')); ?>
+<?php $this->start('subtitle'); ?>
+	<!-- 1 / 5 ページ (合計: 5件) -->
+	<span class="user-search-paginator-count">
+		<?php echo sprintf(__d('users', '%s of %s (Total: %s)'),
+					$this->Paginator->counter('{:page}'),
+					$this->Paginator->counter('{:pages}'),
+					$this->Paginator->counter('{:count}')); ?>
+	</span>
+<?php $this->end(); ?>
 
-<div class="panel panel-default">
-	<div class="panel-body">
-		<?php foreach ($userAttributeLayouts as $layout) : ?>
-			<?php $row = $layout['UserAttributeLayout']['id']; ?>
+<div class="text-center">
+	<!-- 対象会員の絞込み -->
+	<?php echo $this->Form->button('<span class="glyphicon glyphicon-search"></span> ' . __d('users', 'Search for the members'), array(
+			'class' => 'btn btn-info btn-workflow',
+			'name' => 'search',
+		)); ?>
+</div>
 
-			<?php echo $this->element('UserManager/render_index_row', array('row' => $row, 'layout' => $layout)); ?>
+<div class="text-right">
+	<a class="btn btn-success" href="<?php echo $this->Html->url('/user_manager/user_manager/add/');?>">
+		<span class="glyphicon glyphicon-plus"> </span>
+	</a>
+</div>
+
+<table class="table table-condensed">
+	<thead>
+		<tr>
+			<th></th>
+			<?php foreach ($displayFields as $field) : ?>
+				<th>
+					<?php echo $this->UserValue->label($field); ?>
+				</th>
+			<?php endforeach; ?>
+		</tr>
+	</thead>
+	<tbody>
+		<?php foreach ($users as $index => $user) : ?>
+			<tr>
+				<td>
+					<?php echo ($index + 1); ?>
+				</td>
+
+				<?php $this->UserValue->set($user); ?>
+
+				<?php foreach ($displayFields as $field) : ?>
+					<td>
+						<?php echo $this->UserValue->display($field); ?>
+					</td>
+				<?php endforeach; ?>
+			</tr>
 		<?php endforeach; ?>
-	</div>
+	</tbody>
+</table>
 
-	<div class="panel-footer text-center">
-		<?php echo $this->Form->button('<span class="glyphicon glyphicon-search"></span> ' . __d('net_commons', 'Search'), array(
-				'class' => 'btn btn-info btn-workflow',
-				'name' => 'search',
-			)); ?>
-	</div>
+<div class="text-center">
+	<?php echo $this->element('NetCommons.paginator'); ?>
 </div>

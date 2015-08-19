@@ -11,8 +11,6 @@
 ?>
 <?php echo $this->element('UserManager.subtitle'); ?>
 
-<?php echo $this->element('UserManager.tabs', array('activeTab' => 'setting')); ?>
-
 <?php echo $this->element('UserManager.setting_tabs'); ?>
 
 <?php echo $this->Form->create(null, array('novalidate' => true)); ?>

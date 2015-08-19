@@ -28,7 +28,7 @@ if ($this->params['action'] === 'add') {
 		<?php echo $this->Html->link(__d('user_manager', 'General setting'), $urlUsers); ?>
 	</li>
 
-	<li class="<?php echo ($this->params['controller'] === 'roles_rooms_user' ? 'active' : $disabled); ?>">
+	<li class="<?php echo ($this->params['controller'] === 'users_roles_rooms' ? 'active' : $disabled); ?>">
 		<?php echo $this->Html->link(__d('user_manager', 'Select the rooms to join'), $urlRolesRoomsUser); ?>
 	</li>
 
