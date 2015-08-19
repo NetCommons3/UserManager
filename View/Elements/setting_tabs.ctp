@@ -23,7 +23,7 @@ if ($this->params['action'] === 'add') {
 }
 ?>
 
-<ul class="nav nav-pills" role="tablist">
+<ul class="nav nav-tabs" role="tablist">
 	<li class="<?php echo ($this->params['controller'] === 'user_manager' ? 'active' : $disabled); ?>">
 		<?php echo $this->Html->link(__d('user_manager', 'General setting'), $urlUsers); ?>
 	</li>
