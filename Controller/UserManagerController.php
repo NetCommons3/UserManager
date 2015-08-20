@@ -26,8 +26,8 @@ class UserManagerController extends UserManagerAppController {
  */
 	public $uses = array(
 		'Users.User',
-		'Users.UsersLanguage',
-		'UserRoles.UserRole',
+		//'Users.UsersLanguage',
+		//'UserRoles.UserRole',
 	);
 
 /**
@@ -38,8 +38,8 @@ class UserManagerController extends UserManagerAppController {
 	public $components = array(
 		'ControlPanel.ControlPanelLayout',
 		'M17n.SwitchLanguage',
-		'Paginator',
-		//'Users.UserSearch',
+		//'Paginator',
+		'Users.UserSearch',
 		'UserAttributes.UserAttributeLayouts',
 	);
 
@@ -53,15 +53,7 @@ class UserManagerController extends UserManagerAppController {
 			'userAttributes' => $this->viewVars['userAttributes']
 		);
 
-		$this->Paginator->settings = array(
-			'recursive' => -1,
-			'fields' => $this->User->searchFields(),
-			'conditions' => $this->User->searchConditions(),
-			'joins' => $this->User->searchJoinTables(),
-			'order' => array($this->User->alias . '.modified' => 'desc'),
-			//'limit' => 1
-		);
-		$results = $this->Paginator->paginate('User');
+		$results = $this->UserSearch->search();
 
 		$this->set('users', $results);
 		$this->set('displayFields', $this->User->dispayFields($this->params['plugin'] . '/' . $this->params['controller']));
@@ -127,7 +119,7 @@ class UserManagerController extends UserManagerAppController {
 			if ($user = $this->User->saveUser($data, false)) {
 				//正常の場合
 				$this->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
-				$this->redirect('/user_manager/user_manager/edit/' . $user['User']['id'] . '/');
+				$this->redirect('/user_manager/user_manager/index/');
 				return;
 			}
 
