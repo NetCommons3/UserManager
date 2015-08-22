@@ -16,8 +16,6 @@
 $roomName = str_repeat('<span class="rooms-tree"></span>', $nest) . h($roomName);
 ?>
 
-<?php //echo h(json_encode(Hash::merge(['frameId' => $frameId], $tokens))); ?>
-
 <?php
 	if (! isset($rolesRoomsUsers[$roomId])) {
 		$rolesRoomsUsers[$roomId]['RolesRoomsUser']['id'] = null;
