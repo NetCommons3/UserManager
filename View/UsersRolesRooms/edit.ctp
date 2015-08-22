@@ -19,7 +19,19 @@ echo $this->Html->css(
 		'inline' => false
 	)
 );
+echo $this->Html->script(
+	array(
+		'/user_manager/js/users_roles_rooms.js'
+	),
+	array(
+		'plugin' => false,
+		'once' => true,
+		'inline' => false
+	)
+);
 ?>
+
+<?php echo $this->element('NetCommons.javascript_alert'); ?>
 
 <?php echo $this->element('UserManager.subtitle'); ?>
 
@@ -27,10 +39,14 @@ echo $this->Html->css(
 
 <?php echo $this->element('UsersRolesRooms/space_tabs'); ?>
 
-<?php echo $this->Form->create(null, array('novalidate' => true)); ?>
+<div class="nc-content-list">
 
+	<?php echo $this->element('Rooms.Rooms/render_index', array(
+			'headElementPath' => 'UsersRolesRooms/head_room_roles',
+			'elementPath' => 'UsersRolesRooms/select_rooms'
+		)); ?>
 
-<?php echo $this->element('Rooms.Rooms/render_index', array('elementPath' => 'UsersRolesRooms/select_rooms')); ?>
+</div>
 
 <div class="text-center">
 	<a class="btn btn-default btn-workflow" href="<?php echo $this->Html->url('/user_manager/user_manager/index'); ?>">
@@ -38,5 +54,3 @@ echo $this->Html->css(
 		<?php echo __d('net_commons', 'Close'); ?>
 	</a>
 </div>
-
-<?php echo $this->Form->end();

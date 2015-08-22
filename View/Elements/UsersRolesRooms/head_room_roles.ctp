@@ -12,9 +12,9 @@
 ?>
 
 <tr class="">
-	<th></th>
-	<?php foreach ($roomRoles as $key => $name) : ?>
-		<th>
+	<th> </th>
+	<?php foreach ($roles as $key => $name) : ?>
+		<th class="text-center">
 			<?php echo h($name); ?>
 		</th>
 	<?php endforeach; ?>

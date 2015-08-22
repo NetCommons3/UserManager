@@ -22,7 +22,6 @@ echo $this->Html->css(
 ?>
 
 <?php $this->start('subtitle'); ?>
-	<!-- 1 / 5 ページ (合計: 5件) -->
 	<span class="user-search-paginator-count">
 		<?php echo sprintf(__d('users', '%s of %s (Total: %s)'),
 					$this->Paginator->counter('{:page}'),
@@ -34,7 +33,6 @@ echo $this->Html->css(
 <div class="text-center">
 	<a class="btn btn-info" href="<?php echo $this->Html->url('/user_manager/user_manager/search/'); ?>">
 		<span class="glyphicon glyphicon-search"></span>
-		<!-- 対象会員の絞込み -->
 		<?php echo __d('users', 'Search for the members'); ?>
 	</a>
 </div>
@@ -75,4 +73,4 @@ echo $this->Html->css(
 	</tbody>
 </table>
 
-<?php echo $this->element('NetCommons.paginator'); 
+<?php echo $this->element('NetCommons.paginator');
