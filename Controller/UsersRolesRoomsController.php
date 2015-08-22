@@ -85,7 +85,7 @@ class UsersRolesRoomsController extends UserManagerAppController {
 			}
 			if ($result) {
 				$this->setFlashNotification(__d('net_commons', 'Successfully saved.'), array(
-					'type' => 'success',
+					'class' => 'success',
 					'rolesRoomsUser' => array('id' => $result['RolesRoomsUser']['id']),
 				));
 			} else {

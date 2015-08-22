@@ -118,7 +118,7 @@ class UserManagerController extends UserManagerAppController {
 			//登録処理
 			if ($user = $this->User->saveUser($data, false)) {
 				//正常の場合
-				$this->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('type' => 'success'));
+				$this->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
 				$this->redirect('/user_manager/user_manager/index/');
 				return;
 			}
