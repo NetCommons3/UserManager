@@ -60,7 +60,7 @@ NetCommonsApp.controller('UsersRolesRooms', function($scope, $http) {
             }
             $scope.rolesRoomId = $scope.data.RolesRoomsUser['roles_room_id'];
 
-            $scope.flashMessage(data['name'], data['type'], data['interval']);
+            $scope.flashMessage(data['name'], data['class'], data['interval']);
             $scope.$parent.sending = false;
           }).error(function(data, status) {
 console.log(data);
