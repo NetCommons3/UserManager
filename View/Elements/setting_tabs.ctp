@@ -20,7 +20,7 @@ if ($this->params['action'] === 'add') {
 } else {
 	$disabled = '';
 	$urlUsers = '/user_manager/user_manager/' . $this->params['action'] . '/' . h($activeUserId) . '/';
-	$urlRolesRoomsUser = '/user_manager/users_roles_rooms/edit/' . h($activeUserId) . '/' . Space::PUBLIC_SPACE_ID;
+	$urlRolesRoomsUser = '/user_manager/users_roles_rooms/edit/' . h($activeUserId) . '/' . Space::ROOM_SPACE_ID;
 	$urlNotifyUser = '/user_manager/user_notifications/email/' . h($activeUserId) . '/';
 }
 ?>
