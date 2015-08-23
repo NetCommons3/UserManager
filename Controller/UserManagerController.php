@@ -25,6 +25,7 @@ class UserManagerController extends UserManagerAppController {
  * @var array
  */
 	public $uses = array(
+		'Rooms.Space',
 		'Users.User',
 		//'Users.UsersLanguage',
 		//'UserRoles.UserRole',
@@ -78,6 +79,8 @@ class UserManagerController extends UserManagerAppController {
 		$this->helpers[] = 'Users.UserEditForm';
 
 		if ($this->request->isPost()) {
+			$Space = $this->Space;
+
 			//不要パラメータ除去
 			$data = $this->data;
 			unset($data['save'], $data['active_lang_id']);
@@ -85,7 +88,7 @@ class UserManagerController extends UserManagerAppController {
 			//登録処理
 			if ($user = $this->User->saveUser($data, true)) {
 				//正常の場合
-				$this->redirect('/user_manager/users_roles_rooms/edit/' . $user['User']['id'] . '/');
+				$this->redirect('/user_manager/users_roles_rooms/edit/' . $user['User']['id'] . '/' . $Space::ROOM_SPACE_ID);
 				return;
 			}
 			$this->handleValidationError($this->User->validationErrors);

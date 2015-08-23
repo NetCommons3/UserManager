@@ -25,3 +25,16 @@ msgstr "参加ルームの選択"
 msgid "Notify user by e-mail"
 msgstr "メール通知"
 
+#: UserManager/View/Elements/setting_tabs.ctp:38
+msgid "Mail title"
+msgstr "件名"
+
+#: UserManager/View/Elements/setting_tabs.ctp:38
+msgid "Mail body"
+msgstr "本文"
+
+#: UserManager/View/Elements/setting_tabs.ctp:38
+msgid "Send"
+msgstr "送信"
+
+

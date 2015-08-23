@@ -34,7 +34,7 @@ if ($this->params['action'] === 'add') {
 		<?php echo $this->Html->link(__d('user_manager', 'Select the rooms to join'), $urlRolesRoomsUser); ?>
 	</li>
 
-	<li class="<?php echo ($this->params['controller'] === 'notify_user' ? 'active' : $disabled); ?>">
+	<li class="<?php echo ($this->params['controller'] === 'user_notifications' ? 'active' : $disabled); ?>">
 		<?php echo $this->Html->link(__d('user_manager', 'Notify user by e-mail'), $urlNotifyUser); ?>
 	</li>
 </ul>
