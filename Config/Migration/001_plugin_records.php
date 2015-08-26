@@ -70,7 +70,7 @@ class PluginRecords extends NetCommonsMigration {
 				'plugin_key' => 'user_manager',
 			),
 			array(
-				'role_key' => 'user_administrator',
+				'role_key' => 'administrator',
 				'plugin_key' => 'user_manager',
 			),
 		),

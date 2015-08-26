@@ -24,7 +24,12 @@ class UserManagerController extends UserManagerAppController {
  *
  * @var array
  */
-	//public $uses = array();
+	public $uses = array(
+		'Rooms.Space',
+		'Users.User',
+		//'Users.UsersLanguage',
+		//'UserRoles.UserRole',
+	);
 
 /**
  * use component
@@ -32,7 +37,11 @@ class UserManagerController extends UserManagerAppController {
  * @var array
  */
 	public $components = array(
-		'ControlPanel.ControlPanelLayout'
+		'ControlPanel.ControlPanelLayout',
+		'M17n.SwitchLanguage',
+		//'Paginator',
+		'Users.UserSearch',
+		'UserAttributes.UserAttributeLayouts',
 	);
 
 /**
@@ -41,14 +50,23 @@ class UserManagerController extends UserManagerAppController {
  * @return void
  */
 	public function index() {
+		$this->helpers['Users.UserValue'] = array(
+			'userAttributes' => $this->viewVars['userAttributes']
+		);
+
+		$results = $this->UserSearch->search();
+
+		$this->set('users', $results);
+		$this->set('displayFields', $this->User->dispayFields($this->params['plugin'] . '/' . $this->params['controller']));
 	}
 
 /**
- * view
+ * search
  *
  * @return void
  */
-	public function view() {
+	public function search() {
+		$this->helpers[] = 'Users.UserSearchForm';
 	}
 
 /**
@@ -57,21 +75,77 @@ class UserManagerController extends UserManagerAppController {
  * @return void
  */
 	public function add() {
+		$this->view = 'edit';
+		$this->helpers[] = 'Users.UserEditForm';
+
+		if ($this->request->isPost()) {
+			$Space = $this->Space;
+
+			//不要パラメータ除去
+			$data = $this->data;
+			unset($data['save'], $data['active_lang_id']);
+
+			//登録処理
+			if ($user = $this->User->saveUser($data, true)) {
+				//正常の場合
+				$this->redirect('/user_manager/users_roles_rooms/edit/' . $user['User']['id'] . '/' . $Space::ROOM_SPACE_ID);
+				return;
+			}
+			$this->handleValidationError($this->User->validationErrors);
+
+			$this->request->data = $data;
+
+		} else {
+			//表示処理
+			$this->User->languages = $this->viewVars['languages'];
+			$this->request->data = $this->User->createUser();
+		}
+
+		$this->set('userName', '');
 	}
 
 /**
  * edit
  *
+ * @param int $userId users.id
  * @return void
  */
-	public function edit() {
+	public function edit($userId = null) {
+		$this->helpers[] = 'Users.UserEditForm';
+
+		if ($this->request->isPut()) {
+			//不要パラメータ除去
+			$data = $this->data;
+			unset($data['save'], $data['active_lang_id']);
+
+			//登録処理
+			if ($this->User->saveUser($data, false)) {
+				//正常の場合
+				$this->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
+				$this->redirect('/user_manager/user_manager/index/');
+				return;
+			}
+
+			$this->handleValidationError($this->User->validationErrors);
+
+			$this->request->data = $data;
+
+		} else {
+			//表示処理
+			$this->User->languages = $this->viewVars['languages'];
+			$this->request->data = $this->User->getUser($userId);
+		}
+
+		$this->set('userName', $this->request->data['User']['handlename']);
+		$this->set('activeUserId', $userId);
 	}
 
 /**
  * delete
  *
+ * @param int $userId users.id
  * @return void
  */
-	public function delete() {
+	public function delete($userId = null) {
 	}
 }

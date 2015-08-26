@@ -12,3 +12,16 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: UserManager/View/Elements/setting_tabs.ctp:30
+msgid "General setting"
+msgstr ""
+
+#: UserManager/View/Elements/setting_tabs.ctp:34
+msgid "Select the rooms to join"
+msgstr ""
+
+#: UserManager/View/Elements/setting_tabs.ctp:38
+msgid "Notify user by e-mail"
+msgstr ""
+
