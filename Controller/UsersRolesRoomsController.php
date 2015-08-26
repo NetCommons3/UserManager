@@ -58,6 +58,7 @@ class UsersRolesRoomsController extends UserManagerAppController {
  * edit
  *
  * @param int $userId users.id
+ * @param int $spaceId spaces.id
  * @return void
  */
 	public function edit($userId = null, $spaceId = null) {

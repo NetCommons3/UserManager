@@ -119,14 +119,13 @@ class UserManagerController extends UserManagerAppController {
 			unset($data['save'], $data['active_lang_id']);
 
 			//登録処理
-			if ($user = $this->User->saveUser($data, false)) {
+			if ($this->User->saveUser($data, false)) {
 				//正常の場合
 				$this->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
 				$this->redirect('/user_manager/user_manager/index/');
 				return;
 			}
 
-			var_dump($this->User->validationErrors);
 			$this->handleValidationError($this->User->validationErrors);
 
 			$this->request->data = $data;
