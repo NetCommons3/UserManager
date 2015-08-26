@@ -63,7 +63,6 @@ NetCommonsApp.controller('UsersRolesRooms', function($scope, $http) {
             $scope.flashMessage(data['name'], data['class'], data['interval']);
             $scope.$parent.sending = false;
           }).error(function(data, status) {
-console.log(data);
             $scope.flashMessage(data['name'], 'danger', 0);
             $scope.$parent.sending = false;
           });
