@@ -12,6 +12,7 @@
 echo $this->Html->css(
 	array(
 		'/user_attributes/css/style.css',
+		'/users/css/style.css',
 	),
 	array(
 		'plugin' => false,
@@ -30,17 +31,19 @@ echo $this->Html->css(
 	</span>
 <?php $this->end(); ?>
 
-<div class="text-center">
-	<a class="btn btn-info" href="<?php echo $this->Html->url('/user_manager/user_manager/search/'); ?>">
-		<span class="glyphicon glyphicon-search"></span>
-		<?php echo __d('users', 'Search for the members'); ?>
-	</a>
-</div>
+<div class="user-search-index-head-margin">
+	<div class="text-center">
+		<a class="btn btn-info" href="<?php echo $this->Html->url('/user_manager/user_manager/search/'); ?>">
+			<span class="glyphicon glyphicon-search"></span>
+			<?php echo __d('users', 'Search for the members'); ?>
+		</a>
+	</div>
 
-<div class="text-right">
-	<a class="btn btn-success" href="<?php echo $this->Html->url('/user_manager/user_manager/add/');?>">
-		<span class="glyphicon glyphicon-plus"> </span>
-	</a>
+	<div class="text-right">
+		<a class="btn btn-success" href="<?php echo $this->Html->url('/user_manager/user_manager/add/');?>">
+			<span class="glyphicon glyphicon-plus"> </span>
+		</a>
+	</div>
 </div>
 
 <table class="table table-condensed">
