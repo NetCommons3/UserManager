@@ -85,12 +85,12 @@ class UsersRolesRoomsController extends UserManagerAppController {
 				$result = $this->RolesRoomsUser->deleteRolesRoomsUser($data);
 			}
 			if ($result) {
-				$this->setFlashNotification(__d('net_commons', 'Successfully saved.'), array(
+				$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array(
 					'class' => 'success',
 					'rolesRoomsUser' => array('id' => $result['RolesRoomsUser']['id']),
 				));
 			} else {
-				$this->handleValidationError($this->RolesRoomsUser->validationErrors);
+				$this->NetCommons->handleValidationError($this->RolesRoomsUser->validationErrors);
 			}
 			return;
 		}

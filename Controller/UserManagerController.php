@@ -91,7 +91,7 @@ class UserManagerController extends UserManagerAppController {
 				$this->redirect('/user_manager/users_roles_rooms/edit/' . $user['User']['id'] . '/' . $Space::ROOM_SPACE_ID);
 				return;
 			}
-			$this->handleValidationError($this->User->validationErrors);
+			$this->NetCommons->handleValidationError($this->User->validationErrors);
 
 			$this->request->data = $data;
 
@@ -121,12 +121,12 @@ class UserManagerController extends UserManagerAppController {
 			//登録処理
 			if ($this->User->saveUser($data, false)) {
 				//正常の場合
-				$this->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
+				$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
 				$this->redirect('/user_manager/user_manager/index/');
 				return;
 			}
 
-			$this->handleValidationError($this->User->validationErrors);
+			$this->NetCommons->handleValidationError($this->User->validationErrors);
 
 			$this->request->data = $data;
 
