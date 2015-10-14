@@ -25,14 +25,14 @@ echo $this->NetCommonsHtml->css(
 
 <div class="user-search-index-head-margin">
 	<div class="text-center">
-		<a class="btn btn-info" href="<?php echo $this->Html->url('/user_manager/user_manager/search/'); ?>">
+		<a class="btn btn-info" href="<?php echo $this->NetCommonsHtml->url(array('action' => 'search')); ?>">
 			<span class="glyphicon glyphicon-search"></span>
 			<?php echo __d('users', 'Search for the members'); ?>
 		</a>
 	</div>
 
 	<div class="text-right">
-		<a class="btn btn-success" href="<?php echo $this->Html->url('/user_manager/user_manager/add/');?>">
+		<a class="btn btn-success" href="<?php echo $this->NetCommonsHtml->url(array('action' => 'add'));?>">
 			<span class="glyphicon glyphicon-plus"> </span>
 		</a>
 	</div>
