@@ -104,7 +104,7 @@ class UsersRolesRoomsController extends UserManagerAppController {
 			'fields' => array('key', 'name'),
 			'conditions' => array(
 				'is_systemized' => true,
-				'language_id' => Configure::read('Config.languageId'),
+				'language_id' => Current::read('Language.id'),
 				'type' => Role::ROLE_TYPE_ROOM
 			),
 			'order' => array('id' => 'asc')
