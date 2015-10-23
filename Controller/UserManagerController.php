@@ -39,9 +39,8 @@ class UserManagerController extends UserManagerAppController {
 	public $components = array(
 		'ControlPanel.ControlPanelLayout',
 		'M17n.SwitchLanguage',
-		//'Paginator',
-		'Users.UserSearch',
 		'UserAttributes.UserAttributeLayout',
+		'Users.UserSearch',
 	);
 
 /**
@@ -50,14 +49,8 @@ class UserManagerController extends UserManagerAppController {
  * @return void
  */
 	public function index() {
-		//$this->helpers['Users.UserValue'] = array(
-		//	'userAttributes' => $this->viewVars['userAttributes']
-		//);
-		//
-		//$results = $this->UserSearch->search();
-		//
-		//$this->set('users', $results);
-		//$this->set('displayFields', $this->User->dispayFields($this->params['plugin'] . '/' . $this->params['controller']));
+		$this->UserSearch->search();
+		$this->helpers[] = 'Users.UserSearch';
 	}
 
 /**

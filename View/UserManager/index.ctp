@@ -32,9 +32,7 @@ echo $this->NetCommonsHtml->css(
 	</div>
 
 	<div class="text-right">
-		<a class="btn btn-success" href="<?php echo $this->NetCommonsHtml->url(array('action' => 'add'));?>">
-			<span class="glyphicon glyphicon-plus"> </span>
-		</a>
+		<?php echo $this->Button->addLink(); ?>
 	</div>
 </div>
 
@@ -42,27 +40,15 @@ echo $this->NetCommonsHtml->css(
 	<thead>
 		<tr>
 			<th></th>
-			<?php foreach ($displayFields as $field) : ?>
-				<th>
-					<?php echo $this->UserValue->label($field); ?>
-				</th>
-			<?php endforeach; ?>
+			<?php echo $this->UserSearch->tableHeaders(); ?>
 		</tr>
 	</thead>
+
 	<tbody>
 		<?php foreach ($users as $index => $user) : ?>
 			<tr>
-				<td>
-					<?php echo ($index + 1); ?>
-				</td>
-
-				<?php $this->UserValue->set($user); ?>
-
-				<?php foreach ($displayFields as $field) : ?>
-					<td>
-						<?php echo $this->UserValue->display($field); ?>
-					</td>
-				<?php endforeach; ?>
+				<td><?php echo ($index + 1); ?></td>
+				<?php echo $this->UserSearch->tableCells($user); ?>
 			</tr>
 		<?php endforeach; ?>
 	</tbody>
