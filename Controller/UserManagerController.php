@@ -44,6 +44,15 @@ class UserManagerController extends UserManagerAppController {
 	);
 
 /**
+ * use helpers
+ *
+ * @var array
+ */
+	public $helpers = array(
+		'UserAttributes.UserAttributeLayout',
+	);
+
+/**
  * index
  *
  * @return void
@@ -127,6 +136,7 @@ class UserManagerController extends UserManagerAppController {
 			//表示処理
 			$this->User->languages = $this->viewVars['languages'];
 			$this->request->data = $this->User->getUser($userId);
+//			var_dump($this->request->data);
 		}
 
 		$this->set('userName', $this->request->data['User']['handlename']);
