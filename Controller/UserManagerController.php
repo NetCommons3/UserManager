@@ -79,6 +79,8 @@ class UserManagerController extends UserManagerAppController {
 	public function add() {
 		$this->view = 'edit';
 		$this->helpers[] = 'Users.UserEditForm';
+		$this->viewVars['userAttributes'] = Hash::remove($this->viewVars['userAttributes'],
+				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
 
 		if ($this->request->isPost()) {
 			$Space = $this->Space;
@@ -114,6 +116,8 @@ class UserManagerController extends UserManagerAppController {
  */
 	public function edit($userId = null) {
 		$this->helpers[] = 'Users.UserEditForm';
+		$this->viewVars['userAttributes'] = Hash::remove($this->viewVars['userAttributes'],
+				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
 
 		if ($this->request->isPut()) {
 			//不要パラメータ除去

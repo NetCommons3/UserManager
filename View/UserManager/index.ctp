@@ -48,7 +48,9 @@ echo $this->NetCommonsHtml->css(
 		<?php foreach ($users as $index => $user) : ?>
 			<tr>
 				<td><?php echo ($index + 1); ?></td>
-				<?php echo $this->UserSearch->tableCells($user); ?>
+				<?php foreach ($displayFields as $fieldName) : ?>
+					<?php echo $this->UserSearch->tableCells($user, $fieldName); ?>
+				<?php endforeach; ?>
 			</tr>
 		<?php endforeach; ?>
 	</tbody>
