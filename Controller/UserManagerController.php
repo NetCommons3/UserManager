@@ -84,18 +84,18 @@ class UserManagerController extends UserManagerAppController {
 			$Space = $this->Space;
 
 			//不要パラメータ除去
-			$data = $this->data;
-			unset($data['save'], $data['active_lang_id']);
+			unset($this->request->data['save'], $this->request->data['active_lang_id']);
 
 			//登録処理
-			if ($user = $this->User->saveUser($data, true)) {
+			$this->User->userAttributeData = Hash::combine($this->viewVars['userAttributes'],
+				'{n}.{n}.{n}.UserAttribute.id', '{n}.{n}.{n}'
+			);
+			if ($user = $this->User->saveUser($this->request->data)) {
 				//正常の場合
 				$this->redirect('/user_manager/users_roles_rooms/edit/' . $user['User']['id'] . '/' . $Space::ROOM_SPACE_ID);
 				return;
 			}
 			$this->NetCommons->handleValidationError($this->User->validationErrors);
-
-			$this->request->data = $data;
 
 		} else {
 			//表示処理
@@ -117,26 +117,24 @@ class UserManagerController extends UserManagerAppController {
 
 		if ($this->request->isPut()) {
 			//不要パラメータ除去
-			$data = $this->data;
-			unset($data['save'], $data['active_lang_id']);
+			unset($this->request->data['save'], $this->request->data['active_lang_id']);
 
 			//登録処理
-			if ($this->User->saveUser($data, false)) {
+			$this->User->userAttributeData = Hash::combine($this->viewVars['userAttributes'],
+				'{n}.{n}.{n}.UserAttribute.id', '{n}.{n}.{n}'
+			);
+			if ($this->User->saveUser($this->request->data)) {
 				//正常の場合
 				$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
 				$this->redirect('/user_manager/user_manager/index/');
 				return;
 			}
-
 			$this->NetCommons->handleValidationError($this->User->validationErrors);
-
-			$this->request->data = $data;
 
 		} else {
 			//表示処理
 			$this->User->languages = $this->viewVars['languages'];
 			$this->request->data = $this->User->getUser($userId);
-//			var_dump($this->request->data);
 		}
 
 		$this->set('userName', $this->request->data['User']['handlename']);
