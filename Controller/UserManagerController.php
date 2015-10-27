@@ -148,9 +148,15 @@ class UserManagerController extends UserManagerAppController {
 /**
  * delete
  *
- * @param int $userId users.id
  * @return void
  */
-	public function delete($userId = null) {
+	public function delete() {
+		if (! $this->request->isDelete()) {
+			$this->throwBadRequest();
+			return;
+		}
+
+		$this->User->deleteUser($this->data);
+		$this->redirect(NetCommonsUrl::backToIndexUrl('default_setting_action'));
 	}
 }

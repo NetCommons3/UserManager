@@ -46,3 +46,8 @@ echo $this->NetCommonsHtml->css(
 
 	<?php echo $this->NetCommonsForm->end(); ?>
 </div>
+
+<?php if ($this->params['action'] === 'edit') : ?>
+	<?php echo $this->element('Users.Users/delete_form'); ?>
+<?php endif;
+
