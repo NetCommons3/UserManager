@@ -25,7 +25,12 @@ class UserManagerAppController extends AppController {
  * @var array
  */
 	public $components = array(
-		'Security'
+		//アクセスの権限
+		'NetCommons.Permission' => array(
+			'type' => PermissionComponent::CHECK_TYEP_SYSTEM_PLUGIN,
+			'allow' => array()
+		),
+		'Security',
 	);
 
 /**

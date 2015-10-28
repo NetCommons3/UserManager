@@ -9,26 +9,8 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-echo $this->Html->css(
-	array(
-		'/rooms/css/style.css'
-	),
-	array(
-		'plugin' => false,
-		'once' => true,
-		'inline' => false
-	)
-);
-echo $this->Html->script(
-	array(
-		'/user_manager/js/users_roles_rooms.js'
-	),
-	array(
-		'plugin' => false,
-		'once' => true,
-		'inline' => false
-	)
-);
+echo $this->NetCommonsHtml->css('/rooms/css/style.css');
+echo $this->NetCommonsHtml->script('/user_manager/js/users_roles_rooms.js');
 ?>
 
 <?php echo $this->element('NetCommons.javascript_alert'); ?>
@@ -49,7 +31,7 @@ echo $this->Html->script(
 </div>
 
 <div class="text-center">
-	<a class="btn btn-default btn-workflow" href="<?php echo $this->Html->url('/user_manager/user_manager/index'); ?>">
+	<a class="btn btn-default btn-workflow" href="<?php echo $this->NetCommonsHtml->url(array('action' => 'index')); ?>">
 		<span class="glyphicon glyphicon-remove"></span>
 		<?php echo __d('net_commons', 'Close'); ?>
 	</a>

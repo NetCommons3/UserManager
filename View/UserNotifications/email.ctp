@@ -9,16 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-echo $this->Html->css(
-	array(
-		'/user_attributes/css/style.css'
-	),
-	array(
-		'plugin' => false,
-		'once' => true,
-		'inline' => false
-	)
-);
+echo $this->NetCommonsHtml->css('/user_attributes/css/style.css');
 ?>
 
 <?php echo $this->element('UserManager.subtitle'); ?>
@@ -59,7 +50,7 @@ echo $this->Html->css(
 	</div>
 
 	<div class="panel-footer text-center">
-		<a class="btn btn-default btn-workflow" href="<?php echo $this->Html->url('/user_manager/user_manager/index'); ?>">
+		<a class="btn btn-default btn-workflow" href="<?php echo $this->NetCommonsHtml->url(array('action' => 'index')); ?>">
 			<span class="glyphicon glyphicon-remove"></span>
 			<?php echo __d('net_commons', 'Close'); ?>
 		</a>

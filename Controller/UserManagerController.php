@@ -39,9 +39,17 @@ class UserManagerController extends UserManagerAppController {
 	public $components = array(
 		'ControlPanel.ControlPanelLayout',
 		'M17n.SwitchLanguage',
-		//'Paginator',
+		'UserAttributes.UserAttributeLayout',
 		'Users.UserSearch',
-		'UserAttributes.UserAttributeLayouts',
+	);
+
+/**
+ * use helpers
+ *
+ * @var array
+ */
+	public $helpers = array(
+		'UserAttributes.UserAttributeLayout',
 	);
 
 /**
@@ -50,14 +58,8 @@ class UserManagerController extends UserManagerAppController {
  * @return void
  */
 	public function index() {
-		$this->helpers['Users.UserValue'] = array(
-			'userAttributes' => $this->viewVars['userAttributes']
-		);
-
-		$results = $this->UserSearch->search();
-
-		$this->set('users', $results);
-		$this->set('displayFields', $this->User->dispayFields($this->params['plugin'] . '/' . $this->params['controller']));
+		$this->UserSearch->search();
+		$this->helpers[] = 'Users.UserSearch';
 	}
 
 /**
@@ -77,23 +79,25 @@ class UserManagerController extends UserManagerAppController {
 	public function add() {
 		$this->view = 'edit';
 		$this->helpers[] = 'Users.UserEditForm';
+		$this->viewVars['userAttributes'] = Hash::remove($this->viewVars['userAttributes'],
+				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
 
 		if ($this->request->isPost()) {
 			$Space = $this->Space;
 
 			//不要パラメータ除去
-			$data = $this->data;
-			unset($data['save'], $data['active_lang_id']);
+			unset($this->request->data['save'], $this->request->data['active_lang_id']);
 
 			//登録処理
-			if ($user = $this->User->saveUser($data, true)) {
+			$this->User->userAttributeData = Hash::combine($this->viewVars['userAttributes'],
+				'{n}.{n}.{n}.UserAttribute.id', '{n}.{n}.{n}'
+			);
+			if ($user = $this->User->saveUser($this->request->data)) {
 				//正常の場合
 				$this->redirect('/user_manager/users_roles_rooms/edit/' . $user['User']['id'] . '/' . $Space::ROOM_SPACE_ID);
 				return;
 			}
 			$this->NetCommons->handleValidationError($this->User->validationErrors);
-
-			$this->request->data = $data;
 
 		} else {
 			//表示処理
@@ -112,28 +116,41 @@ class UserManagerController extends UserManagerAppController {
  */
 	public function edit($userId = null) {
 		$this->helpers[] = 'Users.UserEditForm';
+		$this->viewVars['userAttributes'] = Hash::remove($this->viewVars['userAttributes'],
+				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
+
+		if ($this->request->isPut()) {
+			$userId = $this->data['User']['id'];
+		}
+		$user = $this->User->getUser($userId);
+
+		//システム管理者は編集不可
+		if (Current::read('User.role_key') !== UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR &&
+				(! $user || $user['User']['role_key'] === UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR)) {
+			$this->throwBadRequest();
+			return;
+		}
 
 		if ($this->request->isPut()) {
 			//不要パラメータ除去
-			$data = $this->data;
-			unset($data['save'], $data['active_lang_id']);
+			unset($this->request->data['save'], $this->request->data['active_lang_id']);
 
 			//登録処理
-			if ($this->User->saveUser($data, false)) {
+			$this->User->userAttributeData = Hash::combine($this->viewVars['userAttributes'],
+				'{n}.{n}.{n}.UserAttribute.id', '{n}.{n}.{n}'
+			);
+			if ($this->User->saveUser($this->request->data)) {
 				//正常の場合
 				$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
 				$this->redirect('/user_manager/user_manager/index/');
 				return;
 			}
-
 			$this->NetCommons->handleValidationError($this->User->validationErrors);
-
-			$this->request->data = $data;
 
 		} else {
 			//表示処理
 			$this->User->languages = $this->viewVars['languages'];
-			$this->request->data = $this->User->getUser($userId);
+			$this->request->data = $user;
 		}
 
 		$this->set('userName', $this->request->data['User']['handlename']);
@@ -143,9 +160,24 @@ class UserManagerController extends UserManagerAppController {
 /**
  * delete
  *
- * @param int $userId users.id
  * @return void
  */
-	public function delete($userId = null) {
+	public function delete() {
+		$user = $this->User->getUser($this->data['User']['id']);
+
+		//システム管理者は削除不可
+		if (Current::read('User.role_key') !== UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR &&
+				(! $user || $user['User']['role_key'] === UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR)) {
+			$this->throwBadRequest();
+			return;
+		}
+
+		if (! $this->request->isDelete()) {
+			$this->throwBadRequest();
+			return;
+		}
+
+		$this->User->deleteUser($user);
+		$this->redirect(NetCommonsUrl::backToIndexUrl('default_setting_action'));
 	}
 }
