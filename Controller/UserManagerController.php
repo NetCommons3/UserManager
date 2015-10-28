@@ -120,6 +120,18 @@ class UserManagerController extends UserManagerAppController {
 				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
 
 		if ($this->request->isPut()) {
+			$userId = $this->data['User']['id'];
+		}
+		$user = $this->User->getUser($userId);
+
+		//システム管理者は編集不可
+		if (Current::read('User.role_key') !== UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR &&
+				(! $user || $user['User']['role_key'] === UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR)) {
+			$this->throwBadRequest();
+			return;
+		}
+
+		if ($this->request->isPut()) {
 			//不要パラメータ除去
 			unset($this->request->data['save'], $this->request->data['active_lang_id']);
 
@@ -138,7 +150,7 @@ class UserManagerController extends UserManagerAppController {
 		} else {
 			//表示処理
 			$this->User->languages = $this->viewVars['languages'];
-			$this->request->data = $this->User->getUser($userId);
+			$this->request->data = $user;
 		}
 
 		$this->set('userName', $this->request->data['User']['handlename']);
@@ -151,12 +163,21 @@ class UserManagerController extends UserManagerAppController {
  * @return void
  */
 	public function delete() {
+		$user = $this->User->getUser($this->data['User']['id']);
+
+		//システム管理者は削除不可
+		if (Current::read('User.role_key') !== UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR &&
+				(! $user || $user['User']['role_key'] === UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR)) {
+			$this->throwBadRequest();
+			return;
+		}
+
 		if (! $this->request->isDelete()) {
 			$this->throwBadRequest();
 			return;
 		}
 
-		$this->User->deleteUser($this->data);
+		$this->User->deleteUser($user);
 		$this->redirect(NetCommonsUrl::backToIndexUrl('default_setting_action'));
 	}
 }
