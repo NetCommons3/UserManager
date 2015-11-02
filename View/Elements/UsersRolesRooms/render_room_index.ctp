@@ -44,12 +44,13 @@
 	}
 ?>
 
-<tr class="<?php echo $this->Rooms->statusCss($room); ?>"
+<tr class="<?php echo $this->Rooms->statusCss($room, 'text-'); ?>"
 	ng-controller="UsersRolesRooms"
 	ng-init="initialize(<?php echo h(json_encode($data, JSON_FORCE_OBJECT)); ?>)">
 
 	<td>
 		<?php echo $this->Rooms->roomName($room, $nest); ?>
+		<?php echo $this->Rooms->statusLabel($room); ?>
 	</td>
 
 	<?php
@@ -76,7 +77,7 @@
 				$ngClass = ' ng-class="{\'success\': (rolesRoomId === \'' . $rolesRoomId . '\')}"';
 			}
 
-			echo '<td class="text-center"' . $ngClass . '">';
+			echo '<td class="text-center"' . $ngClass . '>';
 			echo $html;
 			echo '</td>';
 		}
