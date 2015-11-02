@@ -27,8 +27,6 @@ class UserManagerController extends UserManagerAppController {
 	public $uses = array(
 		'Rooms.Space',
 		'Users.User',
-		//'Users.UsersLanguage',
-		//'UserRoles.UserRole',
 	);
 
 /**
@@ -53,7 +51,7 @@ class UserManagerController extends UserManagerAppController {
 	);
 
 /**
- * index
+ * indexアクション
  *
  * @return void
  */
@@ -63,7 +61,7 @@ class UserManagerController extends UserManagerAppController {
 	}
 
 /**
- * search
+ * searchアクション
  *
  * @return void
  */
@@ -72,7 +70,7 @@ class UserManagerController extends UserManagerAppController {
 	}
 
 /**
- * add
+ * addアクション
  *
  * @return void
  */
@@ -109,18 +107,19 @@ class UserManagerController extends UserManagerAppController {
 	}
 
 /**
- * edit
+ * editアクション
  *
- * @param int $userId users.id
  * @return void
  */
-	public function edit($userId = null) {
+	public function edit() {
 		$this->helpers[] = 'Users.UserEditForm';
 		$this->viewVars['userAttributes'] = Hash::remove($this->viewVars['userAttributes'],
 				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
 
 		if ($this->request->isPut()) {
 			$userId = $this->data['User']['id'];
+		} else {
+			$userId = $this->params['pass'][0];
 		}
 		$user = $this->User->getUser($userId);
 
@@ -158,7 +157,7 @@ class UserManagerController extends UserManagerAppController {
 	}
 
 /**
- * delete
+ * deleteアクション
  *
  * @return void
  */

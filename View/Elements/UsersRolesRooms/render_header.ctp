@@ -1,7 +1,6 @@
 <?php
 /**
- * Space tabs template
- *   - $activeSpaceId: Active spaces.id.
+ * Rooms index template
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -13,7 +12,7 @@
 
 <tr class="">
 	<th> </th>
-	<?php foreach ($roles as $key => $name) : ?>
+	<?php foreach ($defaultRoles as $key => $name) : ?>
 		<th class="text-center">
 			<?php echo h($name); ?>
 		</th>
