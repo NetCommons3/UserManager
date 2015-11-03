@@ -9,9 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-echo $this->NetCommonsHtml->css(
-	array('/user_attributes/css/style.css', '/users/css/style.css')
-);
+echo $this->NetCommonsHtml->css('/users/css/style.css');
 ?>
 
 <?php $this->start('subtitle'); ?>

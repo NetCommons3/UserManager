@@ -50,7 +50,7 @@
 
 	<td>
 		<?php echo $this->Rooms->roomName($room, $nest); ?>
-		<?php echo $this->Rooms->statusLabel($room); ?>
+		<?php echo $this->Rooms->statusLabel($room, '(%s)'); ?>
 	</td>
 
 	<?php
