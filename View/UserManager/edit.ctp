@@ -16,7 +16,7 @@
 <div class="panel panel-default">
 	<?php echo $this->NetCommonsForm->create('User'); ?>
 
-	<?php echo $this->element('Users.Users/edit_form', array('element' => 'UserManager/render_edit_row')); ?>
+	<?php echo $this->element('Users.Users/edit_form', array('element' => 'UserManager.UserManager/render_edit_row')); ?>
 
 	<div class="panel-footer text-center">
 		<?php echo $this->Button->cancelAndSave(
