@@ -14,23 +14,9 @@
 <?php echo $this->element('UserManager.setting_tabs'); ?>
 
 <div class="panel panel-default">
-
 	<?php echo $this->NetCommonsForm->create('User'); ?>
 
-	<div class="panel-body">
-		<?php echo $this->SwitchLanguage->tablist('user-manager-'); ?>
-		<br>
-
-		<div class="tab-content">
-			<?php echo $this->NetCommonsForm->hidden('User.id'); ?>
-			<?php foreach (array_keys($this->data['UsersLanguage']) as $index) : ?>
-				<?php echo $this->NetCommonsForm->hidden('UsersLanguage.' . $index . '.id'); ?>
-				<?php echo $this->NetCommonsForm->hidden('UsersLanguage.' . $index . '.language_id'); ?>
-			<?php endforeach; ?>
-
-			<?php echo $this->UserAttributeLayout->renderRow('Users.Users/render_edit_row'); ?>
-		</div>
-	</div>
+	<?php echo $this->element('Users.Users/edit_form', array('element' => 'UserManager/render_edit_row')); ?>
 
 	<div class="panel-footer text-center">
 		<?php echo $this->Button->cancelAndSave(
