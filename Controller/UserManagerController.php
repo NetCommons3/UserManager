@@ -56,7 +56,12 @@ class UserManagerController extends UserManagerAppController {
  * @return void
  */
 	public function index() {
-		$this->UserSearch->search();
+		$Space = $this->Space;
+
+		$this->UserSearch->search(
+			array('space_id' => $Space::PRIVATE_SPACE_ID),
+			array()
+		);
 		$this->set('displayFields', $this->User->getDispayFields());
 
 		$this->helpers[] = 'Users.UserSearch';
