@@ -57,10 +57,9 @@ class UserManagerController extends UserManagerAppController {
  */
 	public function index() {
 		$Space = $this->Space;
-
 		$this->UserSearch->search(
 			array('space_id' => $Space::PRIVATE_SPACE_ID),
-			array()
+			array('Room' => array('Room.page_id_top NOT' => null))
 		);
 		$this->set('displayFields', $this->User->getDispayFields());
 
