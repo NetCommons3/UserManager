@@ -57,6 +57,8 @@ class UserManagerController extends UserManagerAppController {
  */
 	public function index() {
 		$this->UserSearch->search();
+		$this->set('displayFields', $this->controller->User->getDispayFields());
+
 		$this->helpers[] = 'Users.UserSearch';
 	}
 
