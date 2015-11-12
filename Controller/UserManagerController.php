@@ -120,8 +120,10 @@ class UserManagerController extends UserManagerAppController {
  */
 	public function edit() {
 		$this->helpers[] = 'Users.UserEditForm';
-		$this->viewVars['userAttributes'] = Hash::remove($this->viewVars['userAttributes'],
-				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
+		if (Current::read('User.role_key') !== UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR) {
+			$this->viewVars['userAttributes'] = Hash::remove($this->viewVars['userAttributes'],
+					'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
+		}
 
 		if ($this->request->isPut()) {
 			$userId = $this->data['User']['id'];
