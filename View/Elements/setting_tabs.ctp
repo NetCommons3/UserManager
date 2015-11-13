@@ -19,23 +19,29 @@ if ($this->params['action'] === 'add') {
 	$urlNotifyUser = '';
 } else {
 	$disabled = '';
-	$urlUsers = '/user_manager/user_manager/edit/' . h($activeUserId) . '/';
-	$urlRolesRoomsUser = '/user_manager/users_roles_rooms/edit/' . h($activeUserId) . '/' . Space::ROOM_SPACE_ID;
-	$urlNotifyUser = '/user_manager/user_notifications/email/' . h($activeUserId) . '/';
+	$urlUsers = array(
+		'plugin' => 'user_manager', 'controller' => 'user_manager', 'action' => 'edit', h($activeUserId)
+	);
+	$urlRolesRoomsUser = array(
+		'plugin' => 'user_manager', 'controller' => 'users_roles_rooms', 'action' => 'edit', h($activeUserId), Space::ROOM_SPACE_ID
+	);
+	$urlNotifyUser = array(
+		'plugin' => 'user_manager', 'controller' => 'user_notifications', 'action' => 'email', h($activeUserId)
+	);
 }
 ?>
 
 <ul class="nav nav-tabs" role="tablist">
 	<li class="<?php echo ($this->params['controller'] === 'user_manager' ? 'active' : $disabled); ?>">
-		<?php echo $this->Html->link(__d('user_manager', 'General setting'), $urlUsers); ?>
+		<?php echo $this->NetCommonsHtml->link(__d('user_manager', 'General setting'), $urlUsers); ?>
 	</li>
 
 	<li class="<?php echo ($this->params['controller'] === 'users_roles_rooms' ? 'active' : $disabled); ?>">
-		<?php echo $this->Html->link(__d('user_manager', 'Select the rooms to join'), $urlRolesRoomsUser); ?>
+		<?php echo $this->NetCommonsHtml->link(__d('user_manager', 'Select the rooms to join'), $urlRolesRoomsUser); ?>
 	</li>
 
 	<li class="<?php echo ($this->params['controller'] === 'user_notifications' ? 'active' : $disabled); ?>">
-		<?php echo $this->Html->link(__d('user_manager', 'Notify user by e-mail'), $urlNotifyUser); ?>
+		<?php echo $this->NetCommonsHtml->link(__d('user_manager', 'Notify user by e-mail'), $urlNotifyUser); ?>
 	</li>
 </ul>
 

@@ -1,7 +1,9 @@
 <?php
 /**
- * Space tabs template
- *   - $activeSpaceId: Active spaces.id.
+ * UserAttribute index col template
+ *   - $row: UserAttributeLayout.row
+ *   - $col: UserAttributeLayout.row
+ *   - $layout: UserAttributeLayout
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -11,11 +13,4 @@
  */
 ?>
 
-<tr class="">
-	<th> </th>
-	<?php foreach ($roles as $key => $name) : ?>
-		<th class="text-center">
-			<?php echo h($name); ?>
-		</th>
-	<?php endforeach; ?>
-</tr>
+<?php echo $this->UserEditForm->userInput($userAttribute);

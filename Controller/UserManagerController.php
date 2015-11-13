@@ -27,8 +27,6 @@ class UserManagerController extends UserManagerAppController {
 	public $uses = array(
 		'Rooms.Space',
 		'Users.User',
-		//'Users.UsersLanguage',
-		//'UserRoles.UserRole',
 	);
 
 /**
@@ -53,17 +51,23 @@ class UserManagerController extends UserManagerAppController {
 	);
 
 /**
- * index
+ * indexアクション
  *
  * @return void
  */
 	public function index() {
-		$this->UserSearch->search();
+		$Space = $this->Space;
+		$this->UserSearch->search(
+			array('space_id' => $Space::PRIVATE_SPACE_ID),
+			array('Room' => array('Room.page_id_top NOT' => null))
+		);
+		$this->set('displayFields', $this->User->getDispayFields());
+
 		$this->helpers[] = 'Users.UserSearch';
 	}
 
 /**
- * search
+ * searchアクション
  *
  * @return void
  */
@@ -72,13 +76,14 @@ class UserManagerController extends UserManagerAppController {
 	}
 
 /**
- * add
+ * addアクション
  *
  * @return void
  */
 	public function add() {
 		$this->view = 'edit';
 		$this->helpers[] = 'Users.UserEditForm';
+
 		$this->viewVars['userAttributes'] = Hash::remove($this->viewVars['userAttributes'],
 				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
 
@@ -109,18 +114,21 @@ class UserManagerController extends UserManagerAppController {
 	}
 
 /**
- * edit
+ * editアクション
  *
- * @param int $userId users.id
  * @return void
  */
-	public function edit($userId = null) {
+	public function edit() {
 		$this->helpers[] = 'Users.UserEditForm';
-		$this->viewVars['userAttributes'] = Hash::remove($this->viewVars['userAttributes'],
-				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
+		if (Current::read('User.role_key') !== UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR) {
+			$this->viewVars['userAttributes'] = Hash::remove($this->viewVars['userAttributes'],
+					'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
+		}
 
 		if ($this->request->isPut()) {
 			$userId = $this->data['User']['id'];
+		} else {
+			$userId = $this->params['pass'][0];
 		}
 		$user = $this->User->getUser($userId);
 
@@ -158,7 +166,7 @@ class UserManagerController extends UserManagerAppController {
 	}
 
 /**
- * delete
+ * deleteアクション
  *
  * @return void
  */

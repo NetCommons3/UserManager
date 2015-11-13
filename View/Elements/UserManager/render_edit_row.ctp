@@ -1,6 +1,5 @@
 <?php
 /**
- * 後で見直す
  * UserAttribute index row template
  *   - $row: UserAttributeLayout.row
  *   - $layout: UserAttributeLayout
@@ -14,7 +13,5 @@
 ?>
 
 <div class="row">
-	<?php for($col = 1; $col <= $layout['UserAttributeLayout']['col']; $col++) : ?>
-		<?php echo $this->element('UserManager/render_index_col', array('row' => $row, 'col' => $col, 'layout' => $layout)); ?>
-	<?php endfor; ?>
+	<?php echo $this->UserAttributeLayout->renderCol('UserManager.UserManager/render_edit_col', $layout); ?>
 </div>

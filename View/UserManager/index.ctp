@@ -9,9 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-echo $this->NetCommonsHtml->css(
-	array('/user_attributes/css/style.css', '/users/css/style.css')
-);
+echo $this->NetCommonsHtml->css('/users/css/style.css');
 ?>
 
 <?php $this->start('subtitle'); ?>
@@ -25,10 +23,7 @@ echo $this->NetCommonsHtml->css(
 
 <div class="user-search-index-head-margin">
 	<div class="text-center">
-		<a class="btn btn-info" href="<?php echo $this->NetCommonsHtml->url(array('action' => 'search')); ?>">
-			<span class="glyphicon glyphicon-search"></span>
-			<?php echo __d('users', 'Search for the members'); ?>
-		</a>
+		<?php echo $this->Button->searchLink(__d('users', 'Search for the members')); ?>
 	</div>
 
 	<div class="text-right">
@@ -48,15 +43,7 @@ echo $this->NetCommonsHtml->css(
 		<?php foreach ($users as $index => $user) : ?>
 			<tr>
 				<td><?php echo ($index + 1); ?></td>
-				<?php
-					foreach ($displayFields as $fieldName) {
-						if ($this->UserSearch->hasUserAttribute($fieldName)) {
-							echo $this->UserSearch->tableCells($user, $fieldName);
-						} else {
-							echo '<td></td>';
-						}
-					}
-				?>
+				<?php echo $this->UserSearch->tableRow($user, true); ?>
 			</tr>
 		<?php endforeach; ?>
 	</tbody>

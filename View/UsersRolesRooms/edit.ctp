@@ -14,20 +14,12 @@ echo $this->NetCommonsHtml->script('/user_manager/js/users_roles_rooms.js');
 ?>
 
 <?php echo $this->element('NetCommons.javascript_alert'); ?>
-
 <?php echo $this->element('UserManager.subtitle'); ?>
-
 <?php echo $this->element('UserManager.setting_tabs'); ?>
-
-<?php echo $this->element('UsersRolesRooms/space_tabs'); ?>
+<?php echo $this->Rooms->spaceTabs($activeSpaceId, 'pills', $this->NetCommonsHtml->url(array('action' => 'edit', $activeUserId)) . '/%s'); ?>
 
 <div class="nc-content-list">
-
-	<?php echo $this->element('Rooms.Rooms/render_index', array(
-			'headElementPath' => 'UsersRolesRooms/head_room_roles',
-			'elementPath' => 'UsersRolesRooms/select_rooms'
-		)); ?>
-
+	<?php echo $this->Rooms->roomsRender($activeSpaceId, 'UsersRolesRooms/render_room_index', 'UsersRolesRooms/render_header'); ?>
 </div>
 
 <div class="text-center">
