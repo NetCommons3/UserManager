@@ -87,6 +87,15 @@ class UserManagerController extends UserManagerAppController {
 		$this->viewVars['userAttributes'] = Hash::remove($this->viewVars['userAttributes'],
 				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
 
+		//アバターの設定
+		$uploads = Hash::extract(
+			$this->viewVars['userAttributes'],
+			'{n}.{n}.{n}.UserAttributeSetting[data_type_key=' . DataType::DATA_TYPE_IMG . ']'
+		);
+		foreach ($uploads as $upload) {
+			$this->User->uploadSettings($upload['user_attribute_key'], array('contentKeyFieldName' => 'id'));
+		}
+
 		if ($this->request->isPost()) {
 			$Space = $this->Space;
 
@@ -97,7 +106,8 @@ class UserManagerController extends UserManagerAppController {
 			$this->User->userAttributeData = Hash::combine($this->viewVars['userAttributes'],
 				'{n}.{n}.{n}.UserAttribute.id', '{n}.{n}.{n}'
 			);
-			if ($user = $this->User->saveUser($this->request->data)) {
+			$user = $this->User->saveUser($this->request->data);
+			if ($user) {
 				//正常の場合
 				$this->redirect('/user_manager/users_roles_rooms/edit/' . $user['User']['id'] . '/' . $Space::ROOM_SPACE_ID);
 				return;
@@ -120,9 +130,19 @@ class UserManagerController extends UserManagerAppController {
  */
 	public function edit() {
 		$this->helpers[] = 'Users.UserEditForm';
+
 		if (Current::read('User.role_key') !== UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR) {
 			$this->viewVars['userAttributes'] = Hash::remove($this->viewVars['userAttributes'],
 					'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
+		}
+
+		//アバターの設定
+		$uploads = Hash::extract(
+			$this->viewVars['userAttributes'],
+			'{n}.{n}.{n}.UserAttributeSetting[data_type_key=' . DataType::DATA_TYPE_IMG . ']'
+		);
+		foreach ($uploads as $upload) {
+			$this->User->uploadSettings($upload['user_attribute_key'], array('contentKeyFieldName' => 'id'));
 		}
 
 		if ($this->request->isPut()) {
