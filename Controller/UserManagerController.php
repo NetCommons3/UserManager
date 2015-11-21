@@ -72,7 +72,7 @@ class UserManagerController extends UserManagerAppController {
  * @return void
  */
 	public function search() {
-		$this->helpers[] = 'Users.UserSearchForm';
+		$this->helpers[] = 'UserManager.UserSearchForm';
 	}
 
 /**
