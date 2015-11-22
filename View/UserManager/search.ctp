@@ -11,19 +11,31 @@
  */
 ?>
 
+<?php $this->start('title_for_modal'); ?>
+<?php echo __d('user_manager', 'User search'); ?>
+<?php $this->end(); ?>
+
+<?php echo $this->NetCommonsForm->create('UserSearch', array('type' => 'get')); ?>
+
 <div class="panel panel-default">
 	<div class="panel-body">
 		<?php foreach ($userAttributeLayouts as $layout) : ?>
 			<?php $row = $layout['UserAttributeLayout']['id']; ?>
 
-			<?php echo $this->element('UserManager/render_index_row', array('row' => $row, 'layout' => $layout)); ?>
+			<?php echo $this->element('UserManager/render_search_row', array('row' => $row, 'layout' => $layout)); ?>
 		<?php endforeach; ?>
 	</div>
 
 	<div class="panel-footer text-center">
-		<?php echo $this->Form->button('<span class="glyphicon glyphicon-search"></span> ' . __d('net_commons', 'Search'), array(
-				'class' => 'btn btn-info btn-workflow',
-				'name' => 'search',
-			)); ?>
+		<?php echo $this->Button->cancel(__d('net_commons', 'Cancel'), '', array(
+			'type' => 'button',
+			'ng-click' => 'cancel()'
+		)); ?>
+		<?php echo $this->Button->search(__d('net_commons', 'Search'), array(
+			'type' => 'button',
+			'ng-click' => 'search()'
+		)); ?>
 	</div>
 </div>
+
+<?php $this->end();

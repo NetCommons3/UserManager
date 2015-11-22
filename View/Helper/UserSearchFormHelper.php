@@ -38,79 +38,123 @@ class UserSearchFormHelper extends FormHelper {
 	//}
 
 /**
- * Generates a form input element complete with label and wrapper div
+ * 会員検索の入力フォームHTMLを生成する
  *
- * @param array $userAttribute user_attribute data
- * @param array $options Each type of input takes different options.
- * @return string Completed form widget.
- * @link http://book.cakephp.org/2.0/en/core-libraries/helpers/form.html#creating-form-elements
- * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+ * @param array $userAttribute ユーザ項目属性データ
+ * @return string inputのHTML
  */
-	public function userSearchInput($userAttribute, $options = array()) {
-//		//後で@SuppressWarnings(PHPMD.CyclomaticComplexity)を消す
-//
+	public function userSearchInput($userAttribute) {
 		$html = '';
-//		$dataTypeKey = $userAttribute['DataTypeTemplate']['data_type_key'];
-//		$dataTypeTemplateKey = $userAttribute['DataTypeTemplate']['key'];
-//		$userAttributeKey = $userAttribute['UserAttribute']['key'];
-//
-//		//パスワードは項目表示しない
-//		if ($dataTypeTemplateKey === 'password') {
-//			return '';
-//		}
-//
-//		if ($dataTypeKey === 'img') {
-//			//あり、なし、指定なしのラジオボタン
-//			$dataTypeKey = 'radio';
-//			$options = array(
-//				//未着手
-//			);
-//		} elseif ($dataTypeKey === 'radio' || $dataTypeKey === 'checkbox' || $dataTypeKey === 'select') {
-//			//ラジオボタン、チェックボタン、セレクトボタン
-//			$options = Hash::combine($userAttribute, 'UserAttributeChoice.{n}.key', 'UserAttributeChoice.{n}.name');
-//		}
-//
-//		if ($userAttributeKey === 'password_modified' || $userAttributeKey === 'last_login') {
-//			$dataTypeKey = 'datetime';
-//		}
-//
-//		//$html .= '<ul class="user-attribute-edit">';
-//		//$html .= '<li class="list-group-item form-group">';
-//		$html .= '<div class="form-group">';
-//
-//		switch ($dataTypeKey) {
-//			case 'radio':
-//				$html .= '<strong>' . h($userAttribute['UserAttribute']['name']) . '</strong>';
-//				break;
-//
-//			case 'checkbox':
-//				$html .= '<strong>' . h($userAttribute['UserAttribute']['name']) . '</strong>';
-//				break;
-//
-//			case 'select':
-//				$html .= '<strong>' . h($userAttribute['UserAttribute']['name']) . '</strong>';
-//				break;
-//
-//			case 'datetime':
-//				if ($userAttributeKey === 'last_login') {
-//					//最終ログイン日時の場合、ラベル変更(○日以上ログインしていない、○日以内ログインしている)
-//				} else {
-//					//○日以上前、○日以内
-//				}
-//				$html .= '<strong>' . h($userAttribute['UserAttribute']['name']) . '</strong>';
-//				break;
-//
-//			default:
-//				$html .= $this->Form->input($userAttribute['UserAttribute']['key'], array(
-//					'type' => 'text',
-//					'label' => $userAttribute['UserAttribute']['name'],
-//					'class' => 'form-control',
-//				));
-//		}
-//
-//		//$html .= '</li>';
-//		//$html .= '</ul>';
-//		$html .= '</div>';
+		//var_dump($userAttribute);
+
+		$dataTypeKey = $userAttribute['UserAttributeSetting']['data_type_key'];
+		$userAttributeKey = $userAttribute['UserAttribute']['key'];
+
+		//パスワードは項目表示しない
+		if ($dataTypeKey === DataType::DATA_TYPE_PASSWORD) {
+			return $html;
+		}
+
+		$options = null;
+		if ($dataTypeKey === DataType::DATA_TYPE_IMG) {
+			//あり、なし、指定なしのラジオボタン
+			$dataTypeKey = DataType::DATA_TYPE_RADIO;
+			$options = array(
+				//未着手
+			);
+		} elseif (in_array($dataTypeKey,
+				array(DataType::DATA_TYPE_RADIO, DataType::DATA_TYPE_CHECKBOX, DataType::DATA_TYPE_SELECT), true)) {
+			if ($userAttributeKey === 'role_key') {
+				$keyPath = '{n}.key';
+			} else {
+				$keyPath = '{n}.code';
+			}
+			//ラジオボタン、チェックボタン、セレクトボタン
+			$options = Hash::combine($userAttribute, 'UserAttributeChoice.' . $keyPath, 'UserAttributeChoice.{n}.name');
+		}
+
+		if (in_array($userAttributeKey, array('modified', 'created', 'password_modified', 'last_login'), true)) {
+			$dataTypeKey = DataType::DATA_TYPE_DATETIME;
+		}
+
+		$html .= '<div class="form-group">';
+		$html .= $this->__label($dataTypeKey, $userAttribute);
+		$html .= $this->__input($dataTypeKey, $userAttribute, $options);
+		$html .= '</div>';
+
+		return $html;
+	}
+
+/**
+ * 会員検索のラベルHTMLを生成する
+ *
+ * @param string $dataTypeKey inputタイプ
+ * @param array $userAttribute ユーザ項目属性データ
+ * @return string ラベルHTML
+ */
+	private function __label($dataTypeKey, $userAttribute) {
+		$html = '';
+
+		$html .= '<div>';
+		if (in_array($dataTypeKey,
+				array(DataType::DATA_TYPE_RADIO, DataType::DATA_TYPE_CHECKBOX, DataType::DATA_TYPE_SELECT), true)) {
+			//ラジオボタン、チェックボタン、セレクトボタン、日時
+			$html .= '<strong>' . h($userAttribute['UserAttribute']['name']) . '</strong>';
+		} else {
+			$html .= $this->NetCommonsForm->label($userAttribute['UserAttribute']['key'], $userAttribute['UserAttribute']['name']);
+		}
+		$html .= '</div>';
+
+		return $html;
+	}
+
+/**
+ * 会員検索の入力フォームHTMLを生成する
+ *
+ * @param string $dataTypeKey inputタイプ
+ * @param array $userAttribute ユーザ項目属性データ
+ * @param array $options オプションデータ(radio, checkbox, select)
+ * @return string 入力フォームHTML
+ */
+	private function __input($dataTypeKey, $userAttribute, $options) {
+		$html = '';
+
+		$userAttributeKey = $userAttribute['UserAttribute']['key'];
+
+		$type = DataType::DATA_TYPE_TEXT;
+		switch ($dataTypeKey) {
+			case DataType::DATA_TYPE_RADIO:
+				if ($options) {
+					$options = array('' => __d('user_manager', 'Not specified')) + $options;
+				}
+
+				$html .= '<div class="form-control nc-data-label">';
+				$html .= $this->NetCommonsForm->radio($userAttribute['UserAttribute']['key'], $options, array(
+					'div' => array('class' => 'form-control form-inline'),
+					'separator' => '<span class="radio-separator"></span>',
+					'default' => ''
+				));
+				$html .= '</div>';
+				break;
+			case DataType::DATA_TYPE_CHECKBOX:
+				break;
+			case DataType::DATA_TYPE_SELECT:
+				break;
+			case DataType::DATA_TYPE_DATETIME:
+				if ($userAttributeKey === 'last_login') {
+					//最終ログイン日時の場合、ラベル変更(○日以上ログインしていない、○日以内ログインしている)
+				} else {
+					//○日以上前、○日以内
+				}
+				break;
+
+			default:
+				$html .= $this->NetCommonsForm->input($userAttribute['UserAttribute']['key'], array(
+					'type' => $type,
+					'label' => false,
+					'div' => false
+				));
+		}
 
 		return $html;
 	}

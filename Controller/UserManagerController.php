@@ -56,6 +56,11 @@ class UserManagerController extends UserManagerAppController {
  * @return void
  */
 	public function index() {
+		//CakeLog::debug(print_r($this->request, true));
+		//CakeLog::debug(print_r($this->request->query, true));
+		//CakeLog::debug(print_r($_SERVER, true));
+		//var_dump($this->request->query);
+
 		$Space = $this->Space;
 		$this->UserSearch->search(
 			array('space_id' => $Space::PRIVATE_SPACE_ID),
@@ -71,8 +76,17 @@ class UserManagerController extends UserManagerAppController {
  *
  * @return void
  */
-	public function search() {
-		$this->helpers[] = 'UserManager.UserSearchForm';
+	public function search($type = null) {
+		CakeLog::debug(print_r($this->request->query, true));
+		if ($type === 'conditions') {
+			$this->helpers[] = 'UserManager.UserSearchForm';
+			$this->viewClass = 'View';
+			$this->layout = 'NetCommons.modal';
+		} elseif ($type === 'result') {
+			
+		} else {
+			$this->throwBadRequest();
+		}
 	}
 
 /**
