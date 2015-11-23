@@ -1,0 +1,49 @@
+/**
+ * bbses/css/style.css
+ *
+ * @author   Takako Miyagawa <nekoget@gmail.com>
+ * @link     http://www.netcommons.org NetCommons Project
+ * @license  http://www.netcommons.org/license.txt NetCommons License
+ */
+
+.user-search-conditions label {
+	font-weight: normal;
+}
+
+.user-search-conditions-datetime label {
+	width: 50%;
+	text-align: left;
+}
+
+.user-search-conditions-datetime-login label {
+	width: 70%;
+	text-align: left;
+}
+
+input.user-search-conditions-datetime-top {
+	border-bottom-left-radius: 0;
+	border-top-left-radius: 0;
+	border-bottom: 0;
+}
+input.user-search-conditions-datetime-bottom {
+	border-bottom-left-radius: 0;
+	border-top-left-radius: 0;
+}
+
+label.user-search-conditions-datetime-top {
+	border-bottom-right-radius: 0;
+	border-bottom: 0;
+}
+label.user-search-conditions-datetime-bottom {
+	border-top-right-radius: 0;
+}
+
+.user-search-conditions-datetime input,
+.user-search-conditions-datetime-login input {
+	width: 100%;
+	border-top-left-radius: 0;
+}
+
+.form-control.user-search-conditions {
+	height: auto;
+}

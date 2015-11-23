@@ -74,16 +74,17 @@ class UserManagerController extends UserManagerAppController {
 /**
  * searchアクション
  *
+ * @param string $type 処理タイプ(conditions: 検索フォーム表示、result: 検索条件保持処理)
  * @return void
  */
 	public function search($type = null) {
-		CakeLog::debug(print_r($this->request->query, true));
+		//CakeLog::debug(print_r($this->request->query, true));
 		if ($type === 'conditions') {
 			$this->helpers[] = 'UserManager.UserSearchForm';
 			$this->viewClass = 'View';
 			$this->layout = 'NetCommons.modal';
 		} elseif ($type === 'result') {
-			
+
 		} else {
 			$this->throwBadRequest();
 		}

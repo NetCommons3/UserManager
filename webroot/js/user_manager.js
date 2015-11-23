@@ -18,24 +18,24 @@ NetCommonsApp.controller('UserManager.controller', function(
        */
       $scope.showUserSearch = function(condtions) {
         NetCommonsModal.show(
-          $scope, 'UserManager.search',
-          $scope.baseUrl + '/user_manager/user_manager/search/conditions',
-          {
-            backdrop: 'static',
-            size: 'lg',
-            resolve: {
-              condtions: condtions
+            $scope, 'UserManager.search',
+            $scope.baseUrl + '/user_manager/user_manager/search/conditions',
+            {
+              backdrop: 'static',
+              size: 'lg',
+              resolve: {
+                condtions: condtions
+              }
             }
-          }
         ).result.then(
-          function(result) {
-            var searchUrl = $scope.baseUrl +
+            function(result) {
+              var searchUrl = $scope.baseUrl +
                                 '/user_manager/user_manager/search/result';
-            $http.get(searchUrl, {params: result, cache: false})
-              .success(function() {
-                $window.location.reload();
-              });
-          }
+              $http.get(searchUrl, {params: result, cache: false})
+                .success(function() {
+                    $window.location.reload();
+                  });
+            }
         );
       };
     });

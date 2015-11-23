@@ -28,16 +28,6 @@ class UserSearchFormHelper extends FormHelper {
 	);
 
 /**
- * Default Constructor
- *
- * @param View $View The View this helper is being attached to.
- * @param array $settings Configuration settings for the helper.
- */
-	//public function __construct(View $View, $settings = array()) {
-	//	parent::__construct($View, $settings);
-	//}
-
-/**
  * 会員検索の入力フォームHTMLを生成する
  *
  * @param array $userAttribute ユーザ項目属性データ
@@ -56,14 +46,19 @@ class UserSearchFormHelper extends FormHelper {
 		}
 
 		$options = null;
+		$choiceInArray = array(
+			DataType::DATA_TYPE_RADIO,
+			DataType::DATA_TYPE_CHECKBOX,
+			DataType::DATA_TYPE_SELECT,
+		);
 		if ($dataTypeKey === DataType::DATA_TYPE_IMG) {
 			//あり、なし、指定なしのラジオボタン
 			$dataTypeKey = DataType::DATA_TYPE_RADIO;
 			$options = array(
-				//未着手
+				'0' => __d('user_manager', 'No avatar.'),
+				'1' => __d('user_manager', 'Has avatar.')
 			);
-		} elseif (in_array($dataTypeKey,
-				array(DataType::DATA_TYPE_RADIO, DataType::DATA_TYPE_CHECKBOX, DataType::DATA_TYPE_SELECT), true)) {
+		} elseif (in_array($dataTypeKey, $choiceInArray, true)) {
 			if ($userAttributeKey === 'role_key') {
 				$keyPath = '{n}.key';
 			} else {
@@ -73,11 +68,11 @@ class UserSearchFormHelper extends FormHelper {
 			$options = Hash::combine($userAttribute, 'UserAttributeChoice.' . $keyPath, 'UserAttributeChoice.{n}.name');
 		}
 
-		if (in_array($userAttributeKey, array('modified', 'created', 'password_modified', 'last_login'), true)) {
+		if (in_array($userAttributeKey, UserAttribute::$typeDatetime, true)) {
 			$dataTypeKey = DataType::DATA_TYPE_DATETIME;
 		}
 
-		$html .= '<div class="form-group">';
+		$html .= '<div class="form-group input-group">';
 		$html .= $this->__label($dataTypeKey, $userAttribute);
 		$html .= $this->__input($dataTypeKey, $userAttribute, $options);
 		$html .= '</div>';
@@ -95,15 +90,22 @@ class UserSearchFormHelper extends FormHelper {
 	private function __label($dataTypeKey, $userAttribute) {
 		$html = '';
 
-		$html .= '<div>';
-		if (in_array($dataTypeKey,
-				array(DataType::DATA_TYPE_RADIO, DataType::DATA_TYPE_CHECKBOX, DataType::DATA_TYPE_SELECT), true)) {
+		$inArray = array(
+			DataType::DATA_TYPE_RADIO,
+			DataType::DATA_TYPE_CHECKBOX,
+			//DataType::DATA_TYPE_SELECT,
+			DataType::DATA_TYPE_DATETIME
+		);
+		if (in_array($dataTypeKey, $inArray, true)) {
 			//ラジオボタン、チェックボタン、セレクトボタン、日時
-			$html .= '<strong>' . h($userAttribute['UserAttribute']['name']) . '</strong>';
+			//$html .= '<div>';
+			$html .= '<label class="input-group-addon">' . h($userAttribute['UserAttribute']['name']) . '</label>';
+			//$html .= '</div>';
 		} else {
-			$html .= $this->NetCommonsForm->label($userAttribute['UserAttribute']['key'], $userAttribute['UserAttribute']['name']);
+			$html .= $this->NetCommonsForm->label($userAttribute['UserAttribute']['key'], $userAttribute['UserAttribute']['name'], array(
+				'class' => 'input-group-addon'
+			));
 		}
-		$html .= '</div>';
 
 		return $html;
 	}
@@ -121,40 +123,171 @@ class UserSearchFormHelper extends FormHelper {
 
 		$userAttributeKey = $userAttribute['UserAttribute']['key'];
 
-		$type = DataType::DATA_TYPE_TEXT;
 		switch ($dataTypeKey) {
 			case DataType::DATA_TYPE_RADIO:
-				if ($options) {
-					$options = array('' => __d('user_manager', 'Not specified')) + $options;
-				}
+				$html .= $this->__inputRadio($dataTypeKey, $userAttribute, $options);
+				break;
 
-				$html .= '<div class="form-control nc-data-label">';
-				$html .= $this->NetCommonsForm->radio($userAttribute['UserAttribute']['key'], $options, array(
-					'div' => array('class' => 'form-control form-inline'),
-					'separator' => '<span class="radio-separator"></span>',
-					'default' => ''
-				));
-				$html .= '</div>';
-				break;
 			case DataType::DATA_TYPE_CHECKBOX:
+				$html .= $this->__inputCheckbox($dataTypeKey, $userAttribute, $options);
 				break;
+
 			case DataType::DATA_TYPE_SELECT:
+				$html .= $this->__inputSelect($dataTypeKey, $userAttribute, $options);
 				break;
+
 			case DataType::DATA_TYPE_DATETIME:
-				if ($userAttributeKey === 'last_login') {
-					//最終ログイン日時の場合、ラベル変更(○日以上ログインしていない、○日以内ログインしている)
-				} else {
-					//○日以上前、○日以内
-				}
+				$html .= $this->__inputDatetime($dataTypeKey, $userAttribute);
 				break;
 
 			default:
-				$html .= $this->NetCommonsForm->input($userAttribute['UserAttribute']['key'], array(
-					'type' => $type,
-					'label' => false,
-					'div' => false
-				));
+				$html .= $this->__inputText($dataTypeKey, $userAttribute);
 		}
+
+		return $html;
+	}
+
+/**
+ * 会員検索の入力フォームHTMLを生成する
+ *
+ * @param string $dataTypeKey inputタイプ
+ * @param array $userAttribute ユーザ項目属性データ
+ * @param array $options オプションデータ(radio, checkbox, select)
+ * @return string 入力フォームHTML
+ */
+	private function __inputRadio($dataTypeKey, $userAttribute, $options) {
+		$html = '';
+
+		$html .= '<div class="form-control user-search-conditions">';
+		$html .= $this->NetCommonsForm->radio($userAttribute['UserAttribute']['key'],
+			array('' => __d('user_manager', 'Not specified')),
+			array('div' => false, 'default' => '')
+		);
+		$html .= '<br>';
+
+		$html .= $this->NetCommonsForm->radio($userAttribute['UserAttribute']['key'], $options, array(
+			//'div' => array('class' => 'form-control form-inline'),
+			'div' => false,
+			'separator' => '<span class="radio-separator"></span>',
+		));
+		$html .= '</div>';
+
+		return $html;
+	}
+
+/**
+ * 会員検索の入力フォームHTMLを生成する
+ *
+ * @param string $dataTypeKey inputタイプ
+ * @param array $userAttribute ユーザ項目属性データ
+ * @param array $options オプションデータ(radio, checkbox, select)
+ * @return string 入力フォームHTML
+ */
+	private function __inputCheckbox($dataTypeKey, $userAttribute, $options) {
+		$html = '';
+
+		return $html;
+	}
+
+/**
+ * 会員検索の入力フォームHTMLを生成する
+ *
+ * @param string $dataTypeKey inputタイプ
+ * @param array $userAttribute ユーザ項目属性データ
+ * @param array $options オプションデータ(radio, checkbox, select)
+ * @return string 入力フォームHTML
+ */
+	private function __inputSelect($dataTypeKey, $userAttribute, $options) {
+		$html = '';
+
+		if ($options) {
+			$options = array('' => __d('user_manager', '-- Not specify --')) + $options;
+		}
+		$html .= $this->NetCommonsForm->input($userAttribute['UserAttribute']['key'], array(
+			'type' => 'select',
+			'options' => $options,
+			'label' => false,
+			'div' => false,
+			'error' => false,
+		));
+
+		return $html;
+	}
+
+/**
+ * 会員検索の入力フォームHTMLを生成する
+ *
+ * @param string $dataTypeKey inputタイプ
+ * @param array $userAttribute ユーザ項目属性データ
+ * @return string 入力フォームHTML
+ */
+	private function __inputDatetime($dataTypeKey, $userAttribute) {
+		$html = '';
+
+		if ($userAttribute['UserAttribute']['key'] === 'last_login') {
+			//最終ログイン日時の場合、ラベル変更(○日以上ログインしていない、○日以内ログインしている)
+			$moreThanDays = __d('user_manager', 'Not logged more than <span style="color:#ff0000;">X</span>days ago');
+			$withinDays = __d('user_manager', 'Have logged in within <span style="color:#ff0000;">X</span>days');
+			$html .= '<div class="user-search-conditions-datetime-login">';
+		} else {
+			//○日以上前、○日以内
+			$moreThanDays = __d('user_manager', 'more than <span style="color:#ff0000;">X</span>days ago');
+			$withinDays = __d('user_manager', 'within <span style="color:#ff0000;">X</span>days');
+			$html .= '<div class="user-search-conditions-datetime">';
+		}
+
+		//○日以上前(○日以上ログインしていない)の出力
+		$html .= '<div class="input-group">';
+		$html .= $this->NetCommonsForm->input($userAttribute['UserAttribute']['key'] . '.more_than_days', array(
+			'name' => $userAttribute['UserAttribute']['key'] . '[more_than_days]',
+			'type' => 'number',
+			'class' => 'form-control user-search-conditions-datetime-top',
+			'label' => false,
+			'div' => false,
+			'error' => false,
+		));
+		$html .= $this->NetCommonsForm->label($userAttribute['UserAttribute']['key'] . '.more_than_days', $moreThanDays, array(
+			'class' => 'input-group-addon user-search-conditions-datetime-top'
+		));
+		$html .= '</div>';
+
+		//○日以内(○日以内ログインしている)の出力
+		$html .= '<div class="input-group">';
+		$html .= $this->NetCommonsForm->input($userAttribute['UserAttribute']['key'] . '.within_days', array(
+			'name' => $userAttribute['UserAttribute']['key'] . '[within_days]',
+			'type' => 'number',
+			'class' => 'form-control user-search-conditions-datetime-bottom',
+			'label' => false,
+			'div' => false,
+			'error' => false,
+		));
+		$html .= $this->NetCommonsForm->label($userAttribute['UserAttribute']['key'] . '.within_days', $withinDays, array(
+			'class' => 'input-group-addon user-search-conditions-datetime-bottom'
+		));
+		$html .= '</div>';
+
+		$html .= '</div>';
+
+		return $html;
+	}
+
+/**
+ * 会員検索の入力フォームHTMLを生成する
+ *
+ * @param string $dataTypeKey inputタイプ
+ * @param array $userAttribute ユーザ項目属性データ
+ * @return string 入力フォームHTML
+ */
+	private function __inputText($dataTypeKey, $userAttribute) {
+		$html = '';
+
+		$html .= $this->NetCommonsForm->input($userAttribute['UserAttribute']['key'], array(
+			'type' => DataType::DATA_TYPE_TEXT,
+			'label' => false,
+			'div' => false,
+			'error' => false,
+			//'placeholder' => $this->__label($dataTypeKey, $userAttribute),
+		));
 
 		return $html;
 	}

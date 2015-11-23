@@ -59,8 +59,16 @@ msgstr "日以内にログインしている"
 
 #: UserManager/View/Elements/setting_tabs.ctp:30
 msgid "Not specified"
-msgstr "未選択"
+msgstr "条件に含まない"
 
 #: UserManager/View/Elements/setting_tabs.ctp:30
 msgid "-- Not specify --"
 msgstr "-- 指定しない --"
+
+#: UserManager/View/Elements/setting_tabs.ctp:30
+msgid "No avatar."
+msgstr "なし"
+
+#: UserManager/View/Elements/setting_tabs.ctp:30
+msgid "Has avatar."
+msgstr "あり"

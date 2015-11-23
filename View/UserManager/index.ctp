@@ -9,7 +9,10 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-echo $this->NetCommonsHtml->css('/users/css/style.css');
+echo $this->NetCommonsHtml->css(array(
+	'/user_manager/css/style.css',
+	'/users/css/style.css',
+));
 echo $this->NetCommonsHtml->script('/user_manager/js/user_manager.js');
 ?>
 
@@ -34,22 +37,24 @@ echo $this->NetCommonsHtml->script('/user_manager/js/user_manager.js');
 	</div>
 </div>
 
-<table class="table table-condensed">
-	<thead>
-		<tr>
-			<th></th>
-			<?php echo $this->UserSearch->tableHeaders(); ?>
-		</tr>
-	</thead>
-
-	<tbody>
-		<?php foreach ($users as $index => $user) : ?>
+<div class="table-responsive">
+	<table class="table table-condensed">
+		<thead>
 			<tr>
-				<td><?php echo ($index + 1); ?></td>
-				<?php echo $this->UserSearch->tableRow($user, true); ?>
+				<th></th>
+				<?php echo $this->UserSearch->tableHeaders(); ?>
 			</tr>
-		<?php endforeach; ?>
-	</tbody>
-</table>
+		</thead>
+
+		<tbody>
+			<?php foreach ($users as $index => $user) : ?>
+				<tr>
+					<td><?php echo ($index + 1); ?></td>
+					<?php echo $this->UserSearch->tableRow($user, true); ?>
+				</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+</div>
 
 <?php echo $this->element('NetCommons.paginator');
