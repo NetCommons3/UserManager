@@ -47,3 +47,23 @@ label.user-search-conditions-datetime-bottom {
 .form-control.user-search-conditions {
 	height: auto;
 }
+
+
+/* 後で削除 */
+input.user-search-conditions-datetime-top2 {
+	border-bottom-left-radius: 0;
+	border-top-left-radius: 4px;
+	border-bottom: 0;
+}
+input.user-search-conditions-datetime-bottom2 {
+	/*border-bottom-left-radius: 0;*/
+	border-top-left-radius: 0;
+}
+
+label.user-search-conditions-datetime-top2 {
+	border-bottom-right-radius: 0;
+	border-bottom: 0;
+}
+label.user-search-conditions-datetime-bottom2 {
+	border-top-right-radius: 0;
+}

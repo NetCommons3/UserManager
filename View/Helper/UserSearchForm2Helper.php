@@ -1,7 +1,6 @@
 <?php
 /**
  * UserSearchForm Helper
- * 後で削除
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -73,7 +72,7 @@ class UserSearchFormHelper extends FormHelper {
 			$dataTypeKey = DataType::DATA_TYPE_DATETIME;
 		}
 
-		$html .= '<div class="form-group">';
+		$html .= '<div class="form-group input-group">';
 		$html .= $this->__label($dataTypeKey, $userAttribute);
 		$html .= $this->__input($dataTypeKey, $userAttribute, $options);
 		$html .= '</div>';
@@ -99,13 +98,12 @@ class UserSearchFormHelper extends FormHelper {
 		);
 		if (in_array($dataTypeKey, $inArray, true)) {
 			//ラジオボタン、チェックボタン、セレクトボタン、日時
-			$html .= '<div>';
-			//$html .= '<label class="input-group-addon">' . h($userAttribute['UserAttribute']['name']) . '</label>';
-			$html .= '<label>' . h($userAttribute['UserAttribute']['name']) . '</label>';
-			$html .= '</div>';
+			//$html .= '<div>';
+			$html .= '<label class="input-group-addon">' . h($userAttribute['UserAttribute']['name']) . '</label>';
+			//$html .= '</div>';
 		} else {
 			$html .= $this->NetCommonsForm->label($userAttribute['UserAttribute']['key'], $userAttribute['UserAttribute']['name'], array(
-				//'class' => 'input-group-addon'
+				'class' => 'input-group-addon'
 			));
 		}
 
@@ -160,19 +158,17 @@ class UserSearchFormHelper extends FormHelper {
 	private function __inputRadio($dataTypeKey, $userAttribute, $options) {
 		$html = '';
 
-		$html .= '<div class="form-control user-search-conditions nc-data-label">';
-		//$html .= $this->NetCommonsForm->radio($userAttribute['UserAttribute']['key'],
-		//	array('' => __d('user_manager', 'Not specified')),
-		//	array('div' => false, 'default' => '')
-		//);
-		//$html .= '<br>';
-		$options = array('' => __d('user_manager', 'Not specified')) + $options;
+		$html .= '<div class="form-control user-search-conditions">';
+		$html .= $this->NetCommonsForm->radio($userAttribute['UserAttribute']['key'],
+			array('' => __d('user_manager', 'Not specified')),
+			array('div' => false, 'default' => '')
+		);
+		$html .= '<br>';
 
 		$html .= $this->NetCommonsForm->radio($userAttribute['UserAttribute']['key'], $options, array(
 			//'div' => array('class' => 'form-control form-inline'),
 			'div' => false,
 			'separator' => '<span class="radio-separator"></span>',
-			'default' => '',
 		));
 		$html .= '</div>';
 
@@ -232,7 +228,7 @@ class UserSearchFormHelper extends FormHelper {
 			//最終ログイン日時の場合、ラベル変更(○日以上ログインしていない、○日以内ログインしている)
 			$moreThanDays = __d('user_manager', 'Not logged more than <span style="color:#ff0000;">X</span>days ago');
 			$withinDays = __d('user_manager', 'Have logged in within <span style="color:#ff0000;">X</span>days');
-			$html .= '<div class="user-search-conditions-datetime">';
+			$html .= '<div class="user-search-conditions-datetime-login">';
 		} else {
 			//○日以上前、○日以内
 			$moreThanDays = __d('user_manager', 'more than <span style="color:#ff0000;">X</span>days ago');
@@ -245,13 +241,13 @@ class UserSearchFormHelper extends FormHelper {
 		$html .= $this->NetCommonsForm->input($userAttribute['UserAttribute']['key'] . '.more_than_days', array(
 			'name' => $userAttribute['UserAttribute']['key'] . '[more_than_days]',
 			'type' => 'number',
-			'class' => 'form-control user-search-conditions-datetime-top2',
+			'class' => 'form-control user-search-conditions-datetime-top',
 			'label' => false,
 			'div' => false,
 			'error' => false,
 		));
 		$html .= $this->NetCommonsForm->label($userAttribute['UserAttribute']['key'] . '.more_than_days', $moreThanDays, array(
-			'class' => 'input-group-addon user-search-conditions-datetime-top2'
+			'class' => 'input-group-addon user-search-conditions-datetime-top'
 		));
 		$html .= '</div>';
 
@@ -260,13 +256,13 @@ class UserSearchFormHelper extends FormHelper {
 		$html .= $this->NetCommonsForm->input($userAttribute['UserAttribute']['key'] . '.within_days', array(
 			'name' => $userAttribute['UserAttribute']['key'] . '[within_days]',
 			'type' => 'number',
-			'class' => 'form-control user-search-conditions-datetime-bottom2',
+			'class' => 'form-control user-search-conditions-datetime-bottom',
 			'label' => false,
 			'div' => false,
 			'error' => false,
 		));
 		$html .= $this->NetCommonsForm->label($userAttribute['UserAttribute']['key'] . '.within_days', $withinDays, array(
-			'class' => 'input-group-addon user-search-conditions-datetime-bottom2'
+			'class' => 'input-group-addon user-search-conditions-datetime-bottom'
 		));
 		$html .= '</div>';
 
