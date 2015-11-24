@@ -1,6 +1,7 @@
 <?php
 /**
  * UserSearchForm Helper
+ * 後で削除?
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -9,14 +10,14 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('FormHelper', 'View/Helper');
+App::uses('AppHelper', 'View/Helper');
 
 /**
  * UserSearchForm Helper
  *
  * @package NetCommons\Users\View\Helper
  */
-class UserSearchFormHelper extends FormHelper {
+class UserSearchFormHelper extends AppHelper {
 
 /**
  * Other helpers used by FormHelper

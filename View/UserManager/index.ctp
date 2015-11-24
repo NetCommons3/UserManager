@@ -11,6 +11,7 @@
 
 echo $this->NetCommonsHtml->css(array(
 	'/user_manager/css/style.css',
+	//'/user_manager/css/style2.css', //後で削除
 	'/users/css/style.css',
 ));
 echo $this->NetCommonsHtml->script('/user_manager/js/user_manager.js');
