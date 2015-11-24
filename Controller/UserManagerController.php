@@ -102,15 +102,6 @@ class UserManagerController extends UserManagerAppController {
 		$this->viewVars['userAttributes'] = Hash::remove($this->viewVars['userAttributes'],
 				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
 
-		//アバターの設定
-		$uploads = Hash::extract(
-			$this->viewVars['userAttributes'],
-			'{n}.{n}.{n}.UserAttributeSetting[data_type_key=' . DataType::DATA_TYPE_IMG . ']'
-		);
-		foreach ($uploads as $upload) {
-			$this->User->uploadSettings($upload['user_attribute_key'], array('contentKeyFieldName' => 'id'));
-		}
-
 		if ($this->request->isPost()) {
 			$Space = $this->Space;
 
@@ -149,15 +140,6 @@ class UserManagerController extends UserManagerAppController {
 		if (Current::read('User.role_key') !== UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR) {
 			$this->viewVars['userAttributes'] = Hash::remove($this->viewVars['userAttributes'],
 					'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
-		}
-
-		//アバターの設定
-		$uploads = Hash::extract(
-			$this->viewVars['userAttributes'],
-			'{n}.{n}.{n}.UserAttributeSetting[data_type_key=' . DataType::DATA_TYPE_IMG . ']'
-		);
-		foreach ($uploads as $upload) {
-			$this->User->uploadSettings($upload['user_attribute_key'], array('contentKeyFieldName' => 'id'));
 		}
 
 		if ($this->request->isPut()) {
