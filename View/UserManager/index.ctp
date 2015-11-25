@@ -9,7 +9,12 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-echo $this->NetCommonsHtml->css('/users/css/style.css');
+echo $this->NetCommonsHtml->css(array(
+	'/user_manager/css/style.css',
+	//'/user_manager/css/style2.css', //後で削除
+	'/users/css/style.css',
+));
+echo $this->NetCommonsHtml->script('/user_manager/js/user_manager.js');
 ?>
 
 <?php $this->start('subtitle'); ?>
@@ -22,8 +27,10 @@ echo $this->NetCommonsHtml->css('/users/css/style.css');
 <?php $this->end(); ?>
 
 <div class="user-search-index-head-margin">
-	<div class="text-center">
-		<?php echo $this->Button->searchLink(__d('users', 'Search for the members')); ?>
+	<div class="text-center" ng-controller="UserManager.controller">
+		<?php echo $this->Button->searchLink(__d('users', 'Search for the members'), false, array(
+			'ng-click' => 'showUserSearch()'
+		)); ?>
 	</div>
 
 	<div class="text-right">
@@ -31,22 +38,24 @@ echo $this->NetCommonsHtml->css('/users/css/style.css');
 	</div>
 </div>
 
-<table class="table table-condensed">
-	<thead>
-		<tr>
-			<th></th>
-			<?php echo $this->UserSearch->tableHeaders(); ?>
-		</tr>
-	</thead>
-
-	<tbody>
-		<?php foreach ($users as $index => $user) : ?>
+<div class="table-responsive">
+	<table class="table table-condensed">
+		<thead>
 			<tr>
-				<td><?php echo ($index + 1); ?></td>
-				<?php echo $this->UserSearch->tableRow($user, true); ?>
+				<th></th>
+				<?php echo $this->UserSearch->tableHeaders(); ?>
 			</tr>
-		<?php endforeach; ?>
-	</tbody>
-</table>
+		</thead>
+
+		<tbody>
+			<?php foreach ($users as $index => $user) : ?>
+				<tr>
+					<td><?php echo ($index + 1); ?></td>
+					<?php echo $this->UserSearch->tableRow($user, true); ?>
+				</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+</div>
 
 <?php echo $this->element('NetCommons.paginator');

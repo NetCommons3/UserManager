@@ -1,0 +1,36 @@
+/**
+ * user_manager/css/style.css
+ *
+ * @author   Takako Miyagawa <nekoget@gmail.com>
+ * @link     http://www.netcommons.org NetCommons Project
+ * @license  http://www.netcommons.org/license.txt NetCommons License
+ */
+
+.user-search-conditions label {
+	font-weight: normal;
+}
+
+.user-search-conditions-datetime label {
+	width: 60.8%;
+	text-align: left;
+}
+
+.form-control.user-search-conditions {
+	height: auto;
+}
+
+input.user-search-conditions-datetime-top {
+	border-bottom-left-radius: 0;
+	border-bottom: 0;
+}
+input.user-search-conditions-datetime-bottom {
+	border-top-left-radius: 0;
+}
+
+label.user-search-conditions-datetime-top {
+	border-bottom-right-radius: 0;
+	border-bottom: 0;
+}
+label.user-search-conditions-datetime-bottom {
+	border-top-right-radius: 0;
+}

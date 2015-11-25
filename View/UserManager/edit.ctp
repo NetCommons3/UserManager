@@ -14,7 +14,7 @@
 <?php echo $this->element('UserManager.setting_tabs'); ?>
 
 <div class="panel panel-default">
-	<?php echo $this->NetCommonsForm->create('User'); ?>
+	<?php echo $this->NetCommonsForm->create('User', array('type' => 'file')); ?>
 
 	<?php echo $this->element('Users.Users/edit_form', array('element' => 'UserManager.UserManager/render_edit_row')); ?>
 

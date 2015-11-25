@@ -25,7 +25,9 @@ class UserManagerController extends UserManagerAppController {
  * @var array
  */
 	public $uses = array(
+		'Groups.Group',
 		'Rooms.Space',
+		'Rooms.Room',
 		'Users.User',
 	);
 
@@ -56,6 +58,12 @@ class UserManagerController extends UserManagerAppController {
  * @return void
  */
 	public function index() {
+		//CakeLog::debug(print_r($this->request, true));
+		//CakeLog::debug(print_r($this->request->query, true));
+		//CakeLog::debug(print_r($_SERVER, true));
+		//var_dump($this->request->query);
+
+		//ユーザ一覧データ取得
 		$Space = $this->Space;
 		$this->UserSearch->search(
 			array('space_id' => $Space::PRIVATE_SPACE_ID),
@@ -69,10 +77,39 @@ class UserManagerController extends UserManagerAppController {
 /**
  * searchアクション
  *
+ * @param string $type 処理タイプ(conditions: 検索フォーム表示、result: 検索条件保持処理)
  * @return void
  */
-	public function search() {
-		$this->helpers[] = 'Users.UserSearchForm';
+	public function search($type = null) {
+		//CakeLog::debug(print_r($this->request->query, true));
+		if ($type === 'conditions') {
+			$this->helpers[] = 'UserManager.UserSearchForm';
+			$this->viewClass = 'View';
+			$this->layout = 'NetCommons.modal';
+
+			//自分自身のグループデータ取得(後で置き換え発生する？)
+			$result = $this->Group->find('list', array(
+				'recursive' => -1,
+				'fields' => array('id', 'name'),
+				'conditions' => array(
+					'created_user' => Current::read('User.id'),
+				),
+				'order' => array('id'),
+			));
+			$this->set('groups', $result);
+
+			//参加ルームデータ取得
+			$result = $this->Room->find('all', $this->Room->getReadableRoomsCondtions(array(
+				'Room.space_id !=' => Space::PRIVATE_SPACE_ID
+			)));
+			$rooms = Hash::combine($result, '{n}.Room.id', '{n}.RoomsLanguage.{n}[language_id=' . Current::read('Language.id') . '].name');
+			$this->set('rooms', $rooms);
+
+		} elseif ($type === 'result') {
+
+		} else {
+			$this->throwBadRequest();
+		}
 	}
 
 /**
@@ -97,7 +134,8 @@ class UserManagerController extends UserManagerAppController {
 			$this->User->userAttributeData = Hash::combine($this->viewVars['userAttributes'],
 				'{n}.{n}.{n}.UserAttribute.id', '{n}.{n}.{n}'
 			);
-			if ($user = $this->User->saveUser($this->request->data)) {
+			$user = $this->User->saveUser($this->request->data);
+			if ($user) {
 				//正常の場合
 				$this->redirect('/user_manager/users_roles_rooms/edit/' . $user['User']['id'] . '/' . $Space::ROOM_SPACE_ID);
 				return;
@@ -120,6 +158,7 @@ class UserManagerController extends UserManagerAppController {
  */
 	public function edit() {
 		$this->helpers[] = 'Users.UserEditForm';
+
 		if (Current::read('User.role_key') !== UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR) {
 			$this->viewVars['userAttributes'] = Hash::remove($this->viewVars['userAttributes'],
 					'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');

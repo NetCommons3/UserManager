@@ -37,4 +37,46 @@ msgstr "本文"
 msgid "Send"
 msgstr "送信"
 
+#: UserManager/View/Elements/setting_tabs.ctp:30
+msgid "User search"
+msgstr "会員検索"
 
+#: UserManager/View/Elements/setting_tabs.ctp:30
+msgid "more than <span style=\"color:#ff0000;\">X</span>days ago"
+msgstr "日以上前"
+
+#: UserManager/View/Elements/setting_tabs.ctp:30
+msgid "within <span style=\"color:#ff0000;\">X</span>days"
+msgstr "日以内"
+
+#: UserManager/View/Elements/setting_tabs.ctp:30
+msgid "Not logged more than <span style=\"color:#ff0000;\">X</span>days ago"
+msgstr "日以上ログインしていない"
+
+#: UserManager/View/Elements/setting_tabs.ctp:30
+msgid "Have logged in within <span style=\"color:#ff0000;\">X</span>days"
+msgstr "日以内にログインしている"
+
+#: UserManager/View/Elements/setting_tabs.ctp:30
+msgid "Not specified"
+msgstr "条件に含まない"
+
+#: UserManager/View/Elements/setting_tabs.ctp:30
+msgid "-- Not specify --"
+msgstr "-- 条件に含まない --"
+
+#: UserManager/View/Elements/setting_tabs.ctp:30
+msgid "No avatar."
+msgstr "なし"
+
+#: UserManager/View/Elements/setting_tabs.ctp:30
+msgid "Has avatar."
+msgstr "あり"
+
+#: Users/Model/User.php:165;172
+msgid "Rooms"
+msgstr "参加ルーム"
+
+#: Users/Model/User.php:165;172
+msgid "Groups"
+msgstr "グループ"
