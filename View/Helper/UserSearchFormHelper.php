@@ -35,46 +35,27 @@ class UserSearchFormHelper extends AppHelper {
  */
 	public function userSearchInput($userAttribute) {
 		$html = '';
-		//var_dump($userAttribute);
 
 		$dataTypeKey = $userAttribute['UserAttributeSetting']['data_type_key'];
-		$userAttributeKey = $userAttribute['UserAttribute']['key'];
 
-		//パスワードは項目表示しない
-		if ($dataTypeKey === DataType::DATA_TYPE_PASSWORD) {
+		//以下の場合、条件のinputを表示させない
+		// * パスワードは項目表示しない
+		// * 管理項目 && 会員管理が使えない
+		// * 他人の項目が読めない && 他人の項目が編集できない
+		if ($dataTypeKey === DataType::DATA_TYPE_PASSWORD ||
+				$userAttribute['UserAttributeSetting']['only_administrator'] && ! Current::allowSystemPlugin('user_manager') ||
+				! $userAttribute['UserAttributesRole']['other_readable'] && ! $userAttribute['UserAttributesRole']['other_editable']) {
+
 			return $html;
 		}
 
-		$options = null;
-		$choiceInArray = array(
-			DataType::DATA_TYPE_RADIO,
-			DataType::DATA_TYPE_CHECKBOX,
-			DataType::DATA_TYPE_SELECT,
-		);
-		if ($dataTypeKey === DataType::DATA_TYPE_IMG) {
-			//あり、なし、指定なしのラジオボタン
-			$dataTypeKey = DataType::DATA_TYPE_RADIO;
-			$options = array(
-				'0' => __d('user_manager', 'No avatar.'),
-				'1' => __d('user_manager', 'Has avatar.')
-			);
-		} elseif (in_array($dataTypeKey, $choiceInArray, true)) {
-			if ($userAttributeKey === 'role_key') {
-				$keyPath = '{n}.key';
-			} else {
-				$keyPath = '{n}.code';
-			}
-			//ラジオボタン、チェックボタン、セレクトボタン
-			$options = Hash::combine($userAttribute, 'UserAttributeChoice.' . $keyPath, 'UserAttributeChoice.{n}.name');
-		}
-
-		if (in_array($userAttributeKey, UserAttribute::$typeDatetime, true)) {
+		if (in_array($userAttribute['UserAttribute']['key'], UserAttribute::$typeDatetime, true)) {
 			$dataTypeKey = DataType::DATA_TYPE_DATETIME;
 		}
 
 		$html .= '<div class="form-group">';
 		$html .= $this->__label($dataTypeKey, $userAttribute);
-		$html .= $this->__input($dataTypeKey, $userAttribute, $options);
+		$html .= $this->__input($dataTypeKey, $userAttribute);
 		$html .= '</div>';
 
 		return $html;
@@ -91,6 +72,7 @@ class UserSearchFormHelper extends AppHelper {
 		$html = '';
 
 		$inArray = array(
+			DataType::DATA_TYPE_IMG,
 			DataType::DATA_TYPE_RADIO,
 			DataType::DATA_TYPE_CHECKBOX,
 			//DataType::DATA_TYPE_SELECT,
@@ -113,13 +95,33 @@ class UserSearchFormHelper extends AppHelper {
  *
  * @param string $dataTypeKey inputタイプ
  * @param array $userAttribute ユーザ項目属性データ
- * @param array $options オプションデータ(radio, checkbox, select)
  * @return string 入力フォームHTML
  */
-	private function __input($dataTypeKey, $userAttribute, $options) {
+	private function __input($dataTypeKey, $userAttribute) {
 		$html = '';
 
-		$userAttributeKey = $userAttribute['UserAttribute']['key'];
+		$options = null;
+		$choiceInArray = array(
+			DataType::DATA_TYPE_RADIO,
+			DataType::DATA_TYPE_CHECKBOX,
+			DataType::DATA_TYPE_SELECT,
+		);
+		if ($dataTypeKey === DataType::DATA_TYPE_IMG) {
+			//あり、なし、指定なしのラジオボタン
+			$dataTypeKey = DataType::DATA_TYPE_RADIO;
+			$options = array(
+				'0' => __d('user_manager', 'No avatar.'),
+				'1' => __d('user_manager', 'Has avatar.')
+			);
+		} elseif (in_array($dataTypeKey, $choiceInArray, true)) {
+			if ($userAttribute['UserAttribute']['key'] === 'role_key') {
+				$keyPath = '{n}.key';
+			} else {
+				$keyPath = '{n}.code';
+			}
+			//ラジオボタン、チェックボタン、セレクトボタン
+			$options = Hash::combine($userAttribute, 'UserAttributeChoice.' . $keyPath, 'UserAttributeChoice.{n}.name');
+		}
 
 		switch ($dataTypeKey) {
 			case DataType::DATA_TYPE_RADIO:
@@ -156,7 +158,7 @@ class UserSearchFormHelper extends AppHelper {
 	private function __inputRadio($dataTypeKey, $userAttribute, $options) {
 		$html = '';
 
-		$html .= '<div class="form-control user-search-conditions nc-data-label">';
+		$html .= '<div class="form-control input-sm user-search-conditions nc-data-label">';
 
 		$options = array('' => __d('user_manager', 'Not specified')) + $options;
 		$html .= $this->NetCommonsForm->radio($userAttribute['UserAttribute']['key'], $options, array(
@@ -172,6 +174,7 @@ class UserSearchFormHelper extends AppHelper {
 
 /**
  * 会員検索の入力フォームHTMLを生成する
+ * 後でやる
  *
  * @param string $dataTypeKey inputタイプ
  * @param array $userAttribute ユーザ項目属性データ
@@ -204,6 +207,7 @@ class UserSearchFormHelper extends AppHelper {
 			'label' => false,
 			'div' => false,
 			'error' => false,
+			'class' => 'form-control input-sm',
 		));
 
 		return $html;
@@ -236,7 +240,7 @@ class UserSearchFormHelper extends AppHelper {
 		$html .= $this->NetCommonsForm->input($userAttribute['UserAttribute']['key'] . '.more_than_days', array(
 			'name' => $userAttribute['UserAttribute']['key'] . '[more_than_days]',
 			'type' => 'number',
-			'class' => 'form-control user-search-conditions-datetime-top',
+			'class' => 'form-control input-sm user-search-conditions-datetime-top',
 			'label' => false,
 			'div' => false,
 			'error' => false,
@@ -251,7 +255,7 @@ class UserSearchFormHelper extends AppHelper {
 		$html .= $this->NetCommonsForm->input($userAttribute['UserAttribute']['key'] . '.within_days', array(
 			'name' => $userAttribute['UserAttribute']['key'] . '[within_days]',
 			'type' => 'number',
-			'class' => 'form-control user-search-conditions-datetime-bottom',
+			'class' => 'form-control input-sm user-search-conditions-datetime-bottom',
 			'label' => false,
 			'div' => false,
 			'error' => false,
@@ -281,7 +285,66 @@ class UserSearchFormHelper extends AppHelper {
 			'label' => false,
 			'div' => false,
 			'error' => false,
+			'class' => 'form-control input-sm',
 		));
+
+		return $html;
+	}
+
+/**
+ * 会員検索の入力フォームHTMLを生成する
+ *
+ * @return string inputのHTML
+ */
+	public function userSearchRoomsSelect() {
+		$html = '';
+
+		$options = array('' => __d('user_manager', '-- Not specify --')) + $this->_View->viewVars['rooms'];
+
+		$html .= '<div class="form-group">';
+		$html .= '<div>';
+		$html .= '<label>' . __d('user_manager', 'Rooms') . '</label>';
+		$html .= '</div>';
+		$html .= $this->NetCommonsForm->input('room', array(
+			'type' => 'select',
+			'options' => $options,
+			'label' => false,
+			'div' => false,
+			'error' => false,
+			'class' => 'form-control input-sm',
+		));
+		$html .= '</div>';
+
+		return $html;
+	}
+
+/**
+ * 会員検索の入力フォームHTMLを生成する
+ *
+ * @return string inputのHTML
+ */
+	public function userSearchGroupsSelect() {
+		$html = '';
+
+		if (! $this->_View->viewVars['groups']) {
+			return $html;
+		}
+
+		$options = array('' => __d('user_manager', '-- Not specify --')) + $this->_View->viewVars['groups'];
+
+		$html .= '<div class="form-group">';
+		$html .= '<div>';
+		$html .= '<label>' . __d('user_manager', 'Groups') . '</label>';
+		$html .= '</div>';
+		$html .= $this->NetCommonsForm->input('group', array(
+			'type' => 'select',
+			'options' => $options,
+			'label' => false,
+			'div' => false,
+			'error' => false,
+			'class' => 'form-control input-sm',
+		));
+		$html .= '</div>';
 
 		return $html;
 	}

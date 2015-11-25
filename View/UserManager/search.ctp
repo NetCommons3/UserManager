@@ -24,6 +24,16 @@
 
 			<?php echo $this->element('UserManager/render_search_row', array('row' => $row, 'layout' => $layout)); ?>
 		<?php endforeach; ?>
+
+		<div class="row">
+			<div class="col-xs-12 col-sm-6">
+				<?php echo $this->UserSearchForm->userSearchRoomsSelect(); ?>
+			</div>
+			<div class="col-xs-12 col-sm-6">
+				<?php echo $this->UserSearchForm->userSearchGroupsSelect(); ?>
+			</div>
+		</div>
+
 	</div>
 
 	<div class="panel-footer text-center">

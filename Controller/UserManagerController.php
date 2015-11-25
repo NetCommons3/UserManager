@@ -25,7 +25,9 @@ class UserManagerController extends UserManagerAppController {
  * @var array
  */
 	public $uses = array(
+		'Groups.Group',
 		'Rooms.Space',
+		'Rooms.Room',
 		'Users.User',
 	);
 
@@ -61,6 +63,7 @@ class UserManagerController extends UserManagerAppController {
 		//CakeLog::debug(print_r($_SERVER, true));
 		//var_dump($this->request->query);
 
+		//ユーザ一覧データ取得
 		$Space = $this->Space;
 		$this->UserSearch->search(
 			array('space_id' => $Space::PRIVATE_SPACE_ID),
@@ -83,6 +86,25 @@ class UserManagerController extends UserManagerAppController {
 			$this->helpers[] = 'UserManager.UserSearchForm';
 			$this->viewClass = 'View';
 			$this->layout = 'NetCommons.modal';
+
+			//自分自身のグループデータ取得(後で置き換え発生する？)
+			$result = $this->Group->find('list', array(
+				'recursive' => -1,
+				'fields' => array('id', 'name'),
+				'conditions' => array(
+					'created_user' => Current::read('User.id'),
+				),
+				'order' => array('id'),
+			));
+			$this->set('groups', $result);
+
+			//参加ルームデータ取得
+			$result = $this->Room->find('all', $this->Room->getReadableRoomsCondtions(array(
+				'Room.space_id !=' => Space::PRIVATE_SPACE_ID
+			)));
+			$rooms = Hash::combine($result, '{n}.Room.id', '{n}.RoomsLanguage.{n}[language_id=' . Current::read('Language.id') . '].name');
+			$this->set('rooms', $rooms);
+
 		} elseif ($type === 'result') {
 
 		} else {
