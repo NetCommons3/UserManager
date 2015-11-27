@@ -1,6 +1,5 @@
 <?php
 /**
- * 後で見直す
  * UserManager index template
  *
  * @author Noriko Arai <arai@nii.ac.jp>

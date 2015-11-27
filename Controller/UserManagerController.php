@@ -38,6 +38,7 @@ class UserManagerController extends UserManagerAppController {
  */
 	public $components = array(
 		'ControlPanel.ControlPanelLayout',
+		'Files.FileUpload',
 		'M17n.SwitchLanguage',
 		'UserAttributes.UserAttributeLayout',
 		'Users.UserSearch',
@@ -226,5 +227,56 @@ class UserManagerController extends UserManagerAppController {
 
 		$this->User->deleteUser($user);
 		$this->redirect(NetCommonsUrl::backToIndexUrl('default_setting_action'));
+	}
+
+/**
+ * importアクション
+ *
+ * @return void
+ */
+	public function import() {
+		App::uses('CsvFileReader', 'Files.Utility');
+		if ($this->request->isPost()) {
+			//$this->User->begin();
+
+			$file = $this->FileUpload->getTemporaryUploadFile('import_csv');
+			$reader = new CsvFileReader($file);
+			foreach ($reader as $i => $row) {
+				if ($i === 0) {
+					$header = $row;
+					continue;
+				}
+				$row = array_combine($header, $row);
+				$row['User.id'] = null;
+				$row['User.password_again'] = $row['User.password'];
+
+				$data = Hash::expand($row);
+
+				CakeLog::debug(print_r($data, true));
+
+				$this->User->userAttributeData = Hash::combine($this->viewVars['userAttributes'],
+					'{n}.{n}.{n}.UserAttribute.id', '{n}.{n}.{n}'
+				);
+				if (! $this->User->saveUser($data)) {
+					//正常の場合
+					$this->NetCommons->handleValidationError($this->User->validationErrors);
+					return;
+				}
+			}
+			//$this->User->commit();
+
+			$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
+			$this->redirect('/user_manager/user_manager/index/');
+		}
+
+	}
+
+/**
+ * exportアクション
+ *
+ * @return void
+ */
+	public function export() {
+
 	}
 }
