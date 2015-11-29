@@ -246,7 +246,6 @@ class UserManagerController extends UserManagerAppController {
 			$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
 			$this->redirect('/user_manager/user_manager/index/');
 		}
-
 	}
 
 /**
@@ -255,6 +254,5 @@ class UserManagerController extends UserManagerAppController {
  * @return void
  */
 	public function export() {
-
 	}
 }

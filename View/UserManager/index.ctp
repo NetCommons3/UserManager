@@ -28,13 +28,13 @@ echo $this->NetCommonsHtml->script('/user_manager/js/user_manager.js');
 		<?php echo $this->NetCommonsHtml->link(
 			'<span class="glyphicon glyphicon-export"></span> ' . __d('user_manager', 'Export'),
 			array('action' => 'export'),
-			array('name' => 'import', 'class' => 'btn btn-default btn-sm', 'escapeTitle' => false,)
+			array('name' => 'import', 'class' => 'btn btn-default btn-sm', 'escapeTitle' => false)
 		); ?>
 
 		<?php echo $this->NetCommonsHtml->link(
 			'<span class="glyphicon glyphicon-import"></span> ' . __d('user_manager', 'Import'),
 			array('action' => 'import'),
-			array('name' => 'import', 'class' => 'btn btn-default btn-sm', 'escapeTitle' => false,)
+			array('name' => 'import', 'class' => 'btn btn-default btn-sm', 'escapeTitle' => false)
 		); ?>
 	</div>
 <?php $this->end(); ?>
