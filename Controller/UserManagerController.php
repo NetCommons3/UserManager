@@ -38,6 +38,7 @@ class UserManagerController extends UserManagerAppController {
  */
 	public $components = array(
 		'ControlPanel.ControlPanelLayout',
+		'Files.FileUpload',
 		'M17n.SwitchLanguage',
 		'UserAttributes.UserAttributeLayout',
 		'Users.UserSearch',
@@ -226,5 +227,32 @@ class UserManagerController extends UserManagerAppController {
 
 		$this->User->deleteUser($user);
 		$this->redirect(NetCommonsUrl::backToIndexUrl('default_setting_action'));
+	}
+
+/**
+ * importアクション
+ *
+ * @return void
+ */
+	public function import() {
+		if ($this->request->isPost()) {
+			$file = $this->FileUpload->getTemporaryUploadFile('import_csv');
+			if (! $this->User->importUsers($file)) {
+				//バリデーションエラーの場合
+				$this->NetCommons->handleValidationError($this->User->validationErrors);
+				return;
+			}
+
+			$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
+			$this->redirect('/user_manager/user_manager/index/');
+		}
+	}
+
+/**
+ * exportアクション
+ *
+ * @return void
+ */
+	public function export() {
 	}
 }

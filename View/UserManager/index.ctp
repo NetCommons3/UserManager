@@ -11,7 +11,6 @@
 
 echo $this->NetCommonsHtml->css(array(
 	'/user_manager/css/style.css',
-	//'/user_manager/css/style2.css', //後で削除
 	'/users/css/style.css',
 ));
 echo $this->NetCommonsHtml->script('/user_manager/js/user_manager.js');
@@ -24,6 +23,20 @@ echo $this->NetCommonsHtml->script('/user_manager/js/user_manager.js');
 					$this->Paginator->counter('{:pages}'),
 					$this->Paginator->counter('{:count}')); ?>
 	</span>
+
+	<div class="pull-right">
+		<?php echo $this->NetCommonsHtml->link(
+			'<span class="glyphicon glyphicon-export"></span> ' . __d('user_manager', 'Export'),
+			array('action' => 'export'),
+			array('name' => 'import', 'class' => 'btn btn-default btn-sm', 'escapeTitle' => false)
+		); ?>
+
+		<?php echo $this->NetCommonsHtml->link(
+			'<span class="glyphicon glyphicon-import"></span> ' . __d('user_manager', 'Import'),
+			array('action' => 'import'),
+			array('name' => 'import', 'class' => 'btn btn-default btn-sm', 'escapeTitle' => false)
+		); ?>
+	</div>
 <?php $this->end(); ?>
 
 <div class="user-search-index-head-margin">
