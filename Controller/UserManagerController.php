@@ -20,6 +20,20 @@ App::uses('UserManagerAppController', 'UserManager.Controller');
 class UserManagerController extends UserManagerAppController {
 
 /**
+ * 会員一覧の表示する項目
+ *
+ * @var const
+ */
+	public static $displaFields = array(
+		'handlename',
+		'name',
+		'role_key',
+		'status',
+		'modified',
+		'last_login'
+	);
+
+/**
  * use model
  *
  * @var array
@@ -54,11 +68,23 @@ class UserManagerController extends UserManagerAppController {
 	);
 
 /**
+ * beforeFilter
+ *
+ * @return void
+ */
+	public function beforeFilter() {
+		parent::beforeFilter();
+		$this->Security->unlockedActions = array('search');
+	}
+
+/**
  * indexアクション
  *
  * @return void
  */
 	public function index() {
+		$this->helpers[] = 'UserManager.UserSearchForm';
+
 		//CakeLog::debug(print_r($this->request, true));
 		//CakeLog::debug(print_r($this->request->query, true));
 		//CakeLog::debug(print_r($_SERVER, true));
@@ -68,9 +94,15 @@ class UserManagerController extends UserManagerAppController {
 		$Space = $this->Space;
 		$this->UserSearch->search(
 			array('space_id' => $Space::PRIVATE_SPACE_ID),
-			array('Room' => array('Room.page_id_top NOT' => null))
+			array('Room' => array(
+				'conditions' => array(
+					'Room.page_id_top NOT' => null,
+				)
+			))
 		);
-		$this->set('displayFields', $this->User->getDispayFields());
+
+		$fields = array_combine(self::$displaFields, self::$displaFields);
+		$this->set('displayFields', $this->User->cleanSearchFields($fields));
 
 		$this->helpers[] = 'Users.UserSearch';
 	}
@@ -82,13 +114,13 @@ class UserManagerController extends UserManagerAppController {
  * @return void
  */
 	public function search($type = null) {
-		//CakeLog::debug(print_r($this->request->query, true));
 		if ($type === 'conditions') {
+			//検索フォーム表示
 			$this->helpers[] = 'UserManager.UserSearchForm';
 			$this->viewClass = 'View';
 			$this->layout = 'NetCommons.modal';
 
-			//自分自身のグループデータ取得(後で置き換え発生する？)
+			//自分自身のグループデータ取得(後でGroupプラグインで用意されれば置き換える)
 			$result = $this->Group->find('list', array(
 				'recursive' => -1,
 				'fields' => array('id', 'name'),
@@ -107,6 +139,12 @@ class UserManagerController extends UserManagerAppController {
 			$this->set('rooms', $rooms);
 
 		} elseif ($type === 'result') {
+			//検索のための条件をセッションに保持
+			//CakeLog::debug(var_export($this->request->data, true));
+			$fields = $this->User->cleanSearchFields($this->request->data);
+			CakeLog::debug(var_export($fields, true));
+			//CakeLog::debug(print_r($this->request->url, true));
+			$this->Session->write(UserSearchComponent::$sessionKey, $fields);
 
 		} else {
 			$this->throwBadRequest();
