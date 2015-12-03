@@ -10,10 +10,10 @@
  */
 
 echo $this->NetCommonsHtml->css(array(
-	'/user_manager/css/style.css',
+	//'/user_manager/css/style.css',
 	'/users/css/style.css',
 ));
-echo $this->NetCommonsHtml->script('/user_manager/js/user_manager.js');
+//echo $this->NetCommonsHtml->script('/user_manager/js/user_manager.js');
 ?>
 
 <?php $this->start('subtitle'); ?>
@@ -40,11 +40,7 @@ echo $this->NetCommonsHtml->script('/user_manager/js/user_manager.js');
 <?php $this->end(); ?>
 
 <div class="user-search-index-head-margin">
-	<div class="text-center" ng-controller="UserManager.controller">
-		<?php echo $this->Button->searchLink(__d('users', 'Search for the members'), false, array(
-			'ng-click' => 'showUserSearch()'
-		)); ?>
-	</div>
+	<?php echo $this->UserSearchForm->displaySearchButton('/user_manager/user_manager/index'); ?>
 
 	<div class="text-right">
 		<?php echo $this->Button->addLink(); ?>

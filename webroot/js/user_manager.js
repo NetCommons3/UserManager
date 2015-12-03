@@ -8,15 +8,17 @@
  * UserManager controller
  */
 NetCommonsApp.controller('UserManager.controller', function(
-    $scope, $http, $window, NetCommonsModal) {
+    $scope, NetCommonsModal) {
 
       /**
-       * Show condition form method
+       * 検索ダイアログ表示
        *
-       * @param {number} users.id
+       * @param {array} condtions 条件配列
+       * @param {string} callbackUrl callbackするURL
        * @return {void}
        */
-      $scope.showUserSearch = function(condtions) {
+      $scope.showUserSearch = function(condtions, callbackUrl) {
+        console.log(callbackUrl);
         NetCommonsModal.show(
             $scope, 'UserManager.search',
             $scope.baseUrl + '/user_manager/user_manager/search/conditions',
@@ -24,17 +26,11 @@ NetCommonsApp.controller('UserManager.controller', function(
               backdrop: 'static',
               size: 'lg',
               resolve: {
-                condtions: condtions
+                options: {
+                  condtions: condtions,
+                  callbackUrl: callbackUrl
+                }
               }
-            }
-        ).result.then(
-            function(result) {
-              var searchUrl = $scope.baseUrl +
-                                '/user_manager/user_manager/search/result';
-              $http.get(searchUrl, {params: result, cache: false})
-                .success(function() {
-                    $window.location.reload();
-                  });
             }
         );
       };
@@ -45,28 +41,58 @@ NetCommonsApp.controller('UserManager.controller', function(
  * UserManager search condtion modal controller
  */
 NetCommonsApp.controller('UserManager.search', function(
-    $scope, $modalInstance, condtions) {
+    $scope, $http, $modalInstance, $window, options) {
 
       /**
-       * Search conditions
+       * 検索条件を保持する変数
        */
-      $scope.condtions = condtions;
+      $scope.condtions = options['condtions'];
 
       /**
-       * Dialog search
+       * 初期処理
+       *
+       * @return {void}
+       */
+      $scope.initialize = function(domId) {
+        $scope.domId = domId;
+      };
+
+      /**
+       * 検索処理
        *
        * @return {void}
        */
       $scope.search = function() {
-        console.log('search 1');
-        if (! $scope.condtions) {
-          $scope.condtions = {a: 'aaa'};
-        }
-        $modalInstance.close($scope.condtions);
+        var element = angular.element('#' + $scope.domId);
+        $scope.condtions = {};
+        angular.forEach(element.serializeArray(), function(input) {
+          if (input['value'] !== '') {
+            this.condtions[input['name']] = input['value'];
+          }
+        }, $scope);
+
+        $http.post($scope.baseUrl +
+                            '/user_manager/user_manager/search/result',
+            $.param({_method: 'POST', data: $scope.condtions}),
+            {cache: false,
+              headers:
+                  {'Content-Type': 'application/x-www-form-urlencoded'}
+            }
+        )
+          .success(function(data) {
+              //success condition
+              $window.location.href =
+                          $scope.baseUrl + options['callbackUrl'] + '?reload';
+              //$modalInstance.close('success');
+            })
+          .error(function(data, status) {
+              //error condition
+              $modalInstance.dismiss('error');
+            });
       };
 
       /**
-       * Dialog cancel
+       * キャンセル処理
        *
        * @return {void}
        */

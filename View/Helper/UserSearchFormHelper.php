@@ -24,7 +24,9 @@ class UserSearchFormHelper extends AppHelper {
  * @var array
  */
 	public $helpers = array(
+		'NetCommons.Button',
 		'NetCommons.NetCommonsForm',
+		'NetCommons.NetCommonsHtml',
 	);
 
 /**
@@ -166,6 +168,7 @@ class UserSearchFormHelper extends AppHelper {
 			'div' => false,
 			'separator' => '<span class="radio-separator"></span>',
 			'default' => '',
+			'hiddenField' => false,
 		));
 		$html .= '</div>';
 
@@ -343,6 +346,33 @@ class UserSearchFormHelper extends AppHelper {
 			'div' => false,
 			'error' => false,
 			'class' => 'form-control input-sm',
+		));
+		$html .= '</div>';
+
+		return $html;
+	}
+
+/**
+ * 対象会員の絞り込みボタン表示
+ *
+ * @param string $url URL
+ * @return string HTML
+ */
+	public function displaySearchButton($url) {
+		$html = '';
+		$html .= $this->NetCommonsHtml->css(array(
+			'/user_manager/css/style.css',
+			//'/users/css/style.css',
+		));
+		$html .= $this->NetCommonsHtml->script(array(
+			'/user_manager/js/user_manager.js'
+		));
+
+		$html .= '<div class="text-center" ng-controller="UserManager.controller">';
+
+		$html .= $this->Button->search(__d('users', 'Search for the members'), array(
+			'type' => 'button',
+			'ng-click' => 'showUserSearch(null, \'' . h($url) . '\')'
 		));
 		$html .= '</div>';
 

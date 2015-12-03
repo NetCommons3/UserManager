@@ -14,7 +14,5 @@
 ?>
 
 <div class="row">
-	<?php for($col = 1; $col <= $layout['UserAttributeLayout']['col']; $col++) : ?>
-		<?php echo $this->element('UserManager/render_search_col', array('row' => $row, 'col' => $col, 'layout' => $layout)); ?>
-	<?php endfor; ?>
+	<?php echo $this->UserAttributeLayout->renderCol('UserManager.UserManager/render_search_col', $layout); ?>
 </div>

@@ -15,10 +15,6 @@
 	text-align: left;
 }
 
-.form-control.user-search-conditions {
-	height: auto;
-}
-
 input.user-search-conditions-datetime-top {
 	border-bottom-left-radius: 0;
 	border-bottom: 0;
