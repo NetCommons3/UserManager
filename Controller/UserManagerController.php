@@ -140,7 +140,7 @@ class UserManagerController extends UserManagerAppController {
 
 		} elseif ($type === 'result') {
 			//検索のための条件をセッションに保持
-			//CakeLog::debug(var_export($this->request->data, true));
+			CakeLog::debug(var_export($this->request->data, true));
 			$fields = $this->User->cleanSearchFields($this->request->data);
 			CakeLog::debug(var_export($fields, true));
 			//CakeLog::debug(print_r($this->request->url, true));
