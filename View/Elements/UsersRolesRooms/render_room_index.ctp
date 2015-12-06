@@ -22,6 +22,7 @@
 				'id' => $rolesRoomsUsers[$room['Room']['id']]['RolesRoomsUser']['id'],
 				'roles_room_id' => $rolesRoomsUsers[$room['Room']['id']]['RolesRoomsUser']['roles_room_id'],
 				'user_id' => $rolesRoomsUsers[$room['Room']['id']]['RolesRoomsUser']['user_id'],
+				'room_id' => $room['Room']['id'],
 			),
 			'Room' => array(
 				'id' => $room['Room']['id'],
