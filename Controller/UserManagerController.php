@@ -85,6 +85,8 @@ class UserManagerController extends UserManagerAppController {
 	public function index() {
 		$this->helpers[] = 'UserManager.UserSearchForm';
 
+		$this->UserSearch->clearConditions();
+
 		//CakeLog::debug(print_r($this->request, true));
 		//CakeLog::debug(print_r($this->request->query, true));
 		//CakeLog::debug(print_r($_SERVER, true));
@@ -137,6 +139,8 @@ class UserManagerController extends UserManagerAppController {
 			)));
 			$rooms = Hash::combine($result, '{n}.Room.id', '{n}.RoomsLanguage.{n}[language_id=' . Current::read('Language.id') . '].name');
 			$this->set('rooms', $rooms);
+
+			$this->request->data['UserSearch'] = $this->Session->read(UserSearchComponent::$sessionKey);
 
 		} elseif ($type === 'result') {
 			//検索のための条件をセッションに保持

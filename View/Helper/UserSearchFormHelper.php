@@ -240,32 +240,40 @@ class UserSearchFormHelper extends AppHelper {
 
 		//○日以上前(○日以上ログインしていない)の出力
 		$html .= '<div class="input-group">';
-		$html .= $this->NetCommonsForm->input($userAttribute['UserAttribute']['key'] . '.more_than_days', array(
-			'name' => $userAttribute['UserAttribute']['key'] . '[more_than_days]',
-			'type' => 'number',
-			'class' => 'form-control input-sm user-search-conditions-datetime-top',
-			'label' => false,
-			'div' => false,
-			'error' => false,
-		));
-		$html .= $this->NetCommonsForm->label($userAttribute['UserAttribute']['key'] . '.more_than_days', $moreThanDays, array(
-			'class' => 'input-group-addon user-search-conditions-datetime-top'
-		));
+		$html .= $this->NetCommonsForm->input(
+			$userAttribute['UserAttribute']['key'] . '.' . UserSearchComponent::MORE_THAN_DAYS,
+			array(
+				'name' => $userAttribute['UserAttribute']['key'] . '.' . UserSearchComponent::MORE_THAN_DAYS,
+				'type' => 'number',
+				'class' => 'form-control input-sm user-search-conditions-datetime-top',
+				'label' => false,
+				'div' => false,
+				'error' => false,
+			)
+		);
+		$html .= $this->NetCommonsForm->label(
+			$userAttribute['UserAttribute']['key'] . '.' . UserSearchComponent::MORE_THAN_DAYS, $moreThanDays,
+			array('class' => 'input-group-addon user-search-conditions-datetime-top')
+		);
 		$html .= '</div>';
 
 		//○日以内(○日以内ログインしている)の出力
 		$html .= '<div class="input-group">';
-		$html .= $this->NetCommonsForm->input($userAttribute['UserAttribute']['key'] . '.within_days', array(
-			'name' => $userAttribute['UserAttribute']['key'] . '[within_days]',
-			'type' => 'number',
-			'class' => 'form-control input-sm user-search-conditions-datetime-bottom',
-			'label' => false,
-			'div' => false,
-			'error' => false,
-		));
-		$html .= $this->NetCommonsForm->label($userAttribute['UserAttribute']['key'] . '.within_days', $withinDays, array(
-			'class' => 'input-group-addon user-search-conditions-datetime-bottom'
-		));
+		$html .= $this->NetCommonsForm->input(
+			$userAttribute['UserAttribute']['key'] . '.' . UserSearchComponent::WITHIN_DAYS,
+			array(
+				'name' => $userAttribute['UserAttribute']['key'] . '.' . UserSearchComponent::WITHIN_DAYS,
+				'type' => 'number',
+				'class' => 'form-control input-sm user-search-conditions-datetime-bottom',
+				'label' => false,
+				'div' => false,
+				'error' => false,
+			)
+		);
+		$html .= $this->NetCommonsForm->label(
+			$userAttribute['UserAttribute']['key'] . '.' . UserSearchComponent::WITHIN_DAYS, $withinDays,
+			array('class' => 'input-group-addon user-search-conditions-datetime-bottom')
+		);
 		$html .= '</div>';
 
 		$html .= '</div>';
@@ -339,7 +347,7 @@ class UserSearchFormHelper extends AppHelper {
 		$html .= '<div>';
 		$html .= '<label>' . __d('user_manager', 'Groups') . '</label>';
 		$html .= '</div>';
-		$html .= $this->NetCommonsForm->input('group', array(
+		$html .= $this->NetCommonsForm->input('group_id', array(
 			'type' => 'select',
 			'options' => $options,
 			'label' => false,

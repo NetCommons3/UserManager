@@ -82,7 +82,7 @@ NetCommonsApp.controller('UserManager.search', function(
           .success(function(data) {
               //success condition
               $window.location.href =
-                          $scope.baseUrl + options['callbackUrl'] + '?reload';
+                          $scope.baseUrl + options['callbackUrl'] + '?search';
               //$modalInstance.close('success');
             })
           .error(function(data, status) {
