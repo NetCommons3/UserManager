@@ -42,10 +42,8 @@ class UserSearchFormHelper extends AppHelper {
 
 		//以下の場合、条件のinputを表示させない
 		// * パスワードは項目表示しない
-		// * 管理項目 && 会員管理が使えない
 		// * 他人の項目が読めない && 他人の項目が編集できない
 		if ($dataTypeKey === DataType::DATA_TYPE_PASSWORD ||
-				$userAttribute['UserAttributeSetting']['only_administrator'] && ! Current::allowSystemPlugin('user_manager') ||
 				! $userAttribute['UserAttributesRole']['other_readable'] && ! $userAttribute['UserAttributesRole']['other_editable']) {
 
 			return $html;
