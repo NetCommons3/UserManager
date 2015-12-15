@@ -164,8 +164,10 @@ class UserManagerController extends UserManagerAppController {
 		$this->view = 'edit';
 		$this->helpers[] = 'Users.UserEditForm';
 
-		$this->viewVars['userAttributes'] = Hash::remove($this->viewVars['userAttributes'],
-				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
+		if (UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR !== Current::read('User.role_key')) {
+			$this->viewVars['userAttributes'] = Hash::remove($this->viewVars['userAttributes'],
+					'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
+		}
 
 		if ($this->request->isPost()) {
 			$Space = $this->Space;
