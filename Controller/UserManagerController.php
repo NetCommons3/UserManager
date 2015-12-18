@@ -85,6 +85,8 @@ class UserManagerController extends UserManagerAppController {
 	public function index() {
 		$this->helpers[] = 'UserManager.UserSearchForm';
 
+		$this->UserSearch->clearConditions();
+
 		//CakeLog::debug(print_r($this->request, true));
 		//CakeLog::debug(print_r($this->request->query, true));
 		//CakeLog::debug(print_r($_SERVER, true));
@@ -138,9 +140,11 @@ class UserManagerController extends UserManagerAppController {
 			$rooms = Hash::combine($result, '{n}.Room.id', '{n}.RoomsLanguage.{n}[language_id=' . Current::read('Language.id') . '].name');
 			$this->set('rooms', $rooms);
 
+			$this->request->data['UserSearch'] = $this->Session->read(UserSearchComponent::$sessionKey);
+
 		} elseif ($type === 'result') {
 			//検索のための条件をセッションに保持
-			//CakeLog::debug(var_export($this->request->data, true));
+			CakeLog::debug(var_export($this->request->data, true));
 			$fields = $this->User->cleanSearchFields($this->request->data);
 			CakeLog::debug(var_export($fields, true));
 			//CakeLog::debug(print_r($this->request->url, true));
@@ -160,8 +164,10 @@ class UserManagerController extends UserManagerAppController {
 		$this->view = 'edit';
 		$this->helpers[] = 'Users.UserEditForm';
 
-		$this->viewVars['userAttributes'] = Hash::remove($this->viewVars['userAttributes'],
-				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
+		if (UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR !== Current::read('User.role_key')) {
+			$this->viewVars['userAttributes'] = Hash::remove($this->viewVars['userAttributes'],
+					'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
+		}
 
 		if ($this->request->isPost()) {
 			$Space = $this->Space;
