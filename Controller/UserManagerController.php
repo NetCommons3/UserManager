@@ -298,5 +298,17 @@ class UserManagerController extends UserManagerAppController {
  * @return void
  */
 	public function export() {
+		if (Hash::check($this->request->query, 'pass')) {
+			App::uses('CsvFileWriter', 'Files.Utility');
+
+			$csvWriter = $this->User->exportUsers();
+			if (! $csvWriter) {
+				//バリデーションエラーの場合
+				$this->NetCommons->handleValidationError($this->User->validationErrors);
+				return;
+			}
+
+			return $csvWriter->zipDownload('export_user.zip', 'export_user.csv', $this->request->query['pass']);
+		}
 	}
 }

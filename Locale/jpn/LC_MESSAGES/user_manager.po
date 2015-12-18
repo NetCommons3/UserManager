@@ -41,6 +41,14 @@ msgstr "会員のインポート"
 msgid "Import description"
 msgstr "ここに説明書く"
 
+#: Users/Model/User.php:165;172
+msgid "Export title"
+msgstr "会員のエクスポート"
+
+#: Users/Model/User.php:165;172
+msgid "Export description"
+msgstr "ここに説明書く（取扱注意的な！！）"
+
 #: UserManager/View/Elements/setting_tabs.ctp:38
 msgid "Mail title"
 msgstr "件名"
