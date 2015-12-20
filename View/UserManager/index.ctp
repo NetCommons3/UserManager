@@ -40,7 +40,7 @@ echo $this->NetCommonsHtml->css(array(
 <?php $this->end(); ?>
 
 <div class="user-search-index-head-margin">
-	<?php echo $this->UserSearchForm->displaySearchButton('/user_manager/user_manager/index'); ?>
+	<?php echo $this->UserSearchForm->displaySearchButton(); ?>
 
 	<div class="text-right">
 		<?php echo $this->Button->addLink(); ?>
