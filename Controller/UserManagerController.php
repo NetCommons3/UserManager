@@ -80,8 +80,6 @@ class UserManagerController extends UserManagerAppController {
 	public function index() {
 		$this->helpers[] = 'Users.UserSearchForm';
 
-		$this->UserSearch->clearConditions();
-
 		//CakeLog::debug(print_r($this->request, true));
 		//CakeLog::debug(print_r($this->request->query, true));
 		//CakeLog::debug(print_r($_SERVER, true));
