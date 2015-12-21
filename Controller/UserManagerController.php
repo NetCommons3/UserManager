@@ -208,6 +208,7 @@ class UserManagerController extends UserManagerAppController {
 				return;
 			}
 			$this->NetCommons->handleValidationError($this->User->validationErrors);
+			$this->request->data = Hash::merge($user, $this->request->data);
 
 		} else {
 			//表示処理
