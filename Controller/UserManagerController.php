@@ -38,12 +38,7 @@ class UserManagerController extends UserManagerAppController {
  *
  * @var array
  */
-	public $uses = array(
-		'Groups.Group',
-		'Rooms.Space',
-		'Rooms.Room',
-		'Users.User',
-	);
+	public $uses = array();
 
 /**
  * use component
@@ -83,9 +78,7 @@ class UserManagerController extends UserManagerAppController {
  * @return void
  */
 	public function index() {
-		$this->helpers[] = 'UserManager.UserSearchForm';
-
-		$this->UserSearch->clearConditions();
+		$this->helpers[] = 'Users.UserSearchForm';
 
 		//CakeLog::debug(print_r($this->request, true));
 		//CakeLog::debug(print_r($this->request->query, true));
@@ -93,9 +86,8 @@ class UserManagerController extends UserManagerAppController {
 		//var_dump($this->request->query);
 
 		//ユーザ一覧データ取得
-		$Space = $this->Space;
 		$this->UserSearch->search(
-			array('space_id' => $Space::PRIVATE_SPACE_ID),
+			array('space_id' => Space::PRIVATE_SPACE_ID),
 			array('Room' => array(
 				'conditions' => array(
 					'Room.page_id_top NOT' => null,
@@ -110,49 +102,13 @@ class UserManagerController extends UserManagerAppController {
 	}
 
 /**
- * searchアクション
+ * 検索フォーム表示アクション
  *
- * @param string $type 処理タイプ(conditions: 検索フォーム表示、result: 検索条件保持処理)
  * @return void
  */
-	public function search($type = null) {
-		if ($type === 'conditions') {
-			//検索フォーム表示
-			$this->helpers[] = 'UserManager.UserSearchForm';
-			$this->viewClass = 'View';
-			$this->layout = 'NetCommons.modal';
-
-			//自分自身のグループデータ取得(後でGroupプラグインで用意されれば置き換える)
-			$result = $this->Group->find('list', array(
-				'recursive' => -1,
-				'fields' => array('id', 'name'),
-				'conditions' => array(
-					'created_user' => Current::read('User.id'),
-				),
-				'order' => array('id'),
-			));
-			$this->set('groups', $result);
-
-			//参加ルームデータ取得
-			$result = $this->Room->find('all', $this->Room->getReadableRoomsCondtions(array(
-				'Room.space_id !=' => Space::PRIVATE_SPACE_ID
-			)));
-			$rooms = Hash::combine($result, '{n}.Room.id', '{n}.RoomsLanguage.{n}[language_id=' . Current::read('Language.id') . '].name');
-			$this->set('rooms', $rooms);
-
-			$this->request->data['UserSearch'] = $this->Session->read(UserSearchComponent::$sessionKey);
-
-		} elseif ($type === 'result') {
-			//検索のための条件をセッションに保持
-			CakeLog::debug(var_export($this->request->data, true));
-			$fields = $this->User->cleanSearchFields($this->request->data);
-			CakeLog::debug(var_export($fields, true));
-			//CakeLog::debug(print_r($this->request->url, true));
-			$this->Session->write(UserSearchComponent::$sessionKey, $fields);
-
-		} else {
-			$this->throwBadRequest();
-		}
+	public function search_conditions() {
+		//検索フォーム表示
+		$this->UserSearch->conditions();
 	}
 
 /**
@@ -238,6 +194,7 @@ class UserManagerController extends UserManagerAppController {
 				return;
 			}
 			$this->NetCommons->handleValidationError($this->User->validationErrors);
+			$this->request->data = Hash::merge($user, $this->request->data);
 
 		} else {
 			//表示処理
