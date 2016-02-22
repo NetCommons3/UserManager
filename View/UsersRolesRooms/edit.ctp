@@ -23,7 +23,7 @@ echo $this->NetCommonsHtml->script('/user_manager/js/users_roles_rooms.js');
 </div>
 
 <div class="text-center">
-	<a class="btn btn-default btn-workflow" href="<?php echo $this->NetCommonsHtml->url(array('action' => 'index')); ?>">
+	<a class="btn btn-default btn-workflow" href="<?php echo $this->NetCommonsHtml->url(array('controller' => 'user_manager', 'action' => 'index')); ?>">
 		<span class="glyphicon glyphicon-remove"></span>
 		<?php echo __d('net_commons', 'Close'); ?>
 	</a>
