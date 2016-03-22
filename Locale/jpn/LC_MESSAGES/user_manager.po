@@ -50,6 +50,14 @@ msgid "Export description"
 msgstr "ここに説明書く（取扱注意的な！！）"
 
 #: UserManager/View/Elements/setting_tabs.ctp:38
+msgid "To mail address"
+msgstr "宛先(To)"
+
+#: UserManager/View/Elements/setting_tabs.ctp:38
+msgid "Reply to mail address"
+msgstr "返信用(Reply To)"
+
+#: UserManager/View/Elements/setting_tabs.ctp:38
 msgid "Mail title"
 msgstr "件名"
 

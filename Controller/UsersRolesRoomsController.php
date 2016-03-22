@@ -73,6 +73,7 @@ class UsersRolesRoomsController extends UserManagerAppController {
 			$this->throwBadRequest();
 			return;
 		}
+		$this->set('user', $user['User']);
 		$this->set('userName', $user['User']['handlename']);
 		$this->set('activeUserId', $userId);
 

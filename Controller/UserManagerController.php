@@ -202,6 +202,7 @@ class UserManagerController extends UserManagerAppController {
 			$this->request->data = $user;
 		}
 
+		$this->set('user', $user['User']);
 		$this->set('userName', $this->request->data['User']['handlename']);
 		$this->set('activeUserId', $userId);
 	}

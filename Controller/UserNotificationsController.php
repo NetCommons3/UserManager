@@ -26,6 +26,7 @@ class UserNotificationsController extends UserManagerAppController {
  */
 	public $uses = array(
 		'Users.User',
+		'UserManager.UserMail',
 	);
 
 /**
@@ -38,7 +39,7 @@ class UserNotificationsController extends UserManagerAppController {
 	);
 
 /**
- * edit
+ * メール通知
  *
  * @param int $userId users.id
  * @return void
@@ -46,25 +47,45 @@ class UserNotificationsController extends UserManagerAppController {
 	public function email($userId = null) {
 		//登録処理の場合、URLよりPOSTパラメータでチェックする
 		if ($this->request->isPost()) {
-			$userId = $this->data['RolesRoomsUser']['user_id'];
+			$userId = $this->data['UserMail']['user_id'];
 		}
-
-		if ($this->request->isPost()) {
-			//登録処理
-
-			//--不要パラメータ除去
-			$data = $this->data;
-			unset($data['send']);
-
-		} else {
-			$this->request->data['title'] = '';
-			$this->request->data['body'] = '';
+		if (! $this->User->existsUser($userId)) {
+			return $this->throwBadRequest();
 		}
 
 		//ユーザデータ取得
 		$user = $this->User->getUser($userId);
+		$this->set('user', $user['User']);
 		$this->set('userName', $user['User']['handlename']);
 		$this->set('activeUserId', $userId);
+
+		if ($this->request->isPost()) {
+			//--不要パラメータ除去
+			unset($this->request->data['send']);
+
+			if ($this->UserMail->saveMail($this->request->data)) {
+				$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
+				return $this->redirect('/user_manager/user_manager/index/');
+			}
+			$this->NetCommons->handleValidationError($this->UserMail->validationErrors);
+
+		} else {
+			$this->request->data['UserMail']['title'] = '';
+			$this->request->data['UserMail']['body'] = '';
+			$this->request->data['UserMail']['user_id'] = $user['User']['id'];
+			$this->request->data['UserMail']['reply_to'] = Current::read('User.email');
+		}
 	}
+
+/**
+ * 登録メール通知
+ *
+ * @param int $userId users.id
+ * @return void
+ */
+	public function additional_notify($userId = null) {
+
+	}
+
 
 }
