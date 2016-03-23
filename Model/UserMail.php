@@ -33,11 +33,9 @@ class UserMail extends UserManagerAppModel {
  */
 	public $actsAs = array(
 		'Mails.MailQueue' => array(
-			'requestDataKeys' => array(
-				'embedTags' => array(
-					'X-SUBJECT' => 'UserMail.title',
-					'X-BODY' => 'UserMail.body',
-				),
+			'embedTags' => array(
+				'X-SUBJECT' => 'UserMail.title',
+				'X-BODY' => 'UserMail.body',
 			),
 		),
 	);

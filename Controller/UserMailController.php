@@ -11,6 +11,7 @@
 
 App::uses('UserManagerAppController', 'UserManager.Controller');
 App::uses('NetCommonsMail', 'Mails.Utility');
+App::uses('MailSend', 'Mails.Utility');
 
 /**
  * UserMail Controller
@@ -75,6 +76,9 @@ class UserMailController extends UserManagerAppController {
 			unset($this->request->data['send']);
 
 			if ($this->UserMail->saveMail($this->request->data)) {
+				// キューからメール送信
+				MailSend::send();
+
 				$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
 				return $this->redirect('/user_manager/user_manager/index/');
 			}
@@ -106,7 +110,6 @@ class UserMailController extends UserManagerAppController {
 			}
 
 			//メール送信処理
-			//後で、NetCommonsMailの見直し必要
 			$mail = new NetCommonsMail();
 			$mail->setSubject($this->request->data['UserMail']['title']);
 			$mail->setBody($this->request->data['UserMail']['body']);
@@ -123,7 +126,6 @@ class UserMailController extends UserManagerAppController {
 			return $this->redirect($redirect);
 
 		} else {
-			//後で、NetCommonsMailの見直し必要
 			$mail = new NetCommonsMail();
 			$mailSetting = $this->UserMail->MailSetting->getMailSettingPlugin(null, 'save_notfy');
 			$mail->setSubject($mailSetting['MailSetting']['mail_fixed_phrase_subject']);
