@@ -32,7 +32,7 @@ if ($this->params['action'] === 'add') {
 	} else {
 		$notifyUserDisabled = '';
 		$urlNotifyUser = array(
-			'plugin' => 'user_manager', 'controller' => 'user_notifications', 'action' => 'email', h($activeUserId)
+			'plugin' => 'user_manager', 'controller' => 'user_mail', 'action' => 'notify', h($activeUserId)
 		);
 	}
 }
@@ -47,7 +47,7 @@ if ($this->params['action'] === 'add') {
 		<?php echo $this->NetCommonsHtml->link(__d('user_manager', 'Select the rooms to join'), $urlRolesRoomsUser); ?>
 	</li>
 
-	<li class="<?php echo ($this->params['controller'] === 'user_notifications' ? 'active' : $notifyUserDisabled); ?>">
+	<li class="<?php echo ($this->params['controller'] === 'user_mail' ? 'active' : $notifyUserDisabled); ?>">
 		<?php echo $this->NetCommonsHtml->link(__d('user_manager', 'Notify user by e-mail'), $urlNotifyUser); ?>
 	</li>
 </ul>

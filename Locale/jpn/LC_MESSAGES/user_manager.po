@@ -112,3 +112,7 @@ msgstr "参加ルーム"
 #: Users/Model/User.php:165;172
 msgid "Groups"
 msgstr "グループ"
+
+#: UserManager/View/Elements/setting_tabs.ctp:38
+msgid "Save and notify mail"
+msgstr "決定後、メール通知"

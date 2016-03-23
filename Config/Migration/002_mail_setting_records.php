@@ -15,7 +15,7 @@ App::uses('NetCommonsMigration', 'NetCommons.Config/Migration');
  *
  * @package NetCommons\Mails\Config\Migration
  */
-class LinkMailSettingRecords extends NetCommonsMigration {
+class UserManagerMailSettingRecords extends NetCommonsMigration {
 
 /**
  * Migration description
@@ -64,6 +64,43 @@ class LinkMailSettingRecords extends NetCommonsMigration {
 				'is_mail_send' => true,
 				'mail_fixed_phrase_subject' => '{X-SUBJECT}',
 				'mail_fixed_phrase_body' => '{X-BODY}',
+			),
+			//メール通知
+			// * 英語
+			array(
+				'language_id' => '1',
+				'plugin_key' => 'user_manager',
+				'block_key' => null,
+				'type_key' => 'save_notfy',
+				'is_mail_send' => true,
+				'mail_fixed_phrase_subject' => 'Welcome to {X-SITE_NAME}.',
+				'mail_fixed_phrase_body' => 'Thank you for registering for {X-SITE_NAME}.
+Handle: {X-HANDLENAME}
+Login_id: {X-USERNAME}
+Password: {X-PASSWORD}
+e-mail: {X-EMAIL}
+
+You may now log in by clicking on this link or copying and pasting it in your browser:
+{X-URL}'
+				,
+			),
+			// * 日本語
+			array(
+				'language_id' => '2',
+				'plugin_key' => 'user_manager',
+				'block_key' => null,
+				'type_key' => 'save_notfy',
+				'is_mail_send' => true,
+				'mail_fixed_phrase_subject' => '{X-SITE_NAME}へようこそ',
+				'mail_fixed_phrase_body' => '会員登録が完了しましたのでお知らせします。
+ハンドル: {X-HANDLENAME}
+ログインID: {X-USERNAME}
+パスワード: {X-PASSWORD}
+e-mail: {X-EMAIL}
+
+下記アドレスからログインしてください。
+{X-URL}'
+				,
 			),
 		),
 	);

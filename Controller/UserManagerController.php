@@ -138,8 +138,13 @@ class UserManagerController extends UserManagerAppController {
 			$user = $this->User->saveUser($this->request->data);
 			if ($user) {
 				//正常の場合
-				$this->redirect('/user_manager/users_roles_rooms/edit/' . $user['User']['id'] . '/' . $Space::ROOM_SPACE_ID);
-				return;
+				$url = '/user_manager/users_roles_rooms/edit/' . $user['User']['id'] . '/' . $Space::ROOM_SPACE_ID;
+				if (array_key_exists('save_mail', $this->request->data)) {
+					$this->Session->write('UserMangerEdit.redirect', $url);
+					$this->Session->write('UserMangerEdit.password', Hash::get($this->request->data, 'User.password'));
+					$url = '/user_manager/user_mail/save_notify/' . $user['User']['id'];
+				}
+				return $this->redirect($url);
 			}
 			$this->NetCommons->handleValidationError($this->User->validationErrors);
 
@@ -188,10 +193,15 @@ class UserManagerController extends UserManagerAppController {
 				'{n}.{n}.{n}.UserAttribute.id', '{n}.{n}.{n}'
 			);
 			if ($this->User->saveUser($this->request->data)) {
-				//正常の場合
-				$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
-				$this->redirect('/user_manager/user_manager/index/');
-				return;
+				$url = '/user_manager/user_manager/index';
+				if (array_key_exists('save_mail', $this->request->data)) {
+					$this->Session->write('UserMangerEdit.redirect', $url);
+					$this->Session->write('UserMangerEdit.password', Hash::get($this->request->data, 'User.password'));
+					$url = '/user_manager/user_mail/save_notify/' . $user['User']['id'];
+				} else {
+					$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
+				}
+				return $this->redirect($url);
 			}
 			$this->NetCommons->handleValidationError($this->User->validationErrors);
 			$this->request->data = Hash::merge($user, $this->request->data);
