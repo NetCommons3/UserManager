@@ -52,8 +52,7 @@ class UserManagerMailSettingRecords extends NetCommonsMigration {
 				'type_key' => 'contents',
 				'is_mail_send' => true,
 				'mail_fixed_phrase_subject' => '{X-SUBJECT}',
-				'mail_fixed_phrase_body' => '{X-BODY}'
-				,
+				'mail_fixed_phrase_body' => '{X-BODY}',
 			),
 			// * 日本語
 			array(
@@ -81,8 +80,7 @@ Password: {X-PASSWORD}
 e-mail: {X-EMAIL}
 
 You may now log in by clicking on this link or copying and pasting it in your browser:
-{X-URL}'
-				,
+{X-URL}',
 			),
 			// * 日本語
 			array(
@@ -99,8 +97,7 @@ You may now log in by clicking on this link or copying and pasting it in your br
 e-mail: {X-EMAIL}
 
 下記アドレスからログインしてください。
-{X-URL}'
-				,
+{X-URL}',
 			),
 		),
 	);

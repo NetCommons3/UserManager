@@ -147,5 +147,4 @@ class UserMailController extends UserManagerAppController {
 		}
 	}
 
-
 }

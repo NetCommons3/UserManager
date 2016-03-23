@@ -109,21 +109,19 @@ class UserMail extends UserManagerAppModel {
 		}
 
 		try {
-			/**
-			 * 後々、こんな感じにMailQueueBehaviorを改修してほしい
-			 *
-			 * 1. 下記の方法で送るアドレスを指定する
-			 * - ユーザIDが存在しないものへ送る場合
-			 * $this->setToAddress(xxxxx);
-			 *
-			 * - ユーザIDが存在するものへ送る場合
-			 * $this->setToUserId(xxxxx)
-			 *
-			 * 2. Reply Toを指定するとき
-			 * $this->setReplyTo(xxxxx);
-			 *
-			 * 3. $this->saveQueue()を呼ぶ
-			 */
+			// 後々、こんな感じにMailQueueBehaviorを改修してほしい
+			//
+			// 1. 下記の方法で送るアドレスを指定する
+			// - ユーザIDが存在しないものへ送る場合
+			// $this->setToAddress(xxxxx);
+			//
+			// - ユーザIDが存在するものへ送る場合
+			// $this->setToUserId(xxxxx)
+			//
+			// 2. Reply Toを指定するとき
+			// $this->setReplyTo(xxxxx);
+			//
+			// 3. $this->saveQueue()を呼ぶ
 			if (! $this->saveQueuePostMail(Current::read('Language.id'), null, $data['UserMail']['user_id'])) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
