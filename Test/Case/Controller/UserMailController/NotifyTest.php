@@ -1,6 +1,6 @@
 <?php
 /**
- * UserMailController::beforeFilter()のテスト
+ * UserMailController::notify()のテスト
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -12,12 +12,12 @@
 App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
 
 /**
- * UserMailController::beforeFilter()のテスト
+ * UserMailController::notify()のテスト
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\UserManager\Test\Case\Controller\UserMailController
  */
-class UserMailControllerBeforeFilterTest extends NetCommonsControllerTestCase {
+class UserMailControllerNotifyTest extends NetCommonsControllerTestCase {
 
 /**
  * Fixtures
@@ -69,32 +69,9 @@ class UserMailControllerBeforeFilterTest extends NetCommonsControllerTestCase {
  *
  * @return void
  */
-	public function testBeforeFilterGet() {
+	public function testNotifyGet() {
 		//テスト実行
 		$this->_testGetAction(array('action' => 'notify', 'key' => '1'), array('method' => 'assertNotEmpty'), null, 'view');
-
-		//チェック
-		$this->__assert();
-	}
-
-/**
- * index()アクションのGetリクエストのExceptionErrorテスト
- *
- * @return void
- */
-	public function testBeforeFilterGetOnExceptionError() {
-		//テスト実行
-		$this->_testGetAction(array('action' => 'notify', 'key' => '99999'), null, 'BadRequestException', 'view');
-	}
-
-/**
- * notify()アクションのGetリクエストテスト
- *
- * @return void
- */
-	public function testBeforeFilterPost() {
-		//テスト実行
-		$this->_testPostAction('post', array('UserMail' => ['user_id' => '1']), array('action' => 'notify', 'key' => '1'), null, 'view');
 
 		//チェック
 		$this->__assert();
@@ -106,16 +83,11 @@ class UserMailControllerBeforeFilterTest extends NetCommonsControllerTestCase {
  * @return void
  */
 	private function __assert() {
-		$this->assertInternalType('array', $this->vars['user']);
+		debug($this->view);
+		$this->assertInput('form', null, '/user_manager/user_mail/notify/1', $this->view);
+		$this->assertInput('input', '_method', 'POST', $this->view);
 
-		$this->assertEquals('1', $this->vars['user']['id']);
-		$this->assertEquals('system_administrator', $this->vars['user']['username']);
-		$this->assertEquals('system_admin', $this->vars['user']['key']);
-		$this->assertEquals('system_administrator', $this->vars['user']['role_key']);
-		$this->assertEquals('System Administrator', $this->vars['user']['handlename']);
-
-		$this->assertEquals('System Administrator', $this->vars['userName']);
-		$this->assertEquals('1', $this->vars['activeUserId']);
+		debug($this->controller->request->data);
 	}
 
 }
