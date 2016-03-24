@@ -65,7 +65,7 @@ class UsersRolesRoomsController extends UserManagerAppController {
 		}
 
 		//ユーザデータ取得
-		if ($this->request->isPost()) {
+		if ($this->request->is('post')) {
 			$userId = $this->data['RolesRoomsUser']['user_id'];
 		}
 		$user = $this->User->getUser($userId);
@@ -77,7 +77,7 @@ class UsersRolesRoomsController extends UserManagerAppController {
 		$this->set('userName', $user['User']['handlename']);
 		$this->set('activeUserId', $userId);
 
-		if ($this->request->isPost()) {
+		if ($this->request->is('post')) {
 			//登録処理
 			if ($this->data['RolesRoomsUser']['roles_room_id']) {
 				$result = $this->RolesRoomsUser->saveRolesRoomsUser($this->data);
