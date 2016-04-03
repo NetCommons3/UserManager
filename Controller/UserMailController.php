@@ -49,7 +49,7 @@ class UserMailController extends UserManagerAppController {
 		parent::beforeFilter();
 
 		//登録処理の場合、URLよりPOSTパラメータでチェックする
-		if ($this->request->isPost()) {
+		if ($this->request->is('post')) {
 			$userId = $this->data['UserMail']['user_id'];
 		} else {
 			$userId = Hash::get($this->params['pass'], '0');
@@ -71,7 +71,7 @@ class UserMailController extends UserManagerAppController {
  * @return void
  */
 	public function notify() {
-		if ($this->request->isPost()) {
+		if ($this->request->is('post')) {
 			//--不要パラメータ除去
 			unset($this->request->data['send']);
 
@@ -100,7 +100,7 @@ class UserMailController extends UserManagerAppController {
 	public function save_notify() {
 		$this->view = 'notify';
 
-		if ($this->request->isPost()) {
+		if ($this->request->is('post')) {
 			unset($this->request->data['send']);
 
 			//入力チェック

@@ -25,13 +25,11 @@
 				$this->NetCommonsHtml->url(array('action' => 'index'))
 			); ?>
 
-		<?php echo $this->NetCommonsForm->button(
-				'<span class="glyphicon glyphicon-envelope"></span> ' . __d('user_manager', 'Save and notify mail'),
+		<?php echo $this->Button->button(__d('user_manager', 'Save and notify mail'),
 				array(
 					'name' => 'save_mail',
-					'class' =>
-					'btn btn-primary btn-workflow',
-					'escape' => false,
+					'icon' => 'glyphicon-envelope',
+					'class' => 'btn btn-primary btn-workflow',
 					'ng-class' => '{disabled: sending}'
 				)
 			); ?>

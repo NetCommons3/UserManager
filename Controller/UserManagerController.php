@@ -125,7 +125,7 @@ class UserManagerController extends UserManagerAppController {
 					'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
 		}
 
-		if ($this->request->isPost()) {
+		if ($this->request->is('post')) {
 			$Space = $this->Space;
 
 			//不要パラメータ除去
@@ -170,7 +170,7 @@ class UserManagerController extends UserManagerAppController {
 					'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
 		}
 
-		if ($this->request->isPut()) {
+		if ($this->request->is('put')) {
 			$userId = $this->data['User']['id'];
 		} else {
 			$userId = $this->params['pass'][0];
@@ -184,7 +184,7 @@ class UserManagerController extends UserManagerAppController {
 			return;
 		}
 
-		if ($this->request->isPut()) {
+		if ($this->request->is('put')) {
 			//不要パラメータ除去
 			unset($this->request->data['save'], $this->request->data['active_lang_id']);
 
@@ -232,7 +232,7 @@ class UserManagerController extends UserManagerAppController {
 			return;
 		}
 
-		if (! $this->request->isDelete()) {
+		if (! $this->request->is('delete')) {
 			$this->throwBadRequest();
 			return;
 		}
@@ -247,7 +247,7 @@ class UserManagerController extends UserManagerAppController {
  * @return void
  */
 	public function import() {
-		if ($this->request->isPost()) {
+		if ($this->request->is('post')) {
 			$file = $this->FileUpload->getTemporaryUploadFile('import_csv');
 			if (! $this->User->importUsers($file)) {
 				//バリデーションエラーの場合
