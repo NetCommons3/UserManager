@@ -71,23 +71,109 @@ class UserMailControllerNotifyTest extends NetCommonsControllerTestCase {
  */
 	public function testNotifyGet() {
 		//テスト実行
-		$this->_testGetAction(array('action' => 'notify', 'key' => '1'), array('method' => 'assertNotEmpty'), null, 'view');
+		$this->_testGetAction(array('action' => 'notify', 'key' => '2'), array('method' => 'assertNotEmpty'), null, 'view');
 
 		//チェック
 		$this->__assert();
 	}
 
 /**
- * notify()アクションのチェック
+ * POSTリクエストデータ生成
+ *
+ * @return array リクエストデータ
+ */
+	private function __data() {
+		$data = array(
+			'UserMail' => array(
+				'title' => '',
+				'body' => '',
+				'user_id' => '2',
+				'reply_to' => 'system_admin@exapmle.com'
+			)
+		);
+		return $data;
+	}
+
+/**
+ * notify()アクションのPOSTリクエストテスト
  *
  * @return void
  */
-	private function __assert() {
-		debug($this->view);
-		$this->assertInput('form', null, '/user_manager/user_mail/notify/1', $this->view);
-		$this->assertInput('input', '_method', 'POST', $this->view);
+	public function testNotifyPost() {
+		//テスト実行
+		$this->_mockForReturnTrue('UserManager.UserMail', 'saveMail');
 
-		debug($this->controller->request->data);
+		$this->controller->Components->Session
+			->expects($this->once())->method('setFlash')
+			->with(__d('net_commons', 'Successfully saved.'));
+
+		$this->_testPostAction('post', $this->__data(),
+				array('action' => 'notify', 'key' => '2'), null, 'view');
+
+		//チェック
+		$header = $this->controller->response->header();
+		$this->assertNotEmpty($header['Location']);
+	}
+
+/**
+ * notify()アクションのPOSTリクエストのValidationErrorテスト
+ *
+ * @return void
+ */
+	public function testNotifyPostOnValidationError() {
+		//テストデータ
+		$this->validationMessage['title'] = sprintf(
+			__d('net_commons', 'Please input %s.'),
+			__d('user_manager', 'Mail title')
+		);
+		$this->validationMessage['body'] = sprintf(
+			__d('net_commons', 'Please input %s.'),
+			__d('user_manager', 'Mail body')
+		);
+		$this->validationMessage['reply_to'] = sprintf(
+			__d('net_commons', 'Unauthorized pattern for %s. Please input the data in %s format.'),
+			__d('user_manager', 'Reply to mail address'),
+			__d('net_commons', 'email')
+		);
+
+		$replyTo = 'aaaaa';
+		$data = $this->__data();
+		$data = Hash::insert($data, 'UserMail.reply_to', $replyTo);
+
+		//テスト実行
+		$this->_testPostAction('post', $data, array('action' => 'notify', 'key' => '2'), null, 'view');
+
+		//チェック
+		$this->__assert($replyTo);
+		$this->assertTextContains($this->validationMessage['title'], $this->view);
+		$this->assertTextContains($this->validationMessage['body'], $this->view);
+		$this->assertTextContains($this->validationMessage['reply_to'], $this->view);
+	}
+
+/**
+ * notify()アクションのチェック
+ *
+ * @param string $replyTo 返信用メールアドレス
+ * @return void
+ */
+	private function __assert($replyTo = 'system_admin@exapmle.com') {
+		$this->assertInput('form', null, '/user_manager/user_mail/notify/2', $this->view);
+		$this->assertInput('input', '_method', 'POST', $this->view);
+		$this->assertInput('input', 'data[UserMail][user_id]', '2', $this->view);
+		$this->assertInput('input', 'data[UserMail][to_address]', 'room_administrator@exapmle.com', $this->view);
+		$this->assertInput('input', 'data[UserMail][reply_to]', $replyTo, $this->view);
+		$this->assertInput('input', 'data[UserMail][title]', '', $this->view);
+		$this->assertInput('input', 'data[UserMail][body]', '', $this->view);
+
+		$expected = array(
+			'UserMail' => array(
+				'title' => '',
+				'body' => '',
+				'user_id' => '2',
+				'reply_to' => $replyTo
+			)
+		);
+		$this->assertEquals($expected, $this->controller->request->data);
 	}
 
 }

@@ -62,10 +62,14 @@ class UserMail extends UserManagerAppModel {
 					'message' => __d('net_commons', 'Invalid request.'),
 				),
 			),
-			'reply_to_address' => array(
+			'reply_to' => array(
 				'email' => array(
 					'rule' => array('email'),
-					'message' => __d('net_commons', 'Invalid request.'),
+					'message' => sprintf(
+						__d('net_commons', 'Unauthorized pattern for %s. Please input the data in %s format.'),
+						__d('user_manager', 'Reply to mail address'),
+						__d('net_commons', 'email')
+					),
 					'required' => false
 				),
 			),
@@ -99,7 +103,6 @@ class UserMail extends UserManagerAppModel {
 		//トランザクションBegin
 		$this->begin();
 
-		$data['UserMail']['key'] = ''; //←無駄だが、セットしないと動かないため。
 		$data['UserMail']['key'] = ''; //←無駄だが、セットしないと動かないため。
 
 		//バリデーション
