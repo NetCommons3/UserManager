@@ -41,7 +41,7 @@ NetCommonsApp.controller('UserManager.controller', function(
  * UserManager search condtion modal controller
  */
 NetCommonsApp.controller('UserManager.search', function(
-    $scope, $http, $modalInstance, $window, options) {
+    $scope, $http, $uibModalInstance, $window, options) {
 
       /**
        * 検索条件を保持する変数
@@ -83,11 +83,11 @@ NetCommonsApp.controller('UserManager.search', function(
               //success condition
               $window.location.href =
                           $scope.baseUrl + options['callbackUrl'] + '?search';
-              //$modalInstance.close('success');
+              //$uibModalInstance.close('success');
             })
           .error(function(data, status) {
               //error condition
-              $modalInstance.dismiss('error');
+              $uibModalInstance.dismiss('error');
             });
       };
 
@@ -97,6 +97,6 @@ NetCommonsApp.controller('UserManager.search', function(
        * @return {void}
        */
       $scope.cancel = function() {
-        $modalInstance.dismiss('cancel');
+        $uibModalInstance.dismiss('cancel');
       };
     });
