@@ -51,5 +51,3 @@ if ($this->params['action'] === 'add') {
 		<?php echo $this->NetCommonsHtml->link(__d('user_manager', 'Notify user by e-mail'), $urlNotifyUser); ?>
 	</li>
 </ul>
-
-<br>
