@@ -49,6 +49,7 @@ class UserManagerController extends UserManagerAppController {
 		'ControlPanel.ControlPanelLayout',
 		'Files.FileUpload',
 		'M17n.SwitchLanguage',
+		'Rooms.Rooms',
 		'UserAttributes.UserAttributeLayout',
 		'Users.UserSearch',
 	);
@@ -60,6 +61,7 @@ class UserManagerController extends UserManagerAppController {
  */
 	public $helpers = array(
 		'UserAttributes.UserAttributeLayout',
+		'Users.UserLayout',
 	);
 
 /**
@@ -109,6 +111,37 @@ class UserManagerController extends UserManagerAppController {
 	public function search_conditions() {
 		//検索フォーム表示
 		$this->UserSearch->conditions();
+	}
+
+/**
+ * view method
+ *
+ * @return void
+ */
+	public function view() {
+		$userId = $this->params['pass'][0];
+		$user = $this->User->getUser($userId);
+		if (! $user || $user['User']['is_deleted']) {
+			return $this->throwBadRequest();
+		}
+		$this->set('user', $user);
+		$this->set('title', false);
+
+		//レイアウトの設定
+		$this->viewClass = 'View';
+		$this->layout = 'NetCommons.modal';
+
+		//ルームデータ取得
+		$result = $this->Room->find('all', $this->Room->getReadableRoomsConditions());
+		$this->set('rooms', Hash::combine($result, '{n}.Room.id', '{n}'));
+
+		//ルームのTreeリスト取得
+		$roomTreeLists[Space::PUBLIC_SPACE_ID] = $this->Room->generateTreeList(
+				array('Room.space_id' => Space::PUBLIC_SPACE_ID), null, null, Room::$treeParser);
+
+		$roomTreeLists[Space::ROOM_SPACE_ID] = $this->Room->generateTreeList(
+				array('Room.space_id' => Space::ROOM_SPACE_ID), null, null, Room::$treeParser);
+		$this->set('roomTreeLists', $roomTreeLists);
 	}
 
 /**

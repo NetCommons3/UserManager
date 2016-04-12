@@ -34,6 +34,19 @@ NetCommonsApp.controller('UserManager.controller', function(
             }
         );
       };
+
+      /**
+       * Show user information method
+       *
+       * @param {number} users.id
+       * @return {void}
+       */
+      $scope.showUser = function(id) {
+        NetCommonsModal.show(
+            $scope, 'UserManager.view',
+            $scope.baseUrl + '/user_manager/user_manager/view/' + id + ''
+        );
+      };
     });
 
 
@@ -93,6 +106,23 @@ NetCommonsApp.controller('UserManager.search', function(
 
       /**
        * キャンセル処理
+       *
+       * @return {void}
+       */
+      $scope.cancel = function() {
+        $uibModalInstance.dismiss('cancel');
+      };
+    });
+
+
+/**
+ * User modal controller
+ */
+NetCommonsApp.controller('UserManager.view',
+    function($scope, $uibModalInstance) {
+
+      /**
+       * dialog cancel
        *
        * @return {void}
        */
