@@ -12,6 +12,7 @@
 
 <?php echo $this->element('UserManager.subtitle'); ?>
 <?php echo $this->element('UserManager.setting_tabs'); ?>
+<?php echo $this->MessageFlash->description(__d('user_manager', 'Input the user data, and press &#039;OK&#039; button.<br>Required items are marked by <strong class="text-danger h4">*</strong>.')); ?>
 
 <div class="panel panel-default">
 	<?php echo $this->NetCommonsForm->create('User', array('type' => 'file')); ?>
