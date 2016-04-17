@@ -70,7 +70,8 @@ class UserMail extends UserManagerAppModel {
 						__d('user_manager', 'Reply to mail address'),
 						__d('net_commons', 'email')
 					),
-					'required' => false
+					'required' => false,
+					'allowEmpty' => true
 				),
 			),
 			'title' => array(

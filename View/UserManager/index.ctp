@@ -39,6 +39,10 @@ echo $this->NetCommonsHtml->script('/user_manager/js/user_manager.js');
 	</div>
 <?php $this->end(); ?>
 
+<?php echo $this->MessageFlash->description(
+	__d('user_manager', 'Click the handle name to read his/her data. And to edit the user data. And delete user data, please go from editing screen.')
+); ?>
+
 <div class="user-search-index-head-margin">
 	<?php echo $this->UserSearchForm->displaySearchButton(); ?>
 

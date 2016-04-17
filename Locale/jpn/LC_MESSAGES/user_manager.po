@@ -42,24 +42,32 @@ msgstr "エクスポート"
 msgid "Import"
 msgstr "インポート"
 
+msgid "Click the handle name to read his/her data. And to edit the user data. And delete user data, please go from editing screen."
+msgstr "ハンドル名をクリックすると、会員情報を閲覧および編集できます。会員の削除は、編集画面から行ってください。"
+
 
 #
 # 入力画面
 #
 
-msgid "Input the user data, and press &#039;OK&#039; button.<br>Required items are marked by <strong class="text-danger h4">*</strong>."
-msgstr "会員の基本項目を入力して[OK]ボタンを押してください。<br><strong class="text-danger h4">*</strong> 印の項目は必須入力項目です。"
+msgid "Input the user data, and press [NEXT] button.<br>Required items are marked by <strong class="text-danger h4">*</strong>."
+msgstr "会員の基本項目を入力して[次へ]ボタンを押してください。<br><strong class="text-danger h4">*</strong> 印の項目は必須入力項目です。"
 
 
 #
 # 参加ルームの選択
 #
 
+msgid "Please choose whether to participate in what role the members in each room. After changing the role of the member, it will soon be registered.<br>"
+"When to notify the user, please press the [Next]. If you want to exit this screen, please press the [Cancel]."
+msgstr "この会員が各ルームにどのような役割で参加させるかを選択してください。会員の役割を変更したら、すぐに登録されます。<br>"
+"メール通知する場合は、[次へ]を押してください。この画面を終了する場合は、[キャンセル]を押してください。"
 
 
 #
 # 会員のインポート
 #
+
 #: Users/Model/User.php:165;172
 msgid "Import title"
 msgstr "会員のインポート"
@@ -107,8 +115,8 @@ msgid "Send"
 msgstr "送信"
 
 #: UserManager/View/Elements/setting_tabs.ctp:38
-msgid "Save and notify mail"
-msgstr "決定後、メール通知"
+msgid "Press [OK] to notify the user."
+msgstr "メールで登録内容を通知する場合、[決定]ボタンを押してください。"
 
 
 #
