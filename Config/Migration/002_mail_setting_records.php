@@ -83,7 +83,7 @@ class UserManagerMailSettingRecords extends MailsMigration {
 				'language_id' => '1',
 				'plugin_key' => self::PLUGIN_KEY,
 				'block_key' => null,
-				'type_key' => 'save_notfy',
+				'type_key' => 'save_notify',
 				'mail_fixed_phrase_subject' => 'Welcome to {X-SITE_NAME}.',
 				'mail_fixed_phrase_body' => 'Thank you for registering for {X-SITE_NAME}.
 Handle: {X-HANDLENAME}
@@ -99,7 +99,7 @@ You may now log in by clicking on this link or copying and pasting it in your br
 				'language_id' => '2',
 				'plugin_key' => self::PLUGIN_KEY,
 				'block_key' => null,
-				'type_key' => 'save_notfy',
+				'type_key' => 'save_notify',
 				'mail_fixed_phrase_subject' => '{X-SITE_NAME}へようこそ',
 				'mail_fixed_phrase_body' => '会員登録が完了しましたのでお知らせします。
 ハンドル: {X-HANDLENAME}
