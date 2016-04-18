@@ -52,7 +52,7 @@ echo $this->NetCommonsHtml->script('/user_manager/js/user_manager.js');
 </div>
 
 <div class="table-responsive">
-	<table class="table table-condensed">
+	<table class="table table-hover">
 		<thead>
 			<tr>
 				<?php echo $this->UserSearch->tableHeaders(); ?>
