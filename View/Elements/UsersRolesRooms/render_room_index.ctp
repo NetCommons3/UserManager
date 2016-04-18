@@ -66,14 +66,13 @@
 				}
 				$options = array($rolesRoomId => '');
 
-				if ($rolesRoomId || ! $room['Room']['default_participation']) {
-					$html = $this->NetCommonsForm->radio('RolesRoom.' . $room['Room']['id'] . '.id', $options, array(
-						'checked' => ($rolesRoomId === $rolesRoomsUsers[$room['Room']['id']]['RolesRoomsUser']['roles_room_id']),
-						'hiddenField' => false,
-						'ng-click' => 'sendPost(\'' . $rolesRoomId . '\')',
-						'ng-disabled' => 'sending'
-					));
-				}
+				//マージンを付けないため、Formヘルパーを使う
+				$html = $this->Form->radio('RolesRoom.' . $room['Room']['id'] . '.id', $options, array(
+					'checked' => ($rolesRoomId === $rolesRoomsUsers[$room['Room']['id']]['RolesRoomsUser']['roles_room_id']),
+					'hiddenField' => false,
+					'ng-click' => 'sendPost(\'' . $rolesRoomId . '\')',
+					'ng-disabled' => 'sending'
+				));
 
 				$ngClass = ' ng-class="{\'success\': (rolesRoomId === \'' . $rolesRoomId . '\')}"';
 			}

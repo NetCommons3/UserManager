@@ -15,7 +15,13 @@ echo $this->NetCommonsHtml->script('/user_manager/js/users_roles_rooms.js');
 
 <?php echo $this->element('NetCommons.javascript_alert'); ?>
 <?php echo $this->element('UserManager.subtitle'); ?>
-<?php echo $this->element('UserManager.setting_tabs'); ?>
+<?php echo $this->Wizard->navibar(UserManagerAppController::WIZARD_USERS_ROLES_ROOMS); ?>
+
+<?php echo $this->MessageFlash->description(
+	__d('user_manager', 'Please choose whether to participate in what role the members in each room. After changing the role of the member, it will soon be registered.<br>' .
+						'When to notify the user, please press the [Next]. If you want to exit this screen, please press the [Cancel].')
+); ?>
+
 <?php echo $this->Rooms->spaceTabs($activeSpaceId, 'pills', $this->NetCommonsHtml->url(array('action' => 'edit', $activeUserId)) . '/%s'); ?>
 
 <div class="nc-content-list">
@@ -23,8 +29,12 @@ echo $this->NetCommonsHtml->script('/user_manager/js/users_roles_rooms.js');
 </div>
 
 <div class="text-center">
-	<a class="btn btn-default btn-workflow" href="<?php echo $this->NetCommonsHtml->url(array('controller' => 'user_manager', 'action' => 'index')); ?>">
-		<span class="glyphicon glyphicon-remove"></span>
-		<?php echo __d('net_commons', 'Close'); ?>
-	</a>
+	<div class="text-center">
+		<?php echo $this->Wizard->buttons(
+				UserManagerAppController::WIZARD_USERS_ROLES_ROOMS,
+				array(),
+				array(),
+				array('url' => $this->Wizard->naviUrl(UserManagerAppController::WIZARD_MAIL))
+			); ?>
+	</div>
 </div>

@@ -70,13 +70,16 @@ class UserMail extends UserManagerAppModel {
 						__d('user_manager', 'Reply to mail address'),
 						__d('net_commons', 'email')
 					),
-					'required' => false
+					'required' => false,
+					'allowEmpty' => true
 				),
 			),
 			'title' => array(
 				'notBlank' => array(
 					'rule' => array('notBlank'),
-					'message' => sprintf(__d('net_commons', 'Please input %s.'), __d('user_manager', 'Mail title')),
+					'message' => sprintf(
+						__d('net_commons', 'Please input %s.'), __d('user_manager', 'Mail title')
+					),
 					'required' => true
 				),
 			),
@@ -125,7 +128,8 @@ class UserMail extends UserManagerAppModel {
 			// $this->setReplyTo(xxxxx);
 			//
 			// 3. $this->saveQueue()を呼ぶ
-			if (! $this->saveQueuePostMail(Current::read('Language.id'), null, $data['UserMail']['user_id'])) {
+			$userId = $data['UserMail']['user_id'];
+			if (! $this->saveQueuePostMail(Current::read('Language.id'), null, $userId)) {
 				throw new InternalErrorException(__d('net_commons', 'Internal Server Error'));
 			}
 

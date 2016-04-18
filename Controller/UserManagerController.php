@@ -10,6 +10,7 @@
  */
 
 App::uses('UserManagerAppController', 'UserManager.Controller');
+App::uses('Space', 'Rooms.Model');
 
 /**
  * UserManager Controller
@@ -49,6 +50,7 @@ class UserManagerController extends UserManagerAppController {
 		'ControlPanel.ControlPanelLayout',
 		'Files.FileUpload',
 		'M17n.SwitchLanguage',
+		'Rooms.Rooms',
 		'UserAttributes.UserAttributeLayout',
 		'Users.UserSearch',
 	);
@@ -60,6 +62,7 @@ class UserManagerController extends UserManagerAppController {
  */
 	public $helpers = array(
 		'UserAttributes.UserAttributeLayout',
+		'Users.UserLayout',
 	);
 
 /**
@@ -79,11 +82,6 @@ class UserManagerController extends UserManagerAppController {
  */
 	public function index() {
 		$this->helpers[] = 'Users.UserSearchForm';
-
-		//CakeLog::debug(print_r($this->request, true));
-		//CakeLog::debug(print_r($this->request->query, true));
-		//CakeLog::debug(print_r($_SERVER, true));
-		//var_dump($this->request->query);
 
 		//ユーザ一覧データ取得
 		$this->UserSearch->search(
@@ -112,6 +110,37 @@ class UserManagerController extends UserManagerAppController {
 	}
 
 /**
+ * view method
+ *
+ * @return void
+ */
+	public function view() {
+		$userId = $this->params['pass'][0];
+		$user = $this->User->getUser($userId);
+		if (! $user || $user['User']['is_deleted']) {
+			return $this->throwBadRequest();
+		}
+		$this->set('user', $user);
+		$this->set('title', false);
+
+		//レイアウトの設定
+		$this->viewClass = 'View';
+		$this->layout = 'NetCommons.modal';
+
+		//ルームデータ取得
+		$result = $this->Room->find('all', $this->Room->getReadableRoomsConditions());
+		$this->set('rooms', Hash::combine($result, '{n}.Room.id', '{n}'));
+
+		//ルームのTreeリスト取得
+		$roomTreeLists[Space::PUBLIC_SPACE_ID] = $this->Room->generateTreeList(
+				array('Room.space_id' => Space::PUBLIC_SPACE_ID), null, null, Room::$treeParser);
+
+		$roomTreeLists[Space::ROOM_SPACE_ID] = $this->Room->generateTreeList(
+				array('Room.space_id' => Space::ROOM_SPACE_ID), null, null, Room::$treeParser);
+		$this->set('roomTreeLists', $roomTreeLists);
+	}
+
+/**
  * addアクション
  *
  * @return void
@@ -121,13 +150,13 @@ class UserManagerController extends UserManagerAppController {
 		$this->helpers[] = 'Users.UserEditForm';
 
 		if (UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR !== Current::read('User.role_key')) {
-			$this->viewVars['userAttributes'] = Hash::remove($this->viewVars['userAttributes'],
-					'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
+			$this->viewVars['userAttributes'] = Hash::remove(
+				$this->viewVars['userAttributes'],
+				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']'
+			);
 		}
 
 		if ($this->request->is('post')) {
-			$Space = $this->Space;
-
 			//不要パラメータ除去
 			unset($this->request->data['save'], $this->request->data['active_lang_id']);
 
@@ -138,12 +167,11 @@ class UserManagerController extends UserManagerAppController {
 			$user = $this->User->saveUser($this->request->data);
 			if ($user) {
 				//正常の場合
-				$url = '/user_manager/users_roles_rooms/edit/' . $user['User']['id'] . '/' . $Space::ROOM_SPACE_ID;
-				if (array_key_exists('save_mail', $this->request->data)) {
-					$this->Session->write('UserMangerEdit.redirect', $url);
-					$this->Session->write('UserMangerEdit.password', Hash::get($this->request->data, 'User.password'));
-					$url = '/user_manager/user_mail/save_notify/' . $user['User']['id'];
-				}
+				$this->Session->write(
+					'UserMangerEdit.password', Hash::get($this->request->data, 'User.password')
+				);
+				$url = '/user_manager/users_roles_rooms/edit/' .
+						$user['User']['id'] . '/' . Space::ROOM_SPACE_ID;
 				return $this->redirect($url);
 			}
 			$this->NetCommons->handleValidationError($this->User->validationErrors);
@@ -166,8 +194,10 @@ class UserManagerController extends UserManagerAppController {
 		$this->helpers[] = 'Users.UserEditForm';
 
 		if (Current::read('User.role_key') !== UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR) {
-			$this->viewVars['userAttributes'] = Hash::remove($this->viewVars['userAttributes'],
-					'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
+			$this->viewVars['userAttributes'] = Hash::remove(
+				$this->viewVars['userAttributes'],
+				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']'
+			);
 		}
 
 		if ($this->request->is('put')) {
@@ -193,14 +223,15 @@ class UserManagerController extends UserManagerAppController {
 				'{n}.{n}.{n}.UserAttribute.id', '{n}.{n}.{n}'
 			);
 			if ($this->User->saveUser($this->request->data)) {
-				$url = '/user_manager/user_manager/index';
-				if (array_key_exists('save_mail', $this->request->data)) {
-					$this->Session->write('UserMangerEdit.redirect', $url);
-					$this->Session->write('UserMangerEdit.password', Hash::get($this->request->data, 'User.password'));
-					$url = '/user_manager/user_mail/save_notify/' . $user['User']['id'];
-				} else {
-					$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
-				}
+				$this->NetCommons->setFlashNotification(
+					__d('net_commons', 'Successfully saved.'), array('class' => 'success')
+				);
+
+				$this->Session->write(
+					'UserMangerEdit.password', Hash::get($this->request->data, 'User.password')
+				);
+				$url = '/user_manager/users_roles_rooms/edit/' .
+						$user['User']['id'] . '/' . Space::ROOM_SPACE_ID;
 				return $this->redirect($url);
 			}
 			$this->NetCommons->handleValidationError($this->User->validationErrors);
@@ -255,7 +286,9 @@ class UserManagerController extends UserManagerAppController {
 				return;
 			}
 
-			$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
+			$this->NetCommons->setFlashNotification(
+				__d('net_commons', 'Successfully saved.'), array('class' => 'success')
+			);
 			$this->redirect('/user_manager/user_manager/index/');
 		}
 	}
@@ -276,7 +309,9 @@ class UserManagerController extends UserManagerAppController {
 				return;
 			}
 
-			return $csvWriter->zipDownload('export_user.zip', 'export_user.csv', $this->request->query['pass']);
+			return $csvWriter->zipDownload(
+				'export_user.zip', 'export_user.csv', $this->request->query['pass']
+			);
 		}
 	}
 }

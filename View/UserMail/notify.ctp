@@ -11,7 +11,12 @@
 ?>
 
 <?php echo $this->element('UserManager.subtitle'); ?>
-<?php echo $this->element('UserManager.setting_tabs'); ?>
+<?php
+	if ($this->params['action'] === 'save_notify') {
+		echo $this->Wizard->navibar(UserManagerAppController::WIZARD_MAIL);
+		echo $this->MessageFlash->description(__d('user_manager', 'Press [OK] to notify the user.'));
+	}
+?>
 
 <div class="panel panel-default">
 	<?php echo $this->NetCommonsForm->create('UserMail'); ?>
@@ -44,16 +49,25 @@
 		</div>
 
 		<div class="panel-footer text-center">
-			<a class="btn btn-default btn-workflow" ng-disabled="sending" href="<?php echo $this->NetCommonsHtml->url(array('controller' => 'user_manager', 'action' => 'index')); ?>">
-				<span class="glyphicon glyphicon-remove"></span>
-				<?php echo __d('net_commons', 'Close'); ?>
-			</a>
+			<?php
+				if ($this->params['action'] === 'save_notify') {
+					echo $this->Wizard->buttons(UserManagerAppController::WIZARD_MAIL);
+				} else {
+					echo $this->Button->cancel(
+						__d('net_commons', 'Cancel'),
+						$this->NetCommonsHtml->url(array('controller' => 'user_manager', 'action' => 'index'))
+					);
 
-			<?php echo $this->NetCommonsForm->button('<span class="glyphicon glyphicon-envelope"></span> ' . __d('user_manager', 'Send'), array(
-					'class' => 'btn btn-info btn-workflow',
-					'name' => 'send',
-					'ng-disabled' => 'sending'
-				)); ?>
+					echo $this->NetCommonsForm->button(
+						'<span class="glyphicon glyphicon-envelope"></span> ' . __d('user_manager', 'Send'),
+						array(
+							'class' => 'btn btn-primary btn-workflow',
+							'name' => 'send',
+							'ng-disabled' => 'sending'
+						)
+					);
+				}
+			?>
 		</div>
 	<?php echo $this->NetCommonsForm->end(); ?>
 </div>

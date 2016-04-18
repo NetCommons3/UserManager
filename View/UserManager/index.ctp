@@ -13,7 +13,7 @@ echo $this->NetCommonsHtml->css(array(
 	//'/user_manager/css/style.css',
 	'/users/css/style.css',
 ));
-//echo $this->NetCommonsHtml->script('/user_manager/js/user_manager.js');
+echo $this->NetCommonsHtml->script('/user_manager/js/user_manager.js');
 ?>
 
 <?php $this->start('subtitle'); ?>
@@ -39,6 +39,10 @@ echo $this->NetCommonsHtml->css(array(
 	</div>
 <?php $this->end(); ?>
 
+<?php echo $this->MessageFlash->description(
+	__d('user_manager', 'Click the handle name to read his/her data. And to edit the user data. And delete user data, please go from editing screen.')
+); ?>
+
 <div class="user-search-index-head-margin">
 	<?php echo $this->UserSearchForm->displaySearchButton(); ?>
 
@@ -51,7 +55,6 @@ echo $this->NetCommonsHtml->css(array(
 	<table class="table table-condensed">
 		<thead>
 			<tr>
-				<th></th>
 				<?php echo $this->UserSearch->tableHeaders(); ?>
 			</tr>
 		</thead>
@@ -59,7 +62,6 @@ echo $this->NetCommonsHtml->css(array(
 		<tbody>
 			<?php foreach ($users as $index => $user) : ?>
 				<tr>
-					<td><?php echo ($index + 1); ?></td>
 					<?php echo $this->UserSearch->tableRow($user, true); ?>
 				</tr>
 			<?php endforeach; ?>
