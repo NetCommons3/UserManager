@@ -79,7 +79,9 @@ class UserMailController extends UserManagerAppController {
 				// キューからメール送信
 				MailSend::send();
 
-				$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array('class' => 'success'));
+				$this->NetCommons->setFlashNotification(
+					__d('net_commons', 'Successfully saved.'), array('class' => 'success')
+				);
 				return $this->redirect('/user_manager/user_manager/index/');
 			}
 			$this->NetCommons->handleValidationError($this->UserMail->validationErrors);
@@ -117,7 +119,7 @@ class UserMailController extends UserManagerAppController {
 			$mail->mailAssignTag->initPlugin(Current::read('Language.id'));
 			$mail->initPlugin(Current::read('Language.id'));
 
-			$mail->to($this->viewVars['user']['email']); //ここだけ、CakeMailの方のメソッド使ってる？？？
+			$mail->to($this->viewVars['user']['email']); //ここだけ、CakeMailのメソッド使うの？
 			$mail->setFrom(Current::read('Language.id'));
 			if (! $mail->sendMailDirect()) {
 				return $this->NetCommons->handleValidationError(array('SendMail Error'));
@@ -132,8 +134,12 @@ class UserMailController extends UserManagerAppController {
 			$mail = new NetCommonsMail();
 			$mailSetting = $this->UserMail->MailSetting->getMailSettingPlugin(null, 'save_notify');
 
-			$mail->mailAssignTag->setFixedPhraseSubject($mailSetting['MailSettingFixedPhrase']['mail_fixed_phrase_subject']);
-			$mail->mailAssignTag->setFixedPhraseBody($mailSetting['MailSettingFixedPhrase']['mail_fixed_phrase_body']);
+			$mail->mailAssignTag->setFixedPhraseSubject(
+				$mailSetting['MailSettingFixedPhrase']['mail_fixed_phrase_subject']
+			);
+			$mail->mailAssignTag->setFixedPhraseBody(
+				$mailSetting['MailSettingFixedPhrase']['mail_fixed_phrase_body']
+			);
 			$mail->mailAssignTag->initPlugin(Current::read('Language.id'));
 
 			$password = $this->Session->read('UserMangerEdit.password');

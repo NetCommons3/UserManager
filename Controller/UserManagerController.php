@@ -150,8 +150,10 @@ class UserManagerController extends UserManagerAppController {
 		$this->helpers[] = 'Users.UserEditForm';
 
 		if (UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR !== Current::read('User.role_key')) {
-			$this->viewVars['userAttributes'] = Hash::remove($this->viewVars['userAttributes'],
-				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
+			$this->viewVars['userAttributes'] = Hash::remove(
+				$this->viewVars['userAttributes'],
+				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']'
+			);
 		}
 
 		if ($this->request->is('post')) {
@@ -165,8 +167,11 @@ class UserManagerController extends UserManagerAppController {
 			$user = $this->User->saveUser($this->request->data);
 			if ($user) {
 				//正常の場合
-				$this->Session->write('UserMangerEdit.password', Hash::get($this->request->data, 'User.password'));
-				$url = '/user_manager/users_roles_rooms/edit/' . $user['User']['id'] . '/' . Space::ROOM_SPACE_ID;
+				$this->Session->write(
+					'UserMangerEdit.password', Hash::get($this->request->data, 'User.password')
+				);
+				$url = '/user_manager/users_roles_rooms/edit/' .
+						$user['User']['id'] . '/' . Space::ROOM_SPACE_ID;
 				return $this->redirect($url);
 			}
 			$this->NetCommons->handleValidationError($this->User->validationErrors);
@@ -189,8 +194,10 @@ class UserManagerController extends UserManagerAppController {
 		$this->helpers[] = 'Users.UserEditForm';
 
 		if (Current::read('User.role_key') !== UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR) {
-			$this->viewVars['userAttributes'] = Hash::remove($this->viewVars['userAttributes'],
-					'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']');
+			$this->viewVars['userAttributes'] = Hash::remove(
+				$this->viewVars['userAttributes'],
+				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']'
+			);
 		}
 
 		if ($this->request->is('put')) {
@@ -220,8 +227,11 @@ class UserManagerController extends UserManagerAppController {
 					__d('net_commons', 'Successfully saved.'), array('class' => 'success')
 				);
 
-				$this->Session->write('UserMangerEdit.password', Hash::get($this->request->data, 'User.password'));
-				$url = '/user_manager/users_roles_rooms/edit/' . $user['User']['id'] . '/' . Space::ROOM_SPACE_ID;
+				$this->Session->write(
+					'UserMangerEdit.password', Hash::get($this->request->data, 'User.password')
+				);
+				$url = '/user_manager/users_roles_rooms/edit/' .
+						$user['User']['id'] . '/' . Space::ROOM_SPACE_ID;
 				return $this->redirect($url);
 			}
 			$this->NetCommons->handleValidationError($this->User->validationErrors);
@@ -299,7 +309,9 @@ class UserManagerController extends UserManagerAppController {
 				return;
 			}
 
-			return $csvWriter->zipDownload('export_user.zip', 'export_user.csv', $this->request->query['pass']);
+			return $csvWriter->zipDownload(
+				'export_user.zip', 'export_user.csv', $this->request->query['pass']
+			);
 		}
 	}
 }
