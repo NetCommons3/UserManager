@@ -126,9 +126,7 @@ class UserMailController extends UserManagerAppController {
 			}
 
 			//リダイレクト
-			$redirect = $this->Session->read('UserMangerEdit.redirect');
-			$this->Session->delete('UserMangerEdit.redirect');
-			return $this->redirect($redirect);
+			return $this->redirect('/user_manager/user_manager/index/');
 
 		} else {
 			$mail = new NetCommonsMail();
