@@ -110,6 +110,7 @@ class UserMailController extends UserManagerAppController {
 			if (! $this->UserMail->validates()) {
 				return $this->NetCommons->handleValidationError($this->UserMail->validationErrors);
 			}
+			$this->Session->delete('UserMangerEdit.password');
 
 			//メール送信処理
 			$mail = new NetCommonsMail();
