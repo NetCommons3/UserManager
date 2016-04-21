@@ -114,10 +114,11 @@ class UserMailController extends UserManagerAppController {
 
 			//メール送信処理
 			$mail = new NetCommonsMail();
-			$mail->setSubject($this->request->data['UserMail']['title']);
-			$mail->setBody($this->request->data['UserMail']['body']);
-			$mail->setReplyTo($this->request->data['UserMail']['reply_to']);
+			$mail->mailAssignTag->setFixedPhraseSubject($this->request->data['UserMail']['title']);
+			$mail->mailAssignTag->setFixedPhraseBody($this->request->data['UserMail']['body']);
 			$mail->mailAssignTag->initPlugin(Current::read('Language.id'));
+
+			$mail->setReplyTo($this->request->data['UserMail']['reply_to']);
 			$mail->initPlugin(Current::read('Language.id'));
 
 			$mail->to($this->viewVars['user']['email']); //ここだけ、CakeMailのメソッド使うの？
