@@ -45,6 +45,9 @@ msgstr "インポート"
 msgid "Click the handle name to read his/her data. And to edit the user data. And delete user data, please go from editing screen."
 msgstr "ハンドル名をクリックすると、会員情報を閲覧および編集できます。会員の削除は、編集画面から行ってください。"
 
+msgid "Add user"
+msgstr "会員の追加"
+
 
 #
 # 入力画面
