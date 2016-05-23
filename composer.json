@@ -1,6 +1,7 @@
 {
     "name": "netcommons/user-manager",
     "description": "UserManager for NetCommons Plugin",
+    "type": "cakephp-plugin",
     "homepage": "http://www.netcommons.org/",
     "extra": {
         "installer-paths": {
@@ -8,16 +9,16 @@
         }
     },
     "require": {
-        "cakephp/cakephp":              "~2.6",
-        "cakephp/debug_kit":            "~2.2",
         "cakedc/migrations":            "~2.2",
-        "phpunit/phpunit":              "~3.7.38",
-        "sebastian/phpcpd":             "~2.0"
-    },
-    "require-dev": {
-        "mustangostang/spyc":           "dev-master",
+        "netcommons/control-panel":     "dev-master",
+        "netcommons/files":             "dev-master",
+        "netcommons/mails":             "dev-master",
         "netcommons/net-commons":       "dev-master",
-        "satooshi/php-coveralls":       "dev-master"
+        "netcommons/plugin-manager":    "dev-master",
+        "netcommons/rooms":             "dev-master",
+        "netcommons/user-attributes":   "dev-master",
+        "netcommons/user-roles":        "dev-master",
+        "netcommons/users":             "dev-master"
     },
     "license": "NetCommons License",
     "authors": [
@@ -26,8 +27,7 @@
             "homepage": "https://github.com/NetCommons3/UserManager/graphs/contributors"
         }
     ],
-    "type":        "cakephp-plugin",
-    "keywords":    ["cakephp", "user_manager"],
+    "keywords": ["cakephp", "user_manager"],
     "config": {
         "vendor-dir": "vendors"
     }
