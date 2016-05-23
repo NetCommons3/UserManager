@@ -25,7 +25,10 @@ class UserManagerAppControllerBeforeFilterTest extends NetCommonsControllerTestC
  *
  * @var array
  */
-	public $fixtures = array();
+	public $fixtures = array(
+		'plugin.user_manager.plugin4permission',
+		'plugin.user_manager.plugins_role4permission',
+	);
 
 /**
  * Plugin name
