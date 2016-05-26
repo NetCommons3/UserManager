@@ -25,7 +25,16 @@ echo $this->NetCommonsHtml->script('/user_manager/js/users_roles_rooms.js');
 <?php echo $this->Rooms->spaceTabs($activeSpaceId, 'pills', $this->NetCommonsHtml->url(array('action' => 'edit', $activeUserId)) . '/%s'); ?>
 
 <div class="nc-content-list">
-	<?php echo $this->Rooms->roomsRender($activeSpaceId, 'UsersRolesRooms/render_room_index', 'UsersRolesRooms/render_header'); ?>
+	<?php
+		echo $this->Rooms->roomsRender($activeSpaceId,
+			array(
+				'dataElemen' => 'UsersRolesRooms/render_room_index',
+				'headElement' => 'UsersRolesRooms/render_header'
+			),
+			null,
+			array('displaySpace' => Space::PUBLIC_SPACE_ID === $activeSpaceId)
+		);
+	?>
 </div>
 
 <div class="text-center">
