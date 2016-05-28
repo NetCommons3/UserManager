@@ -11,7 +11,6 @@
 
 App::uses('UserManagerAppController', 'UserManager.Controller');
 App::uses('NetCommonsMail', 'Mails.Utility');
-App::uses('MailSend', 'Mails.Utility');
 
 /**
  * UserMail Controller
@@ -76,9 +75,6 @@ class UserMailController extends UserManagerAppController {
 			unset($this->request->data['send']);
 
 			if ($this->UserMail->saveMail($this->request->data)) {
-				// キューからメール送信
-				MailSend::send();
-
 				$this->NetCommons->setFlashNotification(
 					__d('net_commons', 'Successfully saved.'), array('class' => 'success')
 				);
