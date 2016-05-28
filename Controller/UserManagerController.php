@@ -250,7 +250,7 @@ class UserManagerController extends UserManagerAppController {
  *
  * @return void
  */
-	public function __prepareSave() {
+	private function __prepareSave() {
 		$this->User->userAttributeData = Hash::combine($this->viewVars['userAttributes'],
 			'{n}.{n}.{n}.UserAttribute.id', '{n}.{n}.{n}'
 		);
