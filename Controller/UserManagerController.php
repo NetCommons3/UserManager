@@ -161,9 +161,8 @@ class UserManagerController extends UserManagerAppController {
 			unset($this->request->data['save'], $this->request->data['active_lang_id']);
 
 			//登録処理
-			$this->User->userAttributeData = Hash::combine($this->viewVars['userAttributes'],
-				'{n}.{n}.{n}.UserAttribute.id', '{n}.{n}.{n}'
-			);
+			$this->__prepareSave();
+
 			$user = $this->User->saveUser($this->request->data);
 			if ($user) {
 				//正常の場合
@@ -210,8 +209,7 @@ class UserManagerController extends UserManagerAppController {
 		//システム管理者は編集不可
 		if (Current::read('User.role_key') !== UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR &&
 				(! $user || $user['User']['role_key'] === UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR)) {
-			$this->throwBadRequest();
-			return;
+			return $this->throwBadRequest();
 		}
 
 		if ($this->request->is('put')) {
@@ -219,9 +217,8 @@ class UserManagerController extends UserManagerAppController {
 			unset($this->request->data['save'], $this->request->data['active_lang_id']);
 
 			//登録処理
-			$this->User->userAttributeData = Hash::combine($this->viewVars['userAttributes'],
-				'{n}.{n}.{n}.UserAttribute.id', '{n}.{n}.{n}'
-			);
+			$this->__prepareSave();
+
 			if ($this->User->saveUser($this->request->data)) {
 				$this->NetCommons->setFlashNotification(
 					__d('net_commons', 'Successfully saved.'), array('class' => 'success')
@@ -249,6 +246,26 @@ class UserManagerController extends UserManagerAppController {
 	}
 
 /**
+ * 登録処理の前準備
+ *
+ * @return void
+ */
+	private function __prepareSave() {
+		$this->User->userAttributeData = Hash::combine($this->viewVars['userAttributes'],
+			'{n}.{n}.{n}.UserAttribute.id', '{n}.{n}.{n}'
+		);
+
+		foreach ($this->User->userAttributeData as $attribute) {
+			if ($attribute['UserAttributeSetting']['is_multilingualization']) {
+				$this->SwitchLanguage->fields[] = 'UsersLanguage.' . $attribute['UserAttribute']['key'];
+			}
+		}
+
+		//他言語が入力されていない場合、表示されている言語データをセット
+		$this->SwitchLanguage->setM17nRequestValue();
+	}
+
+/**
  * deleteアクション
  *
  * @return void
@@ -259,13 +276,11 @@ class UserManagerController extends UserManagerAppController {
 		//システム管理者は削除不可
 		if (Current::read('User.role_key') !== UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR &&
 				(! $user || $user['User']['role_key'] === UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR)) {
-			$this->throwBadRequest();
-			return;
+			return $this->throwBadRequest();
 		}
 
 		if (! $this->request->is('delete')) {
-			$this->throwBadRequest();
-			return;
+			return $this->throwBadRequest();
 		}
 
 		$this->User->deleteUser($user);
