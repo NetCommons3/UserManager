@@ -29,12 +29,6 @@ App::uses('Space', 'Rooms.Model');
 				<?php echo __d('users', 'Rooms'); ?>
 			</a>
 		</li>
-
-		<li>
-			<?php echo $this->NetCommonsHtml->link(__d('user_manager', 'Notify user by e-mail'),
-					array('plugin' => 'user_manager', 'controller' => 'user_mail', 'action' => 'notify', h($user['User']['id']))
-				); ?>
-		</li>
 	</ul>
 <?php endif; ?>
 

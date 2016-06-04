@@ -65,32 +65,6 @@ class UserMailController extends UserManagerAppController {
 	}
 
 /**
- * メール通知
- *
- * @return void
- */
-	public function notify() {
-		if ($this->request->is('post')) {
-			//--不要パラメータ除去
-			unset($this->request->data['send']);
-
-			if ($this->UserMail->saveMail($this->request->data)) {
-				$this->NetCommons->setFlashNotification(
-					__d('net_commons', 'Successfully saved.'), array('class' => 'success')
-				);
-				return $this->redirect('/user_manager/user_manager/index/');
-			}
-			$this->NetCommons->handleValidationError($this->UserMail->validationErrors);
-
-		} else {
-			$this->request->data['UserMail']['title'] = '';
-			$this->request->data['UserMail']['body'] = '';
-			$this->request->data['UserMail']['user_id'] = $this->viewVars['user']['id'];
-			$this->request->data['UserMail']['reply_to'] = Current::read('User.email');
-		}
-	}
-
-/**
  * 登録メール通知
  *
  * @return void
