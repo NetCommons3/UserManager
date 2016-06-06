@@ -123,7 +123,8 @@ class UserAddController extends UserManagerAppController {
 		} else {
 			//表示処理
 			$this->User->languages = $this->viewVars['languages'];
-			if ($this->referer() === '/user_manager/user_add/user_roles_rooms') {
+			$referer = Configure::read('App.fullBaseUrl') . '/user_manager/user_add/user_roles_rooms';
+			if ($this->referer() === $referer) {
 				$this->request->data =$this->Session->read('UserMangerEdit');
 			} else {
 				$this->request->data = $this->User->createUser();
