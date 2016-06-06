@@ -10,12 +10,10 @@
  */
 ?>
 
-<?php echo $this->element('UserManager.subtitle'); ?>
-<?php echo $this->element('UserManager.setting_tabs'); ?>
-
+<?php echo $this->Wizard->navibar(UserManagerAppController::WIZARD_USERS); ?>
 <?php
 	echo $this->MessageFlash->description(
-		__d('user_manager', 'Input the user data, and press [OK].<br>Required items are marked by <strong class="text-danger h4">*</strong>.')
+		__d('user_manager', 'Input the user data, and press [NEXT].<br>Required items are marked by <strong class="text-danger h4">*</strong>.')
 	);
 ?>
 
@@ -25,17 +23,8 @@
 	<?php echo $this->element('Users.Users/edit_form', array('element' => 'UserManager.UserManager/render_edit_row')); ?>
 
 	<div class="panel-footer text-center">
-		<?php echo $this->Button->cancelAndSave(
-				__d('net_commons', 'Cancel'),
-				__d('net_commons', 'OK'),
-				$this->NetCommonsHtml->url(array('action' => 'index'))
-			); ?>
+		<?php echo $this->Wizard->buttons(UserManagerAppController::WIZARD_USERS); ?>
 	</div>
 
 	<?php echo $this->NetCommonsForm->end(); ?>
 </div>
-
-<?php if ($this->params['action'] === 'edit') : ?>
-	<?php echo $this->element('Users.Users/delete_form'); ?>
-<?php endif;
-

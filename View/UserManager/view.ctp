@@ -29,12 +29,6 @@ App::uses('Space', 'Rooms.Model');
 				<?php echo __d('users', 'Rooms'); ?>
 			</a>
 		</li>
-
-		<li>
-			<?php echo $this->NetCommonsHtml->link(__d('user_manager', 'Notify user by e-mail'),
-					array('plugin' => 'user_manager', 'controller' => 'user_mail', 'action' => 'notify', h($user['User']['id']))
-				); ?>
-		</li>
 	</ul>
 <?php endif; ?>
 
@@ -47,7 +41,7 @@ App::uses('Space', 'Rooms.Model');
 		<div class="tab-pane" id="user-rooms">
 			<div class="pull-right">
 				<?php echo $this->Button->editLink('',
-						array('controller' => 'users_roles_rooms', 'key' => $user['User']['id'], 'key2' => Space::ROOM_SPACE_ID),
+						array('controller' => 'users_roles_rooms', 'key' => $user['User']['id']),
 						array('tooltip' => true, 'iconSize' => ' btn-xs')
 					); ?>
 			</div>

@@ -9,75 +9,64 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-	if (! isset($rolesRoomsUsers[$room['Room']['id']])) {
-		$rolesRoomsUsers[$room['Room']['id']]['RolesRoomsUser']['id'] = null;
-		$rolesRoomsUsers[$room['Room']['id']]['RolesRoomsUser']['roles_room_id'] = '';
-		$rolesRoomsUsers[$room['Room']['id']]['RolesRoomsUser']['user_id'] = $activeUserId;
-	}
-
-	$data = array();
-	if (isset($rolesRooms[$room['Room']['id']])) {
-		$data = array(
-			'RolesRoomsUser' => array(
-				'id' => $rolesRoomsUsers[$room['Room']['id']]['RolesRoomsUser']['id'],
-				'roles_room_id' => $rolesRoomsUsers[$room['Room']['id']]['RolesRoomsUser']['roles_room_id'],
-				'user_id' => $rolesRoomsUsers[$room['Room']['id']]['RolesRoomsUser']['user_id'],
-				'room_id' => $room['Room']['id'],
-			),
-			'Room' => array(
-				'id' => $room['Room']['id'],
-				'space_id' => $activeSpaceId,
-			)
-		);
-
-		$tokenFields = Hash::flatten($data);
-
-		$hiddenFields = $tokenFields;
-		unset($hiddenFields['RolesRoomsUser.id'], $hiddenFields['RolesRoomsUser.roles_room_id']);
-		$hiddenFields = array_keys($hiddenFields);
-
-		$this->request->data = $data;
-		$this->Token->unlockField('RolesRoomsUser.id');
-		$tokens = $this->Token->getToken('RolesRoomsUser',
-				'/user_manager/users_roles_rooms/edit/' . $activeUserId . '/' . $activeSpaceId . '.json',
-				$tokenFields, $hiddenFields);
-		$data += $tokens;
-	}
+$roomId = $room['Room']['id'];
+if (! isset($rolesRoomsUsers['RolesRoomsUser'][$roomId])) {
+	$rolesRoomsUsers['RolesRoomsUser'][$roomId]['id'] = null;
+	$rolesRoomsUsers['RolesRoomsUser'][$roomId]['roles_room_id'] = '0';
+	$rolesRoomsUsers['RolesRoomsUser'][$roomId]['room_id'] = $roomId;
+	$rolesRoomsUsers['RolesRoomsUser'][$roomId]['user_id'] = $activeUserId;
+}
+$domId = $this->NetCommonsHtml->domId('RolesRoomsUser.' . $roomId . '.roles_room_id');
 ?>
 
 <tr class="<?php echo $this->Rooms->statusCss($room, 'text-'); ?>"
-	ng-controller="UsersRolesRooms"
-	ng-init="initialize(<?php echo h(json_encode($data, JSON_FORCE_OBJECT)); ?>)">
+	ng-init="<?php echo $domId . ' = \'' . $rolesRoomsUsers['RolesRoomsUser'][$roomId]['roles_room_id'] . '\';'; ?>">
 
 	<td>
 		<?php echo $this->Rooms->roomName($room, $nest); ?>
 		<?php echo $this->Rooms->statusLabel($room, '(%s)'); ?>
+		<?php
+			echo $this->NetCommonsForm->hidden(
+				'RolesRoomsUser.' . $roomId . '.id',
+				array('value' => $rolesRoomsUsers['RolesRoomsUser'][$roomId]['id'])
+			);
+			echo $this->NetCommonsForm->hidden(
+				'RolesRoomsUser.' . $roomId . '.room_id',
+				array('value' => $rolesRoomsUsers['RolesRoomsUser'][$roomId]['room_id'])
+			);
+			echo $this->NetCommonsForm->hidden(
+				'RolesRoomsUser.' . $roomId . '.user_id',
+				array('value' => $rolesRoomsUsers['RolesRoomsUser'][$roomId]['user_id'])
+			);
+		?>
 	</td>
 
 	<?php
 		foreach ($defaultRoles as $key => $name) {
 			$html = '';
 			$ngClass = '';
-			if (isset($rolesRooms[$room['Room']['id']])) {
-				if (isset($rolesRooms[$room['Room']['id']][$key])) {
-					$rolesRoomId = $rolesRooms[$room['Room']['id']][$key]['RolesRoom']['id'];
+			if (isset($rolesRooms[$roomId])) {
+				if (isset($rolesRooms[$roomId][$key])) {
+					$rolesRoomId = $rolesRooms[$roomId][$key]['RolesRoom']['id'];
 				} else {
-					$rolesRoomId = '';
+					$rolesRoomId = '0';
 				}
 				$options = array($rolesRoomId => '');
 
 				//マージンを付けないため、Formヘルパーを使う
-				$html = $this->Form->radio('RolesRoom.' . $room['Room']['id'] . '.id', $options, array(
-					'checked' => ($rolesRoomId === $rolesRoomsUsers[$room['Room']['id']]['RolesRoomsUser']['roles_room_id']),
+				$html = $this->Form->radio('RolesRoomsUser.' . $roomId . '.roles_room_id', $options, array(
+					'checked' => ($rolesRoomId === $rolesRoomsUsers['RolesRoomsUser'][$roomId]['roles_room_id']),
 					'hiddenField' => false,
-					'ng-click' => 'sendPost(\'' . $rolesRoomId . '\')',
-					'ng-disabled' => 'sending'
+					'ng-click' => $domId . ' = \'' . $rolesRoomId . '\'',
 				));
 
-				$ngClass = ' ng-class="{\'success\': (rolesRoomId === \'' . $rolesRoomId . '\')}"';
+				$ngClass = '\'success\': (' . $domId . ' === \'' . $rolesRoomId . '\')';
+				if ($rolesRoomId === $rolesRoomsUsers['RolesRoomsUser'][$roomId]['roles_room_id']) {
+					$ngClass .= ', \'active\': (' . $domId . ' !== \'' . $rolesRoomId . '\')';
+				}
 			}
 
-			echo '<td class="text-center"' . $ngClass . '>';
+			echo '<td class="text-center" ng-class="{' . $ngClass . '}">';
 			echo $html;
 			echo '</td>';
 		}

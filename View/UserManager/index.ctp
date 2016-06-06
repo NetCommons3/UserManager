@@ -44,10 +44,10 @@ echo $this->NetCommonsHtml->script('/user_manager/js/user_manager.js');
 ); ?>
 
 <div class="user-search-index-head-margin">
-	<?php echo $this->UserSearchForm->displaySearchButton(); ?>
+	<?php echo $this->UserSearchForm->displaySearchButton(__d('user_manager', 'Search for the members')); ?>
 
 	<div class="text-right">
-		<?php echo $this->Button->addLink(__d('user_manager', 'Add user')); ?>
+		<?php echo $this->Button->addLink(__d('user_manager', 'Add user'), ['controller' => 'user_add', 'action' => 'basic']); ?>
 	</div>
 </div>
 
@@ -55,14 +55,14 @@ echo $this->NetCommonsHtml->script('/user_manager/js/user_manager.js');
 	<table class="table table-hover">
 		<thead>
 			<tr>
-				<?php echo $this->UserSearch->tableHeaders(); ?>
+				<?php echo $this->UserSearch->tableHeaders(true); ?>
 			</tr>
 		</thead>
 
 		<tbody>
 			<?php foreach ($users as $index => $user) : ?>
 				<tr>
-					<?php echo $this->UserSearch->tableRow($user, true); ?>
+					<?php echo $this->UserSearch->tableRow($user, true, ['controller' => 'user_manager', 'action' => 'edit']); ?>
 				</tr>
 			<?php endforeach; ?>
 		</tbody>

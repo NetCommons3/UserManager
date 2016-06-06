@@ -47,7 +47,6 @@ class UserManagerController extends UserManagerAppController {
  * @var array
  */
 	public $components = array(
-		'ControlPanel.ControlPanelLayout',
 		'Files.FileUpload',
 		'M17n.SwitchLanguage',
 		'Rooms.Rooms',
@@ -141,50 +140,6 @@ class UserManagerController extends UserManagerAppController {
 	}
 
 /**
- * addアクション
- *
- * @return void
- */
-	public function add() {
-		$this->view = 'edit';
-		$this->helpers[] = 'Users.UserEditForm';
-
-		if (UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR !== Current::read('User.role_key')) {
-			$this->viewVars['userAttributes'] = Hash::remove(
-				$this->viewVars['userAttributes'],
-				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']'
-			);
-		}
-
-		if ($this->request->is('post')) {
-			//不要パラメータ除去
-			unset($this->request->data['save'], $this->request->data['active_lang_id']);
-
-			//登録処理
-			$this->__prepareSave();
-
-			$user = $this->User->saveUser($this->request->data);
-			if ($user) {
-				//正常の場合
-				$this->Session->write(
-					'UserMangerEdit.password', Hash::get($this->request->data, 'User.password')
-				);
-				$url = '/user_manager/users_roles_rooms/edit/' .
-						$user['User']['id'] . '/' . Space::ROOM_SPACE_ID;
-				return $this->redirect($url);
-			}
-			$this->NetCommons->handleValidationError($this->User->validationErrors);
-
-		} else {
-			//表示処理
-			$this->User->languages = $this->viewVars['languages'];
-			$this->request->data = $this->User->createUser();
-		}
-
-		$this->set('userName', '');
-	}
-
-/**
  * editアクション
  *
  * @return void
@@ -217,19 +172,13 @@ class UserManagerController extends UserManagerAppController {
 			unset($this->request->data['save'], $this->request->data['active_lang_id']);
 
 			//登録処理
-			$this->__prepareSave();
+			$this->_prepareSave();
 
 			if ($this->User->saveUser($this->request->data)) {
 				$this->NetCommons->setFlashNotification(
 					__d('net_commons', 'Successfully saved.'), array('class' => 'success')
 				);
-
-				$this->Session->write(
-					'UserMangerEdit.password', Hash::get($this->request->data, 'User.password')
-				);
-				$url = '/user_manager/users_roles_rooms/edit/' .
-						$user['User']['id'] . '/' . Space::ROOM_SPACE_ID;
-				return $this->redirect($url);
+				return $this->redirect('/user_manager/user_manager/index');
 			}
 			$this->NetCommons->handleValidationError($this->User->validationErrors);
 			$this->request->data = Hash::merge($user, $this->request->data);
@@ -243,26 +192,6 @@ class UserManagerController extends UserManagerAppController {
 		$this->set('user', $user['User']);
 		$this->set('userName', $this->request->data['User']['handlename']);
 		$this->set('activeUserId', $userId);
-	}
-
-/**
- * 登録処理の前準備
- *
- * @return void
- */
-	private function __prepareSave() {
-		$this->User->userAttributeData = Hash::combine($this->viewVars['userAttributes'],
-			'{n}.{n}.{n}.UserAttribute.id', '{n}.{n}.{n}'
-		);
-
-		foreach ($this->User->userAttributeData as $attribute) {
-			if ($attribute['UserAttributeSetting']['is_multilingualization']) {
-				$this->SwitchLanguage->fields[] = 'UsersLanguage.' . $attribute['UserAttribute']['key'];
-			}
-		}
-
-		//他言語が入力されていない場合、表示されている言語データをセット
-		$this->SwitchLanguage->setM17nRequestValue();
 	}
 
 /**

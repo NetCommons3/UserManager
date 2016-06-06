@@ -48,23 +48,28 @@ msgstr "ハンドル名をクリックすると、会員情報を閲覧および
 msgid "Add user"
 msgstr "会員の追加"
 
+msgid "Search for the members"
+msgstr "会員の絞り込み"
 
 #
 # 入力画面
 #
 
-msgid "Input the user data, and press [NEXT] button.<br>Required items are marked by <strong class="text-danger h4">*</strong>."
-msgstr "会員の基本項目を入力して[次へ]ボタンを押してください。<br><strong class="text-danger h4">*</strong> 印の項目は必須入力項目です。"
+msgid "Input the user data, and press [NEXT].<br>Required items are marked by <strong class="text-danger h4">*</strong>."
+msgstr "会員の基本項目を入力して[次へ]を押してください。<br><strong class="text-danger h4">*</strong> 印の項目は必須入力項目です。"
+
+msgid "Input the user data, and press [OK].<br>Required items are marked by <strong class="text-danger h4">*</strong>."
+msgstr "会員の基本項目を入力して[決定]を押してください。<br><strong class="text-danger h4">*</strong> 印の項目は必須入力項目です。"
 
 
 #
 # 参加ルームの選択
 #
 
-msgid "Please choose whether to participate in what role the members in each room. After changing the role of the member, it will soon be registered.<br>"
-"When to notify the user, please press the [Next]. If you want to exit this screen, please press the [Cancel]."
-msgstr "この会員が各ルームにどのような役割で参加させるかを選択してください。会員の役割を変更したら、すぐに登録されます。<br>"
-"メール通知する場合は、[次へ]を押してください。この画面を終了する場合は、[キャンセル]を押してください。"
+msgid "Please choose whether to participate in what role the members in each room, and press the [OK].<br>"
+"If you want to exit this screen, please press the [Cancel]."
+msgstr "この会員が各ルームにどのような役割で参加させるかを選択して、[決定]を押してください。<br>"
+"この画面を終了する場合は、[キャンセル]を押してください。"
 
 
 #
@@ -118,8 +123,14 @@ msgid "Send"
 msgstr "送信"
 
 #: UserManager/View/Elements/setting_tabs.ctp:38
-msgid "Press [OK] to notify the user."
-msgstr "メールで登録内容を通知する場合、[決定]ボタンを押してください。"
+msgid "Press [Send] to notify the user."
+msgstr "メールで登録内容を通知する場合、[送信]ボタンを押してください。"
+
+msgid "To notify the user"
+msgstr "メールで登録内容を通知する"
+
+msgid "Successfully mail send."
+msgstr "メール送信しました。"
 
 
 #
