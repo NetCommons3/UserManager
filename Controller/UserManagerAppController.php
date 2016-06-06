@@ -47,7 +47,7 @@ class UserManagerAppController extends AppController {
  * @var array
  */
 	public $components = array(
-		//アクセスの権限
+		'ControlPanel.ControlPanelLayout',
 		'NetCommons.Permission' => array(
 			'type' => PermissionComponent::CHECK_TYEP_SYSTEM_PLUGIN,
 			'allow' => array()
@@ -56,52 +56,23 @@ class UserManagerAppController extends AppController {
 	);
 
 /**
- * use helpers
- *
- * @var array
- */
-	public $helpers = array(
-		'NetCommons.Wizard' => array(
-			'navibar' => array(
-				self::WIZARD_USERS => array(
-					'url' => array(
-						'controller' => 'user_manager', 'action' => 'add',
-					),
-					'label' => array('user_manager', 'General setting'),
-				),
-				self::WIZARD_USERS_ROLES_ROOMS => array(
-					'url' => array(
-						'controller' => 'users_roles_rooms', 'action' => 'edit', 'key2' => Space::ROOM_SPACE_ID,
-					),
-					'label' => array('user_manager', 'Select the rooms to join'),
-				),
-				self::WIZARD_MAIL => array(
-					'url' => array(
-						'controller' => 'user_mail', 'action' => 'save_notify',
-					),
-					'label' => array('user_manager', 'Notify user by e-mail'),
-				),
-			),
-			'cancelUrl' => array('controller' => 'user_manager', 'action' => 'index')
-		),
-	);
-
-/**
- * beforeFilter
+ * 登録処理の前準備
  *
  * @return void
  */
-	public function beforeFilter() {
-		parent::beforeFilter();
-		$this->Auth->deny('index', 'view');
+	protected function _prepareSave() {
+		$this->User->userAttributeData = Hash::combine($this->viewVars['userAttributes'],
+			'{n}.{n}.{n}.UserAttribute.id', '{n}.{n}.{n}'
+		);
 
-		//ウィザードの設定
-		if (in_array($this->params['action'], ['edit', 'save_notify'])) {
-			$navibar = $this->helpers['NetCommons.Wizard']['navibar'];
-			$navibar = Hash::insert($navibar, '{s}.url.key', $this->params['pass'][0]);
-			$this->helpers['NetCommons.Wizard']['navibar'] = $navibar;
-			$this->helpers['NetCommons.Wizard']['navibar'][self::WIZARD_USERS]['url']['action'] = 'edit';
+		foreach ($this->User->userAttributeData as $attribute) {
+			if ($attribute['UserAttributeSetting']['is_multilingualization']) {
+				$this->SwitchLanguage->fields[] = 'UsersLanguage.' . $attribute['UserAttribute']['key'];
+			}
 		}
+
+		//他言語が入力されていない場合、表示されている言語データをセット
+		$this->SwitchLanguage->setM17nRequestValue();
 	}
 
 }

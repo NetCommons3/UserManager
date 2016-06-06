@@ -10,12 +10,9 @@
  */
 ?>
 
-<?php echo $this->element('UserManager.subtitle'); ?>
 <?php
-	if ($this->params['action'] === 'save_notify') {
-		echo $this->Wizard->navibar(UserManagerAppController::WIZARD_MAIL);
-		echo $this->MessageFlash->description(__d('user_manager', 'Press [OK] to notify the user.'));
-	}
+	echo $this->Wizard->navibar(UserManagerAppController::WIZARD_MAIL);
+	echo $this->MessageFlash->description(__d('user_manager', 'Press [Send] to notify the user.'));
 ?>
 
 <div class="panel panel-default">
@@ -50,23 +47,19 @@
 
 		<div class="panel-footer text-center">
 			<?php
-				if ($this->params['action'] === 'save_notify') {
-					echo $this->Wizard->buttons(UserManagerAppController::WIZARD_MAIL);
-				} else {
-					echo $this->Button->cancel(
-						__d('net_commons', 'Cancel'),
-						$this->NetCommonsHtml->url(array('controller' => 'user_manager', 'action' => 'index'))
-					);
+				echo $this->Button->cancel(
+					__d('net_commons', 'Close'),
+					$this->NetCommonsHtml->url(array('controller' => 'user_manager', 'action' => 'index'))
+				);
 
-					echo $this->NetCommonsForm->button(
-						'<span class="glyphicon glyphicon-envelope"></span> ' . __d('user_manager', 'Send'),
-						array(
-							'class' => 'btn btn-primary btn-workflow',
-							'name' => 'send',
-							'ng-disabled' => 'sending'
-						)
-					);
-				}
+				echo $this->NetCommonsForm->button(
+					'<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> ' . __d('user_manager', 'Send'),
+					array(
+						'class' => 'btn btn-primary btn-workflow',
+						'name' => 'send',
+						'ng-disabled' => 'sending'
+					)
+				);
 			?>
 		</div>
 	<?php echo $this->NetCommonsForm->end(); ?>

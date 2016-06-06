@@ -36,7 +36,6 @@ class UsersRolesRoomsController extends UserManagerAppController {
  * @var array
  */
 	public $components = array(
-		'ControlPanel.ControlPanelLayout',
 		'Rooms.Rooms',
 		'UserRoles.UserRoleForm',
 	);
@@ -56,68 +55,57 @@ class UsersRolesRoomsController extends UserManagerAppController {
  * @return void
  */
 	public function edit() {
-		list($userId, $spaceId) = $this->params['pass'];
-
-		//スペースのチェック
-		if (! isset($this->viewVars['spaces'][$spaceId])) {
-			$this->throwBadRequest();
-			return;
-		}
-
 		//ユーザデータ取得
 		if ($this->request->is('post')) {
-			$userId = $this->data['RolesRoomsUser']['user_id'];
+			$userId = $this->data['User']['id'];
+		} else {
+			$userId = $this->params['pass'][0];
 		}
 		$user = $this->User->getUser($userId);
 		if (! $user) {
-			$this->throwBadRequest();
-			return;
+			return $this->throwBadRequest();
 		}
+
 		$this->set('user', $user['User']);
 		$this->set('userName', $user['User']['handlename']);
 		$this->set('activeUserId', $userId);
 
 		if ($this->request->is('post')) {
 			//登録処理
-			if ($this->data['RolesRoomsUser']['roles_room_id']) {
-				$result = $this->RolesRoomsUser->saveRolesRoomsUser($this->data);
-			} else {
-				$result = $this->RolesRoomsUser->deleteRolesRoomsUser($this->data);
-			}
+			$result = $this->RolesRoomsUser->saveRolesRoomsUsersForUsers($this->request->data);
 			if ($result) {
+				//正常処理
 				$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array(
 					'class' => 'success',
-					'rolesRoomsUser' => array('id' => $result['RolesRoomsUser']['id']),
 				));
+				return $this->redirect('/user_manager/user_manager/index');
 			} else {
+				//異常処理
 				$this->NetCommons->handleValidationError($this->RolesRoomsUser->validationErrors);
 			}
-			return;
-
-		} else {
-			//表示処理
-			//** ルームデータセット
-			$this->set('activeSpaceId', $spaceId);
-			$this->Rooms->setRoomsForPaginator($spaceId);
-
-			//** ロールデータセット
-			$this->viewVars['defaultRoles'][''] = __d('users', 'Non members');
-
-			//** ルームロールデータ取得
-			$rolesRooms = $this->Room->getRolesRooms(array(
-				'Room.space_id' => $spaceId
-			));
-			$rolesRooms = Hash::combine($rolesRooms, '{n}.RolesRoom.role_key', '{n}', '{n}.Room.id');
-			$this->set('rolesRooms', $rolesRooms);
-
-			//** ロールルームユーザデータ取得
-			$rolesRoomsUsers = $this->RolesRoomsUser->getRolesRoomsUsers(array(
-				'RolesRoomsUser.user_id' => $userId,
-				'Room.space_id' => $spaceId
-			));
-			$rolesRoomsUsers = Hash::combine($rolesRoomsUsers, '{n}.Room.id', '{n}');
-			$this->set('rolesRoomsUsers', $rolesRoomsUsers);
 		}
+
+		//** ルームデータセット
+		$this->Rooms->setRoomsForPaginator();
+
+		//** ロールデータセット
+		$this->viewVars['defaultRoles'][''] = __d('users', 'Non members');
+
+		//** ルームロールデータ取得
+		$rolesRooms = $this->Room->getRolesRooms(array(
+			'Room.space_id' => [Space::PUBLIC_SPACE_ID, Space::ROOM_SPACE_ID]
+		));
+		$rolesRooms = Hash::combine($rolesRooms, '{n}.RolesRoom.role_key', '{n}', '{n}.Room.id');
+		$this->set('rolesRooms', $rolesRooms);
+
+		//** ロールルームユーザデータ取得
+		$rolesRoomsUsers = $this->RolesRoomsUser->getRolesRoomsUsers(array(
+			'RolesRoomsUser.user_id' => $userId,
+		));
+		$rolesRoomsUsers['RolesRoomsUser'] = Hash::combine(
+			$rolesRoomsUsers, '{n}.RolesRoomsUser.room_id', '{n}.RolesRoomsUser'
+		);
+		$this->set('rolesRoomsUsers', $rolesRoomsUsers);
 	}
 
 }

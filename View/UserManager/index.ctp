@@ -47,7 +47,7 @@ echo $this->NetCommonsHtml->script('/user_manager/js/user_manager.js');
 	<?php echo $this->UserSearchForm->displaySearchButton(); ?>
 
 	<div class="text-right">
-		<?php echo $this->Button->addLink(__d('user_manager', 'Add user')); ?>
+		<?php echo $this->Button->addLink(__d('user_manager', 'Add user'), ['controller' => 'user_add', 'action' => 'basic']); ?>
 	</div>
 </div>
 

@@ -41,7 +41,7 @@ App::uses('Space', 'Rooms.Model');
 		<div class="tab-pane" id="user-rooms">
 			<div class="pull-right">
 				<?php echo $this->Button->editLink('',
-						array('controller' => 'users_roles_rooms', 'key' => $user['User']['id'], 'key2' => Space::ROOM_SPACE_ID),
+						array('controller' => 'users_roles_rooms', 'key' => $user['User']['id']),
 						array('tooltip' => true, 'iconSize' => ' btn-xs')
 					); ?>
 			</div>
