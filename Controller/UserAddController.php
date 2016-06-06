@@ -10,6 +10,7 @@
  */
 
 App::uses('UserManagerAppController', 'UserManager.Controller');
+App::uses('NetCommonsMail', 'Mails.Utility');
 
 /**
  * UserManagerApp Controller
@@ -125,7 +126,7 @@ class UserAddController extends UserManagerAppController {
 			$this->User->languages = $this->viewVars['languages'];
 			$referer = Configure::read('App.fullBaseUrl') . '/user_manager/user_add/user_roles_rooms';
 			if ($this->referer() === $referer) {
-				$this->request->data =$this->Session->read('UserMangerEdit');
+				$this->request->data = $this->Session->read('UserMangerEdit');
 			} else {
 				$this->request->data = $this->User->createUser();
 			}
@@ -173,7 +174,7 @@ class UserAddController extends UserManagerAppController {
 		$this->set('rolesRooms', $rolesRooms);
 
 		//** ロールルームユーザデータ取得
-		$rolesRoomsUsers = $this->Room->getDefaultRolesRoomsUser();
+		$rolesRoomsUsers['RolesRoomsUser'] = $this->Room->getDefaultRolesRoomsUser();
 		$this->set('rolesRoomsUsers', $rolesRoomsUsers);
 
 		//** ユーザID
@@ -186,9 +187,8 @@ class UserAddController extends UserManagerAppController {
  * @return void
  */
 	public function notify() {
-		App::uses('NetCommonsMail', 'Mails.Utility');
-
 		$user = $this->Session->read('UserMangerEdit');
+
 		$this->set('user', $user['User']);
 
 		if ($this->request->is('post')) {
@@ -196,32 +196,30 @@ class UserAddController extends UserManagerAppController {
 
 			//入力チェック
 			$this->UserMail->set($this->request->data);
-			if (! $this->UserMail->validates()) {
-				return $this->NetCommons->handleValidationError($this->UserMail->validationErrors);
+			if ($this->UserMail->validates()) {
+				//メール送信処理
+				$mail = new NetCommonsMail();
+				$mail->mailAssignTag->setFixedPhraseSubject($this->request->data['UserMail']['title']);
+				$mail->mailAssignTag->setFixedPhraseBody($this->request->data['UserMail']['body']);
+				$mail->mailAssignTag->initPlugin(Current::read('Language.id'));
+
+				$mail->setReplyTo($this->request->data['UserMail']['reply_to']);
+				$mail->initPlugin(Current::read('Language.id'));
+
+				$mail->to($this->viewVars['user']['email']);
+				$mail->setFrom(Current::read('Language.id'));
+				if (! $mail->sendMailDirect()) {
+					return $this->NetCommons->handleValidationError(array('SendMail Error'));
+				}
+
+				//リダイレクト
+				$this->Session->delete('UserMangerEdit');
+				$this->NetCommons->setFlashNotification(
+					__d('user_manager', 'Successfully mail send.'), array('class' => 'success')
+				);
+				return $this->redirect('/user_manager/user_manager/index/');
 			}
-			$this->Session->delete('UserMangerEdit.password');
-
-			//メール送信処理
-			$mail = new NetCommonsMail();
-			$mail->mailAssignTag->setFixedPhraseSubject($this->request->data['UserMail']['title']);
-			$mail->mailAssignTag->setFixedPhraseBody($this->request->data['UserMail']['body']);
-			$mail->mailAssignTag->initPlugin(Current::read('Language.id'));
-
-			$mail->setReplyTo($this->request->data['UserMail']['reply_to']);
-			$mail->initPlugin(Current::read('Language.id'));
-
-			$mail->to($this->viewVars['user']['email']); //ここだけ、CakeMailのメソッド使うの？
-			$mail->setFrom(Current::read('Language.id'));
-			if (! $mail->sendMailDirect()) {
-				return $this->NetCommons->handleValidationError(array('SendMail Error'));
-			}
-
-			//リダイレクト
-			$this->Session->delete('UserMangerEdit');
-			$this->NetCommons->setFlashNotification(
-				__d('user_manager', 'Successfully mail send.'), array('class' => 'success')
-			);
-			return $this->redirect('/user_manager/user_manager/index/');
+			$this->NetCommons->handleValidationError($this->UserMail->validationErrors);
 
 		} else {
 			//ユーザデータ取得
@@ -236,7 +234,7 @@ class UserAddController extends UserManagerAppController {
 			);
 			$mail->mailAssignTag->initPlugin(Current::read('Language.id'));
 
-			$password = $this->Session->read('UserMangerEdit.password');
+			$password = $this->viewVars['user']['password'];
 			if (! isset($password)) {
 				$password = '';
 			}
