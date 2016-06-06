@@ -44,7 +44,7 @@ echo $this->NetCommonsHtml->script('/user_manager/js/user_manager.js');
 ); ?>
 
 <div class="user-search-index-head-margin">
-	<?php echo $this->UserSearchForm->displaySearchButton(); ?>
+	<?php echo $this->UserSearchForm->displaySearchButton(__d('user_manager', 'Search for the members')); ?>
 
 	<div class="text-right">
 		<?php echo $this->Button->addLink(__d('user_manager', 'Add user'), ['controller' => 'user_add', 'action' => 'basic']); ?>
