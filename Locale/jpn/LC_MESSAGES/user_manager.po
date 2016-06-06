@@ -127,6 +127,9 @@ msgstr "メールで登録内容を通知する場合、[送信]ボタンを押�
 msgid "To notify the user"
 msgstr "メールで登録内容を通知する"
 
+msgid "Successfully mail send."
+msgstr "メール送信しました。"
+
 
 #
 # 会員検索

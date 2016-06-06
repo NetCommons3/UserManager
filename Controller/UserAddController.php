@@ -123,7 +123,11 @@ class UserAddController extends UserManagerAppController {
 		} else {
 			//表示処理
 			$this->User->languages = $this->viewVars['languages'];
-			$this->request->data = $this->User->createUser();
+			if ($this->referer() === '/user_manager/user_add/user_roles_rooms') {
+				$this->request->data =$this->Session->read('UserMangerEdit');
+			} else {
+				$this->request->data = $this->User->createUser();
+			}
 		}
 	}
 
@@ -183,6 +187,9 @@ class UserAddController extends UserManagerAppController {
 	public function notify() {
 		App::uses('NetCommonsMail', 'Mails.Utility');
 
+		$user = $this->Session->read('UserMangerEdit');
+		$this->set('user', $user['User']);
+
 		if ($this->request->is('post')) {
 			unset($this->request->data['send']);
 
@@ -209,13 +216,14 @@ class UserAddController extends UserManagerAppController {
 			}
 
 			//リダイレクト
+			$this->Session->delete('UserMangerEdit');
+			$this->NetCommons->setFlashNotification(
+				__d('user_manager', 'Successfully mail send.'), array('class' => 'success')
+			);
 			return $this->redirect('/user_manager/user_manager/index/');
 
 		} else {
 			//ユーザデータ取得
-			$user = $this->Session->read('UserMangerEdit');
-			$this->set('user', $user['User']);
-
 			$mail = new NetCommonsMail();
 			$mailSetting = $this->UserMail->MailSetting->getMailSettingPlugin(null, 'save_notify');
 
