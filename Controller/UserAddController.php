@@ -137,7 +137,7 @@ class UserAddController extends UserManagerAppController {
 
 			if ($this->User->validateUser($this->request->data)) {
 				//正常の場合
-				$this->Session->write('UserMangerEdit', $this->request->data);
+				$this->Session->write('UserAdd', $this->request->data);
 				return $this->redirect('/user_manager/user_add/user_roles_rooms');
 			}
 			$this->NetCommons->handleValidationError($this->User->validationErrors);
@@ -147,7 +147,7 @@ class UserAddController extends UserManagerAppController {
 			$this->User->languages = $this->viewVars['languages'];
 			$referer = Configure::read('App.fullBaseUrl') . '/user_manager/user_add/user_roles_rooms';
 			if ($this->referer() === $referer) {
-				$this->request->data = $this->Session->read('UserMangerEdit');
+				$this->request->data = $this->Session->read('UserAdd');
 			} else {
 				$this->request->data = $this->User->createUser();
 			}
@@ -162,7 +162,7 @@ class UserAddController extends UserManagerAppController {
 	public function user_roles_rooms() {
 		if ($this->request->is('post')) {
 			//登録処理
-			$data = Hash::merge($this->request->data, $this->Session->read('UserMangerEdit'));
+			$data = Hash::merge($this->request->data, $this->Session->read('UserAdd'));
 
 			$user = $this->User->saveUser($data);
 			if ($user) {
@@ -170,10 +170,10 @@ class UserAddController extends UserManagerAppController {
 					'class' => 'success',
 				));
 				if (Hash::get($this->request->data, '_UserManager.notify')) {
-					$this->Session->write('UserMangerEdit', $user);
+					$this->Session->write('UserAdd', $user);
 					return $this->redirect('/user_manager/user_add/notify');
 				} else {
-					$this->Session->delete('UserMangerEdit');
+					$this->Session->delete('UserAdd');
 					return $this->redirect('/user_manager/user_manager/index');
 				}
 			} else {
@@ -208,7 +208,7 @@ class UserAddController extends UserManagerAppController {
  * @return void
  */
 	public function notify() {
-		$user = $this->Session->read('UserMangerEdit');
+		$user = $this->Session->read('UserAdd');
 
 		$this->set('user', $user['User']);
 
@@ -234,7 +234,7 @@ class UserAddController extends UserManagerAppController {
 				}
 
 				//リダイレクト
-				$this->Session->delete('UserMangerEdit');
+				$this->Session->delete('UserAdd');
 				$this->NetCommons->setFlashNotification(
 					__d('user_manager', 'Successfully mail send.'), array('class' => 'success')
 				);
