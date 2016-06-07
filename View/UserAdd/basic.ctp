@@ -10,7 +10,7 @@
  */
 ?>
 
-<?php echo $this->Wizard->navibar(UserManagerAppController::WIZARD_USERS); ?>
+<?php echo $this->Wizard->navibar(UserAddController::WIZARD_USERS); ?>
 <?php
 	echo $this->MessageFlash->description(
 		__d('user_manager', 'Input the user data, and press [NEXT].<br>Required items are marked by <strong class="text-danger h4">*</strong>.')
@@ -23,7 +23,7 @@
 	<?php echo $this->element('Users.Users/edit_form', array('element' => 'UserManager.UserManager/render_edit_row')); ?>
 
 	<div class="panel-footer text-center">
-		<?php echo $this->Wizard->buttons(UserManagerAppController::WIZARD_USERS); ?>
+		<?php echo $this->Wizard->buttons(UserAddController::WIZARD_USERS); ?>
 	</div>
 
 	<?php echo $this->NetCommonsForm->end(); ?>

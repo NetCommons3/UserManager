@@ -1,6 +1,6 @@
 <?php
 /**
- * UserManagerApp Controller
+ * ユーザ追加(ウィザード) Controller
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -13,12 +13,33 @@ App::uses('UserManagerAppController', 'UserManager.Controller');
 App::uses('NetCommonsMail', 'Mails.Utility');
 
 /**
- * UserManagerApp Controller
+ * ユーザ追加(ウィザード) Controller
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\UserManager\Controller
  */
 class UserAddController extends UserManagerAppController {
+
+/**
+ * ウィザード定数(一般設定)
+ *
+ * @var string
+ */
+	const WIZARD_USERS = 'user_manager';
+
+/**
+ * ウィザード定数(参加ルームの選択)
+ *
+ * @var string
+ */
+	const WIZARD_USERS_ROLES_ROOMS = 'users_roles_rooms';
+
+/**
+ * ウィザード定数(メール通知)
+ *
+ * @var string
+ */
+	const WIZARD_MAIL = 'user_mail';
 
 /**
  * use component
@@ -52,13 +73,13 @@ class UserAddController extends UserManagerAppController {
 	public $helpers = array(
 		'NetCommons.Wizard' => array(
 			'navibar' => array(
-				parent::WIZARD_USERS => array(
+				self::WIZARD_USERS => array(
 					'url' => array(
 						'controller' => 'user_add', 'action' => 'basic',
 					),
 					'label' => array('user_manager', 'General setting'),
 				),
-				parent::WIZARD_USERS_ROLES_ROOMS => array(
+				self::WIZARD_USERS_ROLES_ROOMS => array(
 					'url' => array(
 						'controller' => 'user_add', 'action' => 'user_roles_rooms', 'key2' => Space::ROOM_SPACE_ID,
 					),
@@ -81,14 +102,14 @@ class UserAddController extends UserManagerAppController {
 
 		//ウィザードの設定
 		if (in_array($this->params['action'], ['notify'], true)) {
-			$this->helpers['NetCommons.Wizard']['navibar'][parent::WIZARD_MAIL] = array(
+			$this->helpers['NetCommons.Wizard']['navibar'][self::WIZARD_MAIL] = array(
 				'url' => array(
 					'controller' => 'user_add', 'action' => 'notify',
 				),
 				'label' => array('user_manager', 'Notify user by e-mail'),
 			);
-			unset($this->helpers['NetCommons.Wizard']['navibar'][parent::WIZARD_USERS]['url']);
-			unset($this->helpers['NetCommons.Wizard']['navibar'][parent::WIZARD_USERS_ROLES_ROOMS]['url']);
+			unset($this->helpers['NetCommons.Wizard']['navibar'][self::WIZARD_USERS]['url']);
+			unset($this->helpers['NetCommons.Wizard']['navibar'][self::WIZARD_USERS_ROLES_ROOMS]['url']);
 		}
 	}
 

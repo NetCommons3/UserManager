@@ -21,27 +21,6 @@ App::uses('Space', 'Rooms.Model');
 class UserManagerAppController extends AppController {
 
 /**
- * ウィザード定数(一般設定)
- *
- * @var string
- */
-	const WIZARD_USERS = 'user_manager';
-
-/**
- * ウィザード定数(参加ルームの選択)
- *
- * @var string
- */
-	const WIZARD_USERS_ROLES_ROOMS = 'users_roles_rooms';
-
-/**
- * ウィザード定数(メール通知)
- *
- * @var string
- */
-	const WIZARD_MAIL = 'user_mail';
-
-/**
  * use component
  *
  * @var array
