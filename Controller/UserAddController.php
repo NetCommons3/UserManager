@@ -1,6 +1,6 @@
 <?php
 /**
- * UserManagerApp Controller
+ * ユーザ追加(ウィザード) Controller
  *
  * @author Noriko Arai <arai@nii.ac.jp>
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
@@ -13,12 +13,33 @@ App::uses('UserManagerAppController', 'UserManager.Controller');
 App::uses('NetCommonsMail', 'Mails.Utility');
 
 /**
- * UserManagerApp Controller
+ * ユーザ追加(ウィザード) Controller
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\UserManager\Controller
  */
 class UserAddController extends UserManagerAppController {
+
+/**
+ * ウィザード定数(一般設定)
+ *
+ * @var string
+ */
+	const WIZARD_USERS = 'user_manager';
+
+/**
+ * ウィザード定数(参加ルームの選択)
+ *
+ * @var string
+ */
+	const WIZARD_USERS_ROLES_ROOMS = 'users_roles_rooms';
+
+/**
+ * ウィザード定数(メール通知)
+ *
+ * @var string
+ */
+	const WIZARD_MAIL = 'user_mail';
 
 /**
  * use component
@@ -52,13 +73,13 @@ class UserAddController extends UserManagerAppController {
 	public $helpers = array(
 		'NetCommons.Wizard' => array(
 			'navibar' => array(
-				parent::WIZARD_USERS => array(
+				self::WIZARD_USERS => array(
 					'url' => array(
 						'controller' => 'user_add', 'action' => 'basic',
 					),
 					'label' => array('user_manager', 'General setting'),
 				),
-				parent::WIZARD_USERS_ROLES_ROOMS => array(
+				self::WIZARD_USERS_ROLES_ROOMS => array(
 					'url' => array(
 						'controller' => 'user_add', 'action' => 'user_roles_rooms', 'key2' => Space::ROOM_SPACE_ID,
 					),
@@ -81,14 +102,14 @@ class UserAddController extends UserManagerAppController {
 
 		//ウィザードの設定
 		if (in_array($this->params['action'], ['notify'], true)) {
-			$this->helpers['NetCommons.Wizard']['navibar'][parent::WIZARD_MAIL] = array(
+			$this->helpers['NetCommons.Wizard']['navibar'][self::WIZARD_MAIL] = array(
 				'url' => array(
 					'controller' => 'user_add', 'action' => 'notify',
 				),
 				'label' => array('user_manager', 'Notify user by e-mail'),
 			);
-			unset($this->helpers['NetCommons.Wizard']['navibar'][parent::WIZARD_USERS]['url']);
-			unset($this->helpers['NetCommons.Wizard']['navibar'][parent::WIZARD_USERS_ROLES_ROOMS]['url']);
+			unset($this->helpers['NetCommons.Wizard']['navibar'][self::WIZARD_USERS]['url']);
+			unset($this->helpers['NetCommons.Wizard']['navibar'][self::WIZARD_USERS_ROLES_ROOMS]['url']);
 		}
 	}
 
@@ -116,7 +137,7 @@ class UserAddController extends UserManagerAppController {
 
 			if ($this->User->validateUser($this->request->data)) {
 				//正常の場合
-				$this->Session->write('UserMangerEdit', $this->request->data);
+				$this->Session->write('UserAdd', $this->request->data);
 				return $this->redirect('/user_manager/user_add/user_roles_rooms');
 			}
 			$this->NetCommons->handleValidationError($this->User->validationErrors);
@@ -126,7 +147,7 @@ class UserAddController extends UserManagerAppController {
 			$this->User->languages = $this->viewVars['languages'];
 			$referer = Configure::read('App.fullBaseUrl') . '/user_manager/user_add/user_roles_rooms';
 			if ($this->referer() === $referer) {
-				$this->request->data = $this->Session->read('UserMangerEdit');
+				$this->request->data = $this->Session->read('UserAdd');
 			} else {
 				$this->request->data = $this->User->createUser();
 			}
@@ -141,7 +162,7 @@ class UserAddController extends UserManagerAppController {
 	public function user_roles_rooms() {
 		if ($this->request->is('post')) {
 			//登録処理
-			$data = Hash::merge($this->request->data, $this->Session->read('UserMangerEdit'));
+			$data = Hash::merge($this->request->data, $this->Session->read('UserAdd'));
 
 			$user = $this->User->saveUser($data);
 			if ($user) {
@@ -149,10 +170,10 @@ class UserAddController extends UserManagerAppController {
 					'class' => 'success',
 				));
 				if (Hash::get($this->request->data, '_UserManager.notify')) {
-					$this->Session->write('UserMangerEdit', $user);
+					$this->Session->write('UserAdd', $user);
 					return $this->redirect('/user_manager/user_add/notify');
 				} else {
-					$this->Session->delete('UserMangerEdit');
+					$this->Session->delete('UserAdd');
 					return $this->redirect('/user_manager/user_manager/index');
 				}
 			} else {
@@ -187,7 +208,7 @@ class UserAddController extends UserManagerAppController {
  * @return void
  */
 	public function notify() {
-		$user = $this->Session->read('UserMangerEdit');
+		$user = $this->Session->read('UserAdd');
 
 		$this->set('user', $user['User']);
 
@@ -213,7 +234,7 @@ class UserAddController extends UserManagerAppController {
 				}
 
 				//リダイレクト
-				$this->Session->delete('UserMangerEdit');
+				$this->Session->delete('UserAdd');
 				$this->NetCommons->setFlashNotification(
 					__d('user_manager', 'Successfully mail send.'), array('class' => 'success')
 				);

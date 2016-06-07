@@ -11,7 +11,7 @@
 ?>
 
 <?php
-	echo $this->Wizard->navibar(UserManagerAppController::WIZARD_MAIL);
+	echo $this->Wizard->navibar(UserAddController::WIZARD_MAIL);
 	echo $this->MessageFlash->description(__d('user_manager', 'Press [Send] to notify the user.'));
 ?>
 

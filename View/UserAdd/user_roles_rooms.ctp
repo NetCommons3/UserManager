@@ -10,7 +10,7 @@
  */
 ?>
 
-<?php echo $this->Wizard->navibar(UserManagerAppController::WIZARD_USERS_ROLES_ROOMS); ?>
+<?php echo $this->Wizard->navibar(UserAddController::WIZARD_USERS_ROLES_ROOMS); ?>
 
 <?php echo $this->element('UserManager.UsersRolesRooms/edit_header'); ?>
 
@@ -21,10 +21,10 @@
 	<div class="row">
 		<div class="col-xs-8 text-right">
 			<?php echo $this->Wizard->buttons(
-					UserManagerAppController::WIZARD_USERS_ROLES_ROOMS,
+					UserAddController::WIZARD_USERS_ROLES_ROOMS,
 					array(),
 					array(),
-					array('url' => $this->Wizard->naviUrl(UserManagerAppController::WIZARD_MAIL))
+					array('url' => $this->Wizard->naviUrl(UserAddController::WIZARD_MAIL))
 				); ?>
 		</div>
 		<div class="col-xs-4">
