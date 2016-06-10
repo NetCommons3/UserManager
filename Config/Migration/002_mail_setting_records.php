@@ -53,6 +53,7 @@ class UserManagerMailSettingRecords extends MailsMigration {
 				'plugin_key' => self::PLUGIN_KEY,
 				'block_key' => null,
 				'is_mail_send' => true,
+				'is_mail_send_approval' => false,
 			),
 		),
 		'MailSettingFixedPhrase' => array(
