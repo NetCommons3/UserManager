@@ -13,8 +13,8 @@ echo $this->NetCommonsHtml->css('/rooms/css/style.css');
 echo $this->NetCommonsHtml->script('/user_manager/js/users_roles_rooms.js');
 ?>
 
-<?php echo $this->element('UserManager.subtitle'); ?>
 <?php echo $this->element('UserManager.setting_tabs'); ?>
+<?php echo $this->element('UserManager.subtitle'); ?>
 <?php echo $this->element('UserManager.UsersRolesRooms/edit_header'); ?>
 
 <?php echo $this->NetCommonsForm->create('RolesRoomsUser'); ?>

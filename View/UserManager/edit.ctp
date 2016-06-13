@@ -10,8 +10,8 @@
  */
 ?>
 
-<?php echo $this->element('UserManager.subtitle'); ?>
 <?php echo $this->element('UserManager.setting_tabs'); ?>
+<?php echo $this->element('UserManager.subtitle'); ?>
 
 <?php
 	echo $this->MessageFlash->description(
