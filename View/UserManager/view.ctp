@@ -34,7 +34,13 @@ App::uses('Space', 'Rooms.Model');
 
 <div class="tab-content">
 	<div class="tab-pane active" id="user-information">
-		<?php echo $this->element('Users.Users/view_information', array('editLink' => true)); ?>
+		<div class="text-right nc-edit-link">
+			<?php echo $this->Button->editLink(__d('net_commons', 'Edit'),
+					array('controller' => 'user_manager', 'action' => 'edit', 'key' => $user['User']['id']),
+					array('iconSize' => ' btn-sm')
+				); ?>
+		</div>
+		<?php echo $this->element('Users.Users/view_information', array('editLink' => false)); ?>
 	</div>
 
 	<?php if (isset($rooms)) : ?>
@@ -42,7 +48,7 @@ App::uses('Space', 'Rooms.Model');
 			<div class="pull-right">
 				<?php echo $this->Button->editLink('',
 						array('controller' => 'users_roles_rooms', 'key' => $user['User']['id']),
-						array('tooltip' => true, 'iconSize' => ' btn-xs')
+						array('tooltip' => true, 'iconSize' => ' btn-sm')
 					); ?>
 			</div>
 			<?php echo $this->element('Users.Users/view_rooms'); ?>
