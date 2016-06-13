@@ -34,7 +34,13 @@ App::uses('Space', 'Rooms.Model');
 
 <div class="tab-content">
 	<div class="tab-pane active" id="user-information">
-		<?php echo $this->element('Users.Users/view_information', array('editLink' => true)); ?>
+		<div class="text-right nc-edit-link">
+			<?php echo $this->Button->editLink(__d('net_commons', 'Edit'),
+					array('controller' => 'user_manager', 'action' => 'edit', 'key' => $user['User']['id']),
+					array('iconSize' => ' btn-xs')
+				); ?>
+		</div>
+		<?php echo $this->element('Users.Users/view_information', array('editLink' => false)); ?>
 	</div>
 
 	<?php if (isset($rooms)) : ?>
