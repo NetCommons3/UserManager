@@ -12,10 +12,4 @@
  */
 ?>
 
-<?php $this->start('subtitle'); ?>
-	<?php if ($userName !== '') : ?>
-		<div class="text-muted visible-xs-inline-block visible-sm-inline-block visible-md-inline-block visible-lg-inline-block">
-			( <?php echo h($userName); ?> )
-		</div>
-	<?php endif; ?>
-<?php $this->end();
+<h2><?php echo h($userName); ?></h2>
