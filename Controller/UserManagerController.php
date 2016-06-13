@@ -127,16 +127,7 @@ class UserManagerController extends UserManagerAppController {
 		$this->layout = 'NetCommons.modal';
 
 		//ルームデータ取得
-		$result = $this->Room->find('all', $this->Room->getReadableRoomsConditions());
-		$this->set('rooms', Hash::combine($result, '{n}.Room.id', '{n}'));
-
-		//ルームのTreeリスト取得
-		$roomTreeLists[Space::PUBLIC_SPACE_ID] = $this->Room->generateTreeList(
-				array('Room.space_id' => Space::PUBLIC_SPACE_ID), null, null, Room::$treeParser);
-
-		$roomTreeLists[Space::ROOM_SPACE_ID] = $this->Room->generateTreeList(
-				array('Room.space_id' => Space::ROOM_SPACE_ID), null, null, Room::$treeParser);
-		$this->set('roomTreeLists', $roomTreeLists);
+		$this->Rooms->setReadableRooms($userId);
 	}
 
 /**
