@@ -227,11 +227,10 @@ class UserAddController extends UserManagerAppController {
 				$mail->mailAssignTag->setFixedPhraseBody($this->request->data['UserMail']['body']);
 				$mail->mailAssignTag->initPlugin(Current::read('Language.id'));
 
-				$mail->setReplyTo($this->request->data['UserMail']['reply_to']);
 				$mail->initPlugin(Current::read('Language.id'));
 
 				$mail->to($this->viewVars['user']['email']);
-				$mail->setFrom(Current::read('Language.id'));
+				$mail->from($this->request->data['UserMail']['from']);
 				if (! $mail->sendMailDirect()) {
 					return $this->NetCommons->handleValidationError(array('SendMail Error'));
 				}
