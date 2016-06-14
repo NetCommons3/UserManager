@@ -89,11 +89,10 @@ class UserManagerMailSettingRecords extends MailsMigration {
 				'mail_fixed_phrase_body' => 'Thank you for registering for {X-SITE_NAME}.
 Handle: {X-HANDLENAME}
 Login_id: {X-USERNAME}
-Password: {X-PASSWORD}
 e-mail: {X-EMAIL}
 
-You may now log in by clicking on this link or copying and pasting it in your browser:
-{X-URL}',
+New to get the password from the following, please login.:
+{X-PASSWORD_URL}',
 			),
 			// * 日本語
 			array(
@@ -105,11 +104,10 @@ You may now log in by clicking on this link or copying and pasting it in your br
 				'mail_fixed_phrase_body' => '会員登録が完了しましたのでお知らせします。
 ハンドル: {X-HANDLENAME}
 ログインID: {X-USERNAME}
-パスワード: {X-PASSWORD}
 e-mail: {X-EMAIL}
 
-下記アドレスからログインしてください。
-{X-URL}',
+下記から新たにパスワードを取得し、ログインてください。
+{X-PASSWORD_URL}',
 			),
 		),
 	);

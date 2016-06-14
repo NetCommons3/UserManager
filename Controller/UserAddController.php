@@ -170,6 +170,9 @@ class UserAddController extends UserManagerAppController {
 					'class' => 'success',
 				));
 				if (Hash::get($this->request->data, '_UserManager.notify')) {
+					$user = Hash::insert(
+						$user, 'User.password', $this->Session->read('UserAdd.User.password')
+					);
 					$this->Session->write('UserAdd', $user);
 					return $this->redirect('/user_manager/user_add/notify');
 				} else {
@@ -224,11 +227,10 @@ class UserAddController extends UserManagerAppController {
 				$mail->mailAssignTag->setFixedPhraseBody($this->request->data['UserMail']['body']);
 				$mail->mailAssignTag->initPlugin(Current::read('Language.id'));
 
-				$mail->setReplyTo($this->request->data['UserMail']['reply_to']);
 				$mail->initPlugin(Current::read('Language.id'));
 
 				$mail->to($this->viewVars['user']['email']);
-				$mail->setFrom(Current::read('Language.id'));
+				$mail->from($this->request->data['UserMail']['from']);
 				if (! $mail->sendMailDirect()) {
 					return $this->NetCommons->handleValidationError(array('SendMail Error'));
 				}
@@ -259,10 +261,14 @@ class UserAddController extends UserManagerAppController {
 			if (! isset($password)) {
 				$password = '';
 			}
+
+			$passwordUrl = NetCommonsUrl::url('/auth/forgot_pass/request', true) .
+							'?email=' . $this->viewVars['user']['email'];
 			$mail->mailAssignTag->assignTags(array(
 				'X-HANDLENAME' => $this->viewVars['user']['handlename'],
 				'X-USERNAME' => $this->viewVars['user']['username'],
 				'X-PASSWORD' => $password,
+				'X-PASSWORD_URL' => $passwordUrl,
 				'X-EMAIL' => $this->viewVars['user']['email'],
 				'X-URL' => NetCommonsUrl::url('/', true),
 			));
@@ -271,7 +277,7 @@ class UserAddController extends UserManagerAppController {
 			$this->request->data['UserMail']['title'] = $mail->mailAssignTag->fixedPhraseSubject;
 			$this->request->data['UserMail']['body'] = $mail->mailAssignTag->fixedPhraseBody;
 			$this->request->data['UserMail']['user_id'] = $this->viewVars['user']['id'];
-			$this->request->data['UserMail']['reply_to'] = Current::read('User.email');
+			$this->request->data['UserMail']['from'] = SiteSettingUtil::read('Mail.from');
 		}
 	}
 
