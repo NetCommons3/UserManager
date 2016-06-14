@@ -10,7 +10,7 @@
  * @param {string} Controller name
  * @param {function($scope, $http, $window)} Controller
  */
-NetCommonsApp.controller('UsersRolesRooms', function($scope, $http) {
+NetCommonsApp.controller('UsersRolesRooms', ['$scope', '$http', function($scope, $http) {
 
   /**
    * initialize
@@ -68,4 +68,4 @@ NetCommonsApp.controller('UsersRolesRooms', function($scope, $http) {
           });
         });
   };
-});
+}]);
