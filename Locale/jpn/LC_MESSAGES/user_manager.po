@@ -19,7 +19,7 @@ msgstr ""
 
 #: UserManager/View/Elements/setting_tabs.ctp:30
 msgid "General setting"
-msgstr "一般設定"
+msgstr "基本設定"
 
 #: UserManager/View/Elements/setting_tabs.ctp:34
 msgid "Select the rooms to join"
