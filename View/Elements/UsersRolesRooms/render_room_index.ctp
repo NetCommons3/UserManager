@@ -54,11 +54,14 @@ $domId = $this->NetCommonsHtml->domId('RolesRoomsUser.' . $roomId . '.roles_room
 				$options = array($rolesRoomId => '');
 
 				//マージンを付けないため、Formヘルパーを使う
-				$html = $this->Form->radio('RolesRoomsUser.' . $roomId . '.roles_room_id', $options, array(
+				$html .= '<label for="' . $this->Form->domId('RolesRoomsUser.' . $roomId . '.roles_room_id' . $rolesRoomId) . '">';
+				$html .= $this->Form->radio('RolesRoomsUser.' . $roomId . '.roles_room_id', $options, array(
 					'checked' => ($rolesRoomId === $rolesRoomsUsers['RolesRoomsUser'][$roomId]['roles_room_id']),
 					'hiddenField' => false,
 					'ng-click' => $domId . ' = \'' . $rolesRoomId . '\'',
+					'label' => false
 				));
+				$html .= '</label>';
 
 				$ngClass = '\'success\': (' . $domId . ' === \'' . $rolesRoomId . '\')';
 				if ($rolesRoomId === $rolesRoomsUsers['RolesRoomsUser'][$roomId]['roles_room_id']) {
@@ -66,7 +69,7 @@ $domId = $this->NetCommonsHtml->domId('RolesRoomsUser.' . $roomId . '.roles_room
 				}
 			}
 
-			echo '<td class="text-center" ng-class="{' . $ngClass . '}">';
+			echo '<td class="text-center users-roles-rooms-select" ng-class="{' . $ngClass . '}">';
 			echo $html;
 			echo '</td>';
 		}

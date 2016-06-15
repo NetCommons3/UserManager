@@ -10,6 +10,8 @@
  */
 
 App::uses('Space', 'Rooms.Model');
+
+echo $this->NetCommonsHtml->css('/user_manager/css/style.css');
 ?>
 
 <div class="tab-content">
@@ -25,6 +27,7 @@ App::uses('Space', 'Rooms.Model');
 						'displaySpace' => true,
 						'roomTreeList' => $rooms[Space::PUBLIC_SPACE_ID]['roomTreeList'],
 						'rooms' => $rooms[Space::PUBLIC_SPACE_ID]['rooms'],
+						'tableClass' => 'table table-hover'
 					)
 				); ?>
 		</article>
@@ -42,6 +45,7 @@ App::uses('Space', 'Rooms.Model');
 						'displaySpace' => false,
 						'roomTreeList' => $rooms[Space::ROOM_SPACE_ID]['roomTreeList'],
 						'rooms' => $rooms[Space::ROOM_SPACE_ID]['rooms'],
+						'tableClass' => 'table table-hover'
 					)
 				); ?>
 		</article>
