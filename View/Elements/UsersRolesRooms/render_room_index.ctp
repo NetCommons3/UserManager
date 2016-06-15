@@ -23,7 +23,11 @@ $domId = $this->NetCommonsHtml->domId('RolesRoomsUser.' . $roomId . '.roles_room
 	ng-init="<?php echo $domId . ' = \'' . $rolesRoomsUsers['RolesRoomsUser'][$roomId]['roles_room_id'] . '\';'; ?>">
 
 	<td>
-		<?php echo $this->Rooms->roomName($room, $nest); ?>
+		<a href="" ng-controller="RoomsController"
+			ng-click="showRoom(<?php echo $room['Space']['id'] . ', ' . $room['Room']['id'] . ', null, 0'; ?>)">
+
+			<?php echo $this->Rooms->roomName($room, $nest); ?>
+		</a>
 		<?php echo $this->Rooms->statusLabel($room, '(%s)'); ?>
 		<?php
 			echo $this->NetCommonsForm->hidden(

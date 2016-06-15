@@ -9,8 +9,16 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-echo $this->NetCommonsHtml->css('/rooms/css/style.css');
-echo $this->NetCommonsHtml->script('/user_manager/js/users_roles_rooms.js');
+echo $this->NetCommonsHtml->css([
+	'/rooms/css/style.css',
+	'/plugin_manager/css/style.css',
+]);
+echo $this->NetCommonsHtml->script([
+	'/user_manager/js/users_roles_rooms.js',
+	'/rooms/js/rooms.js',
+	'/rooms/js/role_permissions.js',
+	'/rooms/js/room_role_permissions.js'
+]);
 ?>
 
 <?php echo $this->element('UserManager.setting_tabs'); ?>
