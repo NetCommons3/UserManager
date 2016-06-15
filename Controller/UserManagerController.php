@@ -152,11 +152,11 @@ class UserManagerController extends UserManagerAppController {
 		}
 		$user = $this->User->getUser($userId);
 
-		//システム管理者は編集不可
-		if (Current::read('User.role_key') !== UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR &&
-				(! $user || $user['User']['role_key'] === UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR)) {
+		//編集できるかどうかチェック
+		if (! $this->User->canUserEdit($user)) {
 			return $this->throwBadRequest();
 		}
+		$this->set('canUserDelete', $this->User->canUserDelete($user));
 
 		if ($this->request->is('put')) {
 			//不要パラメータ除去
@@ -193,9 +193,8 @@ class UserManagerController extends UserManagerAppController {
 	public function delete() {
 		$user = $this->User->getUser($this->data['User']['id']);
 
-		//システム管理者は削除不可
-		if (Current::read('User.role_key') !== UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR &&
-				(! $user || $user['User']['role_key'] === UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR)) {
+		//削除できるかチェック
+		if (! $this->User->canUserDelete($user)) {
 			return $this->throwBadRequest();
 		}
 

@@ -35,7 +35,7 @@
 	<?php echo $this->NetCommonsForm->end(); ?>
 </div>
 
-<?php if ($this->params['action'] === 'edit') : ?>
+<?php if ($this->params['action'] === 'edit' && $canUserDelete) : ?>
 	<?php echo $this->element('Users.Users/delete_form'); ?>
 <?php endif;
 
