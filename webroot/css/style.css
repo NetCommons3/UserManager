@@ -6,16 +6,22 @@
  * @license http://www.netcommons.org/license.txt NetCommons License
  */
 
-.user-manager-add-notify {
-	margin-left: 250px;
-}
-
-.rooms-manager .table > tbody > tr > td.users-roles-rooms-select {
+/**
+ * 参加ルームの選択
+ */
+.plugin-user-manager .table > tbody > tr > td.users-roles-rooms-select {
 	padding: 0px;
 }
-.rooms-manager .table > tbody > tr > td.users-roles-rooms-select > label {
+.plugin-user-manager .table > tbody > tr > td.users-roles-rooms-select > label {
 	display: block;
 	margin-bottom: 0px;
 	padding: 8px;
 }
 
+.plugin-user-manager .user-manager-check-notify {
+	margin-left: 3px;
+}
+
+.plugin-user-manager .user-manager-check-notify .checkbox.checkbox-inline {
+	padding-left: 0px;
+}

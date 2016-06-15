@@ -18,21 +18,21 @@
 
 	<?php echo $this->element('UserManager.UsersRolesRooms/edit_content'); ?>
 
-	<div class="row">
-		<div class="col-xs-8 text-right">
-			<?php echo $this->Wizard->buttons(
-					UserAddController::WIZARD_USERS_ROLES_ROOMS,
-					array(),
-					array(),
-					array('url' => $this->Wizard->naviUrl(UserAddController::WIZARD_MAIL))
-				); ?>
-		</div>
-		<div class="col-xs-4">
+	<div class="text-center">
+		<?php echo $this->Wizard->buttons(
+				UserAddController::WIZARD_USERS_ROLES_ROOMS,
+				array(),
+				array(),
+				array('url' => $this->Wizard->naviUrl(UserAddController::WIZARD_MAIL))
+			); ?>
+
+		<span class="well well-sm btn-workflow user-manager-check-notify">
 			<?php echo $this->NetCommonsForm->checkbox('_UserManager.notify', array(
 					'label' => __d('user_manager', 'To notify the user'),
 					'checked' => true,
+					'inline' => true
 				)); ?>
-		</div>
+		</span>
 	</div>
 
 <?php echo $this->NetCommonsForm->end();
