@@ -9,3 +9,13 @@
 .user-manager-add-notify {
 	margin-left: 250px;
 }
+
+.rooms-manager .table > tbody > tr > td.users-roles-rooms-select {
+	padding: 0px;
+}
+.rooms-manager .table > tbody > tr > td.users-roles-rooms-select > label {
+	display: block;
+	margin-bottom: 0px;
+	padding: 8px;
+}
+
