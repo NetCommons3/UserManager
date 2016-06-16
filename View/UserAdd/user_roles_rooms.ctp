@@ -35,7 +35,6 @@ echo $this->NetCommonsHtml->script([
 				array(),
 				array(),
 				array(
-					'url' => $this->Wizard->naviUrl(UserAddController::WIZARD_MAIL),
 					'title' => __d('net_commons', 'OK'),
 					'icon' => false,
 				)
