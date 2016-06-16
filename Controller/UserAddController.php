@@ -85,6 +85,12 @@ class UserAddController extends UserManagerAppController {
 					),
 					'label' => array('user_manager', 'Select the rooms to join'),
 				),
+				self::WIZARD_MAIL => array(
+					'url' => array(
+						'controller' => 'user_add', 'action' => 'notify',
+					),
+					'label' => array('user_manager', 'Notify user by e-mail'),
+				)
 			),
 			'cancelUrl' => array('controller' => 'user_manager', 'action' => 'index')
 		),
@@ -102,12 +108,6 @@ class UserAddController extends UserManagerAppController {
 
 		//ウィザードの設定
 		if (in_array($this->params['action'], ['notify'], true)) {
-			$this->helpers['NetCommons.Wizard']['navibar'][self::WIZARD_MAIL] = array(
-				'url' => array(
-					'controller' => 'user_add', 'action' => 'notify',
-				),
-				'label' => array('user_manager', 'Notify user by e-mail'),
-			);
 			unset($this->helpers['NetCommons.Wizard']['navibar'][self::WIZARD_USERS]['url']);
 			unset($this->helpers['NetCommons.Wizard']['navibar'][self::WIZARD_USERS_ROLES_ROOMS]['url']);
 		}

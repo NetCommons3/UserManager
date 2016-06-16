@@ -34,7 +34,11 @@ echo $this->NetCommonsHtml->script([
 				UserAddController::WIZARD_USERS_ROLES_ROOMS,
 				array(),
 				array(),
-				array('url' => $this->Wizard->naviUrl(UserAddController::WIZARD_MAIL))
+				array(
+					'url' => $this->Wizard->naviUrl(UserAddController::WIZARD_MAIL),
+					'title' => __d('net_commons', 'OK'),
+					'icon' => false,
+				)
 			); ?>
 
 		<span class="well well-sm btn-workflow user-manager-check-notify">
