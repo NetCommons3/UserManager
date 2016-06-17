@@ -11,6 +11,7 @@
 
 App::uses('UserManagerAppController', 'UserManager.Controller');
 App::uses('NetCommonsMail', 'Mails.Utility');
+App::uses('File', 'Utility');
 
 /**
  * ユーザ追加(ウィザード) Controller
@@ -61,6 +62,7 @@ class UserAddController extends UserManagerAppController {
 	public $uses = array(
 		'Rooms.Room',
 		'Rooms.Space',
+		'UserAttributes.UserAttribute',
 		'UserManager.UserMail',
 		'Users.User',
 	);
@@ -144,6 +146,21 @@ class UserAddController extends UserManagerAppController {
 
 			if ($this->User->validateUser($this->request->data)) {
 				//正常の場合
+
+				//** アップロードファイルの退避
+				$tmpName = Hash::get(
+					$this->request->data,
+					'User.' . UserAttribute::AVATAR_FIELD . '.tmp_name'
+				);
+				if ($tmpName) {
+					$destPath = TMP . pathinfo($tmpName, PATHINFO_BASENAME);
+					if (move_uploaded_file($tmpName, $destPath)) {
+						$this->request->data = Hash::insert(
+							$this->request->data, 'User.' . UserAttribute::AVATAR_FIELD . '.tmp_name', $destPath
+						);
+					}
+				}
+
 				$this->Session->write('UserAdd', $this->request->data);
 				return $this->redirect('/user_manager/user_add/user_roles_rooms');
 			}
@@ -152,6 +169,12 @@ class UserAddController extends UserManagerAppController {
 		} else {
 			//表示処理
 			$this->User->languages = $this->viewVars['languages'];
+
+			$tmpName = $this->Session->read('UserAdd.User.' . UserAttribute::AVATAR_FIELD . '.tmp_name');
+			if ($tmpName) {
+				(new File($tmpName))->delete();
+			}
+
 			$referer = Configure::read('App.fullBaseUrl') . '/user_manager/user_add/user_roles_rooms';
 			if ($this->referer() === $referer) {
 				$this->request->data = $this->Session->read('UserAdd');
