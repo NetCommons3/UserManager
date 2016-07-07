@@ -51,6 +51,10 @@ msgstr "会員の追加"
 msgid "Search for the members"
 msgstr "会員の絞り込み"
 
+#: Users/Model/User.php:165;172
+msgid "Password"
+msgstr "パスワード"
+
 #
 # 入力画面
 #
