@@ -26,7 +26,7 @@
 
 		<?php echo $this->NetCommonsForm->input('pass', array(
 			'type' => 'text',
-			'label' => __('Password'),
+			'label' => __d('user_manager', 'Password'),
 			'value' => substr(str_shuffle(ImportExportBehavior::RANDAMSTR), 0, 10))
 		); ?>
 	</div>
