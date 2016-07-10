@@ -39,7 +39,9 @@ class UserManagerController extends UserManagerAppController {
  *
  * @var array
  */
-	public $uses = array();
+	public $uses = array(
+		'Users.User'
+	);
 
 /**
  * use component
@@ -51,7 +53,7 @@ class UserManagerController extends UserManagerAppController {
 		'M17n.SwitchLanguage',
 		'Rooms.Rooms',
 		'UserAttributes.UserAttributeLayout',
-		'Users.UserSearch',
+		'Users.UserSearchComp',
 	);
 
 /**
@@ -83,17 +85,15 @@ class UserManagerController extends UserManagerAppController {
 		$this->helpers[] = 'Users.UserSearchForm';
 
 		//ユーザ一覧データ取得
-		$this->UserSearch->search(
-			array('space_id' => Space::PRIVATE_SPACE_ID),
-			array('Room' => array(
+		$this->UserSearchComp->search([
+			'fields' => self::$displaFields,
+			'conditions' => array('space_id' => Space::PRIVATE_SPACE_ID),
+			'joins' => array('Room' => array(
 				'conditions' => array(
 					'Room.page_id_top NOT' => null,
 				)
 			))
-		);
-
-		$fields = array_combine(self::$displaFields, self::$displaFields);
-		$this->set('displayFields', $this->User->cleanSearchFields($fields));
+		]);
 
 		$this->helpers[] = 'Users.UserSearch';
 	}
@@ -105,7 +105,7 @@ class UserManagerController extends UserManagerAppController {
  */
 	public function search_conditions() {
 		//検索フォーム表示
-		$this->UserSearch->conditions();
+		$this->UserSearchComp->conditions();
 	}
 
 /**
