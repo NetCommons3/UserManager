@@ -221,7 +221,7 @@ class UserAddController extends UserManagerAppController {
 		$this->viewVars['defaultRoles'][''] = __d('users', 'Non members');
 
 		//** ルームロールデータ取得
-		$rolesRooms = $this->Room->getRolesRooms(array(
+		$rolesRooms = $this->Room->getRolesRoomsNotInDraft(array(
 			'Room.space_id' => [Space::PUBLIC_SPACE_ID, Space::ROOM_SPACE_ID]
 		));
 		$rolesRooms = Hash::combine($rolesRooms, '{n}.RolesRoom.role_key', '{n}', '{n}.Room.id');
