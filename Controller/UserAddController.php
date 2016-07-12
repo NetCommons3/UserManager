@@ -257,10 +257,11 @@ class UserAddController extends UserManagerAppController {
 				$mail->mailAssignTag->setFixedPhraseBody($this->request->data['UserMail']['body']);
 				$mail->mailAssignTag->initPlugin(Current::read('Language.id'));
 
+				$mail->setReplyTo($this->request->data['UserMail']['reply_to']);
 				$mail->initPlugin(Current::read('Language.id'));
 
 				$mail->to($this->viewVars['user']['email']);
-				$mail->from($this->request->data['UserMail']['from']);
+				$mail->setFrom(Current::read('Language.id'));
 				if (! $mail->sendMailDirect()) {
 					return $this->NetCommons->handleValidationError(array('SendMail Error'));
 				}
@@ -307,7 +308,7 @@ class UserAddController extends UserManagerAppController {
 			$this->request->data['UserMail']['title'] = $mail->mailAssignTag->fixedPhraseSubject;
 			$this->request->data['UserMail']['body'] = $mail->mailAssignTag->fixedPhraseBody;
 			$this->request->data['UserMail']['user_id'] = $this->viewVars['user']['id'];
-			$this->request->data['UserMail']['from'] = SiteSettingUtil::read('Mail.from');
+			$this->request->data['UserMail']['reply_to'] = SiteSettingUtil::read('Mail.from');
 		}
 	}
 

@@ -27,9 +27,9 @@
 					'value' => $user['email']
 				)); ?>
 
-			<?php echo $this->NetCommonsForm->input('UserMail.from', array(
+			<?php echo $this->NetCommonsForm->input('UserMail.reply_to', array(
 					'type' => 'text',
-					'label' => __d('user_manager', 'From mail address'),
+					'label' => __d('user_manager', 'Reply to mail address'),
 				)); ?>
 
 			<?php echo $this->NetCommonsForm->input('UserMail.title', array(
