@@ -62,12 +62,12 @@ class UserMail extends UserManagerAppModel {
 					'message' => __d('net_commons', 'Invalid request.'),
 				),
 			),
-			'from' => array(
+			'reply_to' => array(
 				'email' => array(
 					'rule' => array('email'),
 					'message' => sprintf(
 						__d('net_commons', 'Unauthorized pattern for %s. Please input the data in %s format.'),
-						__d('user_manager', 'From mail address'),
+						__d('user_manager', 'Reply to mail address'),
 						__d('net_commons', 'email')
 					),
 					'required' => false,

@@ -111,8 +111,8 @@ msgid "To mail address"
 msgstr "宛先(To)"
 
 #: UserManager/View/Elements/setting_tabs.ctp:38
-msgid "From mail address"
-msgstr "差出人(From)"
+msgid "Reply to mail address"
+msgstr "返信用(Reply To)"
 
 #: UserManager/View/Elements/setting_tabs.ctp:38
 msgid "Mail title"
