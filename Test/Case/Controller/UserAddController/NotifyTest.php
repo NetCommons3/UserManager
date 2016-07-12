@@ -102,7 +102,7 @@ class UserAddControllerNotifyTest extends NetCommonsControllerTestCase {
 				'title' => '',
 				'body' => '',
 				'user_id' => '2',
-				'from' => 'system_admin@exapmle.com'
+				'reply_to' => 'system_admin@exapmle.com'
 			)
 		);
 		return $data;
@@ -144,38 +144,38 @@ class UserAddControllerNotifyTest extends NetCommonsControllerTestCase {
 			__d('net_commons', 'Please input %s.'),
 			__d('user_manager', 'Mail body')
 		);
-		$this->validationMessage['from'] = sprintf(
+		$this->validationMessage['reply_to'] = sprintf(
 			__d('net_commons', 'Unauthorized pattern for %s. Please input the data in %s format.'),
-			__d('user_manager', 'From mail address'),
+			__d('user_manager', 'Reply to mail address'),
 			__d('net_commons', 'email')
 		);
 
-		$from = 'aaaaa';
+		$replyTo = 'aaaaa';
 		$data = $this->__data();
-		$data = Hash::insert($data, 'UserMail.from', $from);
+		$data = Hash::insert($data, 'UserMail.reply_to', $replyTo);
 
 		//テスト実行
 		$this->_testPostAction('post', $data, array('action' => 'notify'), null, 'view');
 
 		//チェック
-		$this->__assert($from);
+		$this->__assert($replyTo);
 		$this->assertTextContains($this->validationMessage['title'], $this->view);
 		$this->assertTextContains($this->validationMessage['body'], $this->view);
-		$this->assertTextContains($this->validationMessage['from'], $this->view);
+		$this->assertTextContains($this->validationMessage['reply_to'], $this->view);
 	}
 
 /**
  * notify()アクションのチェック
  *
- * @param string $from 差出人メールアドレス
+ * @param string $replyTo 返信用メールアドレス
  * @return void
  */
-	private function __assert($from = null) {
+	private function __assert($replyTo = null) {
 		$this->assertInput('form', null, '/user_manager/user_add/notify', $this->view);
 		$this->assertInput('input', '_method', 'POST', $this->view);
 		$this->assertInput('input', 'data[UserMail][user_id]', '2', $this->view);
 		$this->assertInput('input', 'data[UserMail][to_address]', 'room_administrator@exapmle.com', $this->view);
-		$this->assertInput('input', 'data[UserMail][from]', $from, $this->view);
+		$this->assertInput('input', 'data[UserMail][reply_to]', $replyTo, $this->view);
 		$this->assertInput('input', 'data[UserMail][title]', '', $this->view);
 		$this->assertInput('input', 'data[UserMail][body]', '', $this->view);
 
@@ -184,7 +184,7 @@ class UserAddControllerNotifyTest extends NetCommonsControllerTestCase {
 				'title' => '',
 				'body' => '',
 				'user_id' => '2',
-				'from' => $from
+				'reply_to' => $replyTo
 			)
 		);
 		$this->assertEquals($expected, $this->controller->request->data);
