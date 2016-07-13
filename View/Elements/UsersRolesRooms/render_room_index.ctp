@@ -20,7 +20,7 @@ $domId = $this->NetCommonsHtml->domId('RolesRoomsUser.' . $roomId . '.roles_room
 ?>
 
 <tr class="<?php echo $this->Rooms->statusCss($room, 'text-'); ?>"
-	ng-init="<?php echo $domId . ' = \'' . $rolesRoomsUsers['RolesRoomsUser'][$roomId]['roles_room_id'] . '\';'; ?>">
+	ng-init="initValue(<?php echo '\'' . $domId . '\', \'' . $rolesRoomsUsers['RolesRoomsUser'][$roomId]['roles_room_id'] . '\''; ?>)">
 
 	<td>
 		<a href="" ng-controller="RoomsController"
@@ -54,6 +54,7 @@ $domId = $this->NetCommonsHtml->domId('RolesRoomsUser.' . $roomId . '.roles_room
 					$rolesRoomId = $rolesRooms[$roomId][$key]['RolesRoom']['id'];
 				} else {
 					$rolesRoomId = '0';
+					$key = 'delete';
 				}
 				$options = array($rolesRoomId => '');
 
@@ -63,7 +64,8 @@ $domId = $this->NetCommonsHtml->domId('RolesRoomsUser.' . $roomId . '.roles_room
 					'checked' => ($rolesRoomId === $rolesRoomsUsers['RolesRoomsUser'][$roomId]['roles_room_id']),
 					'hiddenField' => false,
 					'ng-click' => $domId . ' = \'' . $rolesRoomId . '\'',
-					'label' => false
+					'label' => false,
+					'room-role-key' => $key
 				));
 				$html .= '</label>';
 
