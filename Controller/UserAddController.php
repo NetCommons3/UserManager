@@ -123,18 +123,22 @@ class UserAddController extends UserManagerAppController {
 	public function basic() {
 		$this->helpers[] = 'Users.UserEditForm';
 
-		//新規登録時に不要な選択肢を削除
+		//システム管理者以外は、選択肢からシステム管理者を除外
 		if (UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR !== Current::read('User.role_key')) {
 			$this->viewVars['userAttributes'] = Hash::remove(
 				$this->viewVars['userAttributes'],
 				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']'
 			);
 		}
+
+		//状態の選択肢から承認待ち、承認済みを除外
 		$this->viewVars['userAttributes'] = Hash::remove(
-			$this->viewVars['userAttributes'], '{n}.{n}.{n}.UserAttributeChoice.{n}[key=status_2]'
+			$this->viewVars['userAttributes'],
+			'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserAttributeChoice::STATUS_KEY_WAITING . ']'
 		);
 		$this->viewVars['userAttributes'] = Hash::remove(
-			$this->viewVars['userAttributes'], '{n}.{n}.{n}.UserAttributeChoice.{n}[key=status_3]'
+			$this->viewVars['userAttributes'],
+			'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserAttributeChoice::STATUS_KEY_APPROVED . ']'
 		);
 
 		if ($this->request->is('post')) {

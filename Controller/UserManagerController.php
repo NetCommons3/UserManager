@@ -138,6 +138,7 @@ class UserManagerController extends UserManagerAppController {
 	public function edit() {
 		$this->helpers[] = 'Users.UserEditForm';
 
+		//システム管理者以外は、選択肢からシステム管理者を除外
 		if (Current::read('User.role_key') !== UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR) {
 			$this->viewVars['userAttributes'] = Hash::remove(
 				$this->viewVars['userAttributes'],
@@ -157,6 +158,20 @@ class UserManagerController extends UserManagerAppController {
 			return $this->throwBadRequest();
 		}
 		$this->set('canUserDelete', $this->User->canUserDelete($user));
+
+		//状態の選択肢から承認待ち、承認済みを除外
+		if (Hash::get($user, 'User.status') !== UserAttributeChoice::STATUS_CODE_WAITING) {
+			$this->viewVars['userAttributes'] = Hash::remove(
+				$this->viewVars['userAttributes'],
+				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserAttributeChoice::STATUS_KEY_WAITING . ']'
+			);
+		}
+		if (Hash::get($user, 'User.status') !== UserAttributeChoice::STATUS_CODE_APPROVED) {
+			$this->viewVars['userAttributes'] = Hash::remove(
+				$this->viewVars['userAttributes'],
+				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserAttributeChoice::STATUS_KEY_APPROVED . ']'
+			);
+		}
 
 		if ($this->request->is('put')) {
 			//不要パラメータ除去
