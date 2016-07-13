@@ -61,7 +61,7 @@ echo $this->NetCommonsHtml->script('/user_manager/js/user_manager.js');
 
 		<tbody>
 			<?php foreach ($users as $index => $user) : ?>
-				<tr>
+			<tr<?php echo $this->UserSearch->userActiveClass($user); ?>>
 					<?php echo $this->UserSearch->tableRow($user, true, ['controller' => 'user_manager', 'action' => 'edit']); ?>
 				</tr>
 			<?php endforeach; ?>

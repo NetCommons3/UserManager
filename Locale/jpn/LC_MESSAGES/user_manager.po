@@ -55,6 +55,16 @@ msgstr "会員の絞り込み"
 msgid "Password"
 msgstr "パスワード"
 
+msgid "Approval"
+msgstr "承認"
+
+msgid "Resend"
+msgstr "再送"
+
+msgid "Do you approve?"
+msgstr "承認しますか。"
+
+
 #
 # 入力画面
 #

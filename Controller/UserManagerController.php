@@ -40,6 +40,8 @@ class UserManagerController extends UserManagerAppController {
  * @var array
  */
 	public $uses = array(
+		'Auth.AutoUserRegist',
+		'Auth.AutoUserRegistMail',
 		'Users.User'
 	);
 
@@ -218,7 +220,53 @@ class UserManagerController extends UserManagerAppController {
 		}
 
 		$this->User->deleteUser($user);
+
+		$this->NetCommons->setFlashNotification(
+			__d('net_commons', 'Successfully deleted.'), array('class' => 'success')
+		);
 		$this->redirect(NetCommonsUrl::backToIndexUrl('default_setting_action'));
+	}
+
+/**
+ * view method
+ *
+ * @return void
+ */
+	public function status() {
+		if (! $this->request->is('put')) {
+			return $this->throwBadRequest();
+		}
+
+		$userId = $this->data['User']['id'];
+		$user = $this->User->getUser($userId);
+
+		//編集できるかどうかチェック
+		if (! $this->User->canUserEdit($user)) {
+			return $this->throwBadRequest();
+		}
+
+		$result = $this->AutoUserRegist->saveUserStatus(
+			['id' => $userId], AutoUserRegist::CONFIRMATION_ADMIN_APPROVAL, false
+		);
+		if ($result) {
+			$user = Hash::merge($user, $result);
+			$this->AutoUserRegistMail->sendMail(AutoUserRegist::CONFIRMATION_USER_OWN, $user);
+
+			$message = __d('auth', 'hank you for your registration.<br>' .
+							'We have sent you the registration key to your registered e-mail address.');
+			$this->NetCommons->setFlashNotification($message, array('class' => 'success'));
+
+		} else {
+			$message = __d('auth', 'Your registration was not approved.<br>' .
+							'Please consult with the system administrator.');
+			$this->NetCommons->setFlashNotification(__d('net_commons', 'Bad Request'), array(
+				'class' => 'danger',
+				'interval' => NetCommonsComponent::ALERT_VALIDATE_ERROR_INTERVAL,
+				'error' => $message
+			), 400);
+		}
+
+		$this->redirect($this->request->referer());
 	}
 
 /**
