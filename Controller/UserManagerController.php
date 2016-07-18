@@ -116,7 +116,7 @@ class UserManagerController extends UserManagerAppController {
  * @return void
  */
 	public function view() {
-		$userId = $this->params['pass'][0];
+		$userId = $this->params['user_id'];
 		$user = $this->User->getUser($userId);
 		if (! $user || $user['User']['is_deleted']) {
 			return $this->throwBadRequest();
@@ -151,7 +151,7 @@ class UserManagerController extends UserManagerAppController {
 		if ($this->request->is('put')) {
 			$userId = $this->data['User']['id'];
 		} else {
-			$userId = $this->params['pass'][0];
+			$userId = $this->params['user_id'];
 		}
 		$user = $this->User->getUser($userId);
 
