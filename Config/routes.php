@@ -13,3 +13,8 @@ Router::connect(
 	['plugin' => 'user_manager'],
 	['user_id' => '[0-9]+', 'controller' => 'user_manager|users_roles_rooms']
 );
+
+Router::connect(
+	'/user_manager/:controller/:action/*',
+	array('plugin' => 'user_manager')
+);
