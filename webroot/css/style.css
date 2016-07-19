@@ -9,6 +9,10 @@
 /**
  * 参加ルームの選択
  */
+.plugin-user-manager .table > thead > tr > th.users-roles-rooms-all-select {
+	vertical-align: middle;
+}
+
 .plugin-user-manager .table > tbody > tr > td.users-roles-rooms-select {
 	padding: 0px;
 }

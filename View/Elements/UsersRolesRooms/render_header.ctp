@@ -13,8 +13,16 @@
 <tr class="">
 	<th> </th>
 	<?php foreach ($defaultRoles as $key => $name) : ?>
-		<th class="text-center">
+		<th class="text-center users-roles-rooms-all-select">
 			<?php echo h($name); ?>
+
+			<?php if (! in_array($key, [Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR, Role::ROOM_ROLE_KEY_CHIEF_EDITOR], true)) : ?>
+				<div>
+					<button class="btn btn-default btn-xs" ng-click="selectAll(<?php echo '\'' . $key . '\', \'' . $space['Space']['id'] . '\''; ?>)" onclick="return false">
+						<?php echo __d('net_commons', 'All select'); ?>
+					</button>
+				</div>
+			<?php endif; ?>
 		</th>
 	<?php endforeach; ?>
 </tr>

@@ -65,7 +65,8 @@ $domId = $this->NetCommonsHtml->domId('RolesRoomsUser.' . $roomId . '.roles_room
 					'hiddenField' => false,
 					'ng-click' => $domId . ' = \'' . $rolesRoomId . '\'',
 					'label' => false,
-					'room-role-key' => $key
+					'data-input-key' => $key . '_' . $room['Space']['id'],
+					'data-dom-id' => $domId
 				));
 				$html .= '</label>';
 
