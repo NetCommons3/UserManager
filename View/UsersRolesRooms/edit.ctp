@@ -29,7 +29,9 @@ echo $this->NetCommonsHtml->script([
 
 	<?php echo $this->NetCommonsForm->hidden('User.id', array('value' => $activeUserId)); ?>
 
-	<?php echo $this->element('UserManager.UsersRolesRooms/edit_content'); ?>
+	<article ng-controller="UsersRolesRooms">
+		<?php echo $this->element('UserManager.UsersRolesRooms/edit_content'); ?>
+	</article>
 
 	<div class="text-center">
 		<?php echo $this->Button->cancelAndSave(

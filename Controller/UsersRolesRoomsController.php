@@ -59,7 +59,7 @@ class UsersRolesRoomsController extends UserManagerAppController {
 		if ($this->request->is('post')) {
 			$userId = $this->data['User']['id'];
 		} else {
-			$userId = $this->params['pass'][0];
+			$userId = $this->params['user_id'];
 		}
 		$user = $this->User->getUser($userId);
 		if (! $user) {
