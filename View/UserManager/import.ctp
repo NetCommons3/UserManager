@@ -18,11 +18,9 @@
 			<?php echo __d('user_manager', 'Import title'); ?>
 		</h4>
 
-		<p>
+		<div class="well well-sm">
 			<?php echo __d('user_manager', 'Import description'); ?>
-		</p>
-
-		<hr>
+		</div>
 
 		<?php echo $this->NetCommonsForm->input('import_csv', array('type' => 'file', 'class' => '', 'label' => false)); ?>
 	</div>
