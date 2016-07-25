@@ -11,6 +11,7 @@
 
 App::uses('UserManagerAppController', 'UserManager.Controller');
 App::uses('Space', 'Rooms.Model');
+App::uses('ImportExportBehavior', 'Users.Model/Behavior');
 
 /**
  * UserManager Controller
@@ -278,7 +279,7 @@ class UserManagerController extends UserManagerAppController {
 	public function import() {
 		if ($this->request->is('post')) {
 			$file = $this->FileUpload->getTemporaryUploadFile('import_csv');
-			if (! $this->User->importUsers($file)) {
+			if (! $this->User->importUsers($file, ImportExportBehavior::IMPORT_TYPE_NEW)) {
 				//バリデーションエラーの場合
 				$this->NetCommons->handleValidationError($this->User->validationErrors);
 				return;
