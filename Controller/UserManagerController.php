@@ -299,7 +299,19 @@ class UserManagerController extends UserManagerAppController {
 		if (Hash::check($this->request->query, 'pass')) {
 			App::uses('CsvFileWriter', 'Files.Utility');
 
-			$csvWriter = $this->User->exportUsers();
+			$csvWriter = $this->User->exportUsers([
+				'conditions' => array(
+					'space_id' => Space::PRIVATE_SPACE_ID,
+					'User.role_key !=' => UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR,
+					'User.is_deleted' => false,
+				),
+				'joins' => array('Room' => array(
+					'conditions' => array(
+						'Room.page_id_top NOT' => null,
+					)
+				))
+			]);
+
 			if (! $csvWriter) {
 				//バリデーションエラーの場合
 				$this->NetCommons->handleValidationError($this->User->validationErrors);

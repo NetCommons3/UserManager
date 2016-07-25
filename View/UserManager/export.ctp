@@ -22,8 +22,6 @@
 			<?php echo __d('user_manager', 'Export description'); ?>
 		</p>
 
-		<hr>
-
 		<?php echo $this->NetCommonsForm->input('pass', array(
 			'type' => 'text',
 			'label' => __d('user_manager', 'Password'),
