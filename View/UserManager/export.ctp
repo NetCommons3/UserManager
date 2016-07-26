@@ -40,15 +40,16 @@ echo $this->NetCommonsHtml->css(array(
 		<?php echo $this->NetCommonsForm->input('pass', array(
 			'type' => 'text',
 			'label' => __d('user_manager', 'Password'),
-			'value' => substr(str_shuffle(ImportExportBehavior::RANDAMSTR), 0, 10))
-		); ?>
+			'value' => substr(str_shuffle(ImportExportBehavior::RANDAMSTR), 0, 10),
+			'help' => __d('user_manager', 'If you do not want to assign a password, please leave it blank.'),
+		)); ?>
 	</div>
 
 	<div class="panel-footer text-center">
 		<?php echo $this->Button->cancelAndSave(
 				__d('net_commons', 'Cancel'),
 				__d('net_commons', 'OK'),
-				$this->NetCommonsHtml->url(array('action' => 'index', '?' => $this->request->query)),
+				array('action' => 'index', '?' => $cancelQuery),
 				array('ng-disabled' => null),
 				array('ng-disabled' => null)
 			); ?>

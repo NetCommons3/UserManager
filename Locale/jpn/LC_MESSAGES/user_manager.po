@@ -53,7 +53,10 @@ msgstr "会員の絞り込み"
 
 #: Users/Model/User.php:165;172
 msgid "Password"
-msgstr "パスワード"
+msgstr "ZIPファイルのパスワード"
+
+msgid "If you do not want to assign a password, please leave it blank."
+msgstr "パスワードを付与しない場合、空欄にしてください。"
 
 msgid "Approval"
 msgstr "承認"

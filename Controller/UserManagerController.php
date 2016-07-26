@@ -331,8 +331,11 @@ class UserManagerController extends UserManagerAppController {
 		} else {
 			$defaultConditions = $this->UserSearch->cleanSearchFields($this->request->query);
 			$this->request->data['UserSearch'] = $defaultConditions;
+
+			$this->set('cancelQuery', $this->request->query);
 			$defaultConditions['search'] = '1';
 			$this->request->query = $defaultConditions;
+
 		}
 	}
 }
