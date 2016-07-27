@@ -10,19 +10,34 @@
  */
 ?>
 
+<h2>
+	<?php echo __d('user_manager', 'Import title'); ?>
+</h2>
+
+<div class="well well-sm">
+	<?php echo __d('user_manager', 'Import description'); ?>
+</div>
+
 <div class="panel panel-default">
 	<?php echo $this->NetCommonsForm->create(false, array('type' => 'file')); ?>
 
 	<div class="panel-body">
-		<h4 class="text-info">
-			<?php echo __d('user_manager', 'Import title'); ?>
-		</h4>
+		<?php echo $this->NetCommonsForm->input('import_type', array(
+			'type' => 'radio',
+			'options' => array(
+				ImportExportBehavior::IMPORT_TYPE_NEW => __d('user_manager', 'Error if have same datas.'),
+				ImportExportBehavior::IMPORT_TYPE_UPDATE => __d('user_manager', 'Overwrite the same datas.'),
+				ImportExportBehavior::IMPORT_TYPE_SKIP => __d('user_manager', 'Skip if have same datas.'),
+			),
+			'label' => __d('user_manager', 'Same datas'),
+			'value' => ImportExportBehavior::IMPORT_TYPE_NEW
+		)); ?>
 
-		<div class="well well-sm">
-			<?php echo __d('user_manager', 'Import description'); ?>
-		</div>
-
-		<?php echo $this->NetCommonsForm->input('import_csv', array('type' => 'file', 'class' => '', 'label' => false)); ?>
+		<?php echo $this->NetCommonsForm->input('import_csv', array(
+			'type' => 'file',
+			'class' => '',
+			'label' => __d('user_manager', 'Import file'),
+		)); ?>
 	</div>
 
 	<div class="panel-footer text-center">

@@ -15,18 +15,18 @@ echo $this->NetCommonsHtml->css(array(
 ));
 ?>
 
+<h2>
+	<?php echo __d('user_manager', 'Export title'); ?>
+</h2>
+
+<div class="well well-sm">
+	<?php echo __d('user_manager', 'Export description'); ?>
+</div>
+
 <div class="panel panel-default">
 	<?php echo $this->NetCommonsForm->create(false, array('type' => 'get')); ?>
 
 	<div class="panel-body">
-		<h4 class="text-info">
-			<?php echo __d('user_manager', 'Export title'); ?>
-		</h4>
-
-		<div class="well well-sm">
-			<?php echo __d('user_manager', 'Export description'); ?>
-		</div>
-
 		<div class="user-export-header">
 			<?php echo $this->UserSearchForm->displaySearchButton(__d('user_manager', 'Search for the export members')); ?>
 		</div>

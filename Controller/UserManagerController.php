@@ -279,7 +279,7 @@ class UserManagerController extends UserManagerAppController {
 	public function import() {
 		if ($this->request->is('post')) {
 			$file = $this->FileUpload->getTemporaryUploadFile('import_csv');
-			if (! $this->User->importUsers($file, ImportExportBehavior::IMPORT_TYPE_NEW)) {
+			if (! $this->User->importUsers($file, $this->data['import_type'])) {
 				//バリデーションエラーの場合
 				$this->NetCommons->handleValidationError($this->User->validationErrors);
 				return;
