@@ -296,6 +296,21 @@ class UserManagerController extends UserManagerAppController {
 	}
 
 /**
+ * importファイルフォーマットのダウンロード
+ *
+ * @return void
+ */
+	public function download_import_format() {
+		App::uses('CsvFileWriter', 'Files.Utility');
+
+		$header = $this->User->getCsvHeader();
+		$csvWriter = new CsvFileWriter(array('header' => $header));
+		$csvWriter->close();
+
+		return $csvWriter->download('export_user.csv');
+	}
+
+/**
  * exportアクション
  *
  * @return void
@@ -338,7 +353,7 @@ class UserManagerController extends UserManagerAppController {
 			$this->set('cancelQuery', $this->request->query);
 			$defaultConditions['search'] = '1';
 			$this->request->query = $defaultConditions;
-
 		}
 	}
+
 }

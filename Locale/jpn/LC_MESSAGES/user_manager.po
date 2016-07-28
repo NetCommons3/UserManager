@@ -122,6 +122,9 @@ msgstr "インポートファイルの指定"
 msgid "Line %s: %s"
 msgstr "%s行目: %s"
 
+msgid "Format file download"
+msgstr "インポートファイルフォーマットのダウンロード"
+
 
 #
 # 会員のエクスポート
