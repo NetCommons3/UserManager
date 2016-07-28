@@ -281,6 +281,7 @@ class UserManagerController extends UserManagerAppController {
 			$file = $this->FileUpload->getTemporaryUploadFile('import_csv');
 			if (! $this->User->importUsers($file, $this->data['import_type'])) {
 				//バリデーションエラーの場合
+				$this->set('errorMessages', Hash::flatten($this->User->validationErrors));
 				$this->NetCommons->handleValidationError($this->User->validationErrors);
 				return;
 			}
@@ -289,6 +290,8 @@ class UserManagerController extends UserManagerAppController {
 				__d('net_commons', 'Successfully saved.'), array('class' => 'success')
 			);
 			$this->redirect('/user_manager/user_manager/index/');
+		} else {
+			$this->set('errorMessages', null);
 		}
 	}
 

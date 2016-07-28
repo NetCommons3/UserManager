@@ -8,6 +8,10 @@
  * @license http://www.netcommons.org/license.txt NetCommons License
  * @copyright Copyright 2014, NetCommons Project
  */
+
+echo $this->NetCommonsHtml->css(array(
+	'/user_manager/css/style.css',
+));
 ?>
 
 <h2>
@@ -17,6 +21,14 @@
 <div class="well well-sm">
 	<?php echo __d('user_manager', 'Import description'); ?>
 </div>
+
+<?php if ($errorMessages) : ?>
+	<div class="alert alert-warning user-import pre-scrollable">
+		<?php foreach ($errorMessages as $message) : ?>
+			<div class="text-danger"><?php echo $message; ?></div>
+		<?php endforeach; ?>
+	</div>
+<?php endif; ?>
 
 <div class="panel panel-default">
 	<?php echo $this->NetCommonsForm->create(false, array('type' => 'file')); ?>
