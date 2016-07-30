@@ -29,3 +29,20 @@
 .plugin-user-manager .user-manager-check-notify .checkbox.checkbox-inline {
 	padding-left: 0px;
 }
+
+/**
+ * エクスポート
+ */
+.user-export-header {
+	margin-bottom: 16px;
+}
+
+/**
+ * インポート
+ */
+.user-import.pre-scrollable {
+	max-height: 240px;
+}
+.user-maanger-import-help-options {
+	padding-left: 32px;
+}

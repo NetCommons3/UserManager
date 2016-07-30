@@ -53,7 +53,10 @@ msgstr "会員の絞り込み"
 
 #: Users/Model/User.php:165;172
 msgid "Password"
-msgstr "パスワード"
+msgstr "ZIPファイルのパスワード"
+
+msgid "If you do not want to assign a password, please leave it blank."
+msgstr "パスワードを付与しない場合、空欄にしてください。"
 
 msgid "Approval"
 msgstr "承認"
@@ -96,7 +99,73 @@ msgstr "会員のインポート"
 
 #: Users/Model/User.php:165;172
 msgid "Import description"
-msgstr "ここに説明書く"
+msgstr "大量の会員データを登録したい場合、CSVファイルからインポートすることができます。"
+"<br>"
+"会員情報をインポートするには、「参照」をクリックし、インポートするファイルを指定します。インポートファイルはCSV形式で保存されたものだけが有効です。"
+"まずは、会員情報の重複等がないかどうかを確認し、すべて正常の場合、会員情報の登録処理が実行されます。"
+
+msgid "Same datas"
+msgstr "重複データの扱い"
+
+msgid "Error if have same datas."
+msgstr "既存会員情報に同じログインIDが存在する場合、エラーとする"
+
+msgid "Overwrite the same datas."
+msgstr "既存会員情報に同じログインIDが存在する場合、上書きする"
+
+msgid "Skip if have same datas."
+msgstr "既存会員情報に同じログインIDが存在する場合、無視する"
+
+msgid "Import file"
+msgstr "インポートファイルの指定"
+
+msgid "Line %s: %s"
+msgstr "%s行目: %s"
+
+msgid "Format file download"
+msgstr "インポートファイルフォーマットのダウンロード"
+
+msgid "Details of settings from import file"
+msgstr "インポートファイルの説明"
+
+msgid "display"
+msgstr "表示"
+
+msgid "hidden"
+msgstr "非表示"
+
+msgid "Item"
+msgstr "項目"
+
+msgid "Description"
+msgstr "内容"
+
+msgid "Set %s."
+msgstr "%sを設定します。"
+
+msgid "<span class="text-danger">Required.</span>"
+msgstr "この項目は、<span class="text-danger">必須項目</span>です。"
+
+msgid "Set public/private status for %s."
+msgstr "%sの公開／非公開を設定します。"
+
+msgid "Set `%s can/cannot be used` (can/cannot receive) status."
+msgstr "%sの利用可否（受け取ることができる状態にするか否か）を設定します。"
+
+msgid "[option]"
+msgstr "【選択肢】"
+
+msgid "Disclose"
+msgstr "公開する"
+
+msgid "Do not disclose"
+msgstr "公開しない"
+
+msgid "Receipt (condition when email is received)"
+msgstr "受け取る(メールを受信する状態)"
+
+msgid "Non-receipt (condition when email cannot be received)"
+msgstr "受け取らない(メールを受け取ることができない状態)"
 
 
 #
@@ -109,7 +178,20 @@ msgstr "会員のエクスポート"
 
 #: Users/Model/User.php:165;172
 msgid "Export description"
-msgstr "ここに説明書く（取扱注意的な！！）"
+msgstr "エクスポートした会員情報は個人情報の集積です。"
+"<br>"
+"このファイルを不適切に扱った場合には、個人情報保護法違反の罪に問われることがありますので、管理には十分な注意が必要です。"
+"たとえば、作業を行うPCにファイル交換ソフトを搭載しない、作業が終了したらファイルの中身を空にした上で上書きを行う、USBメモリーなどに保存しない、などです。"
+"（ファイルを削除しただけでは物理ファイルが残ります。内容を白紙にして上書きするほうが安全です。）"
+
+msgid "[Public setting]"
+msgstr "【公開設定】"
+
+msgid "[Reception setting]"
+msgstr "【受信可否】"
+
+msgid "Search for the export members"
+msgstr "エクスポートの条件指定"
 
 
 #

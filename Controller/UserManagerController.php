@@ -11,6 +11,7 @@
 
 App::uses('UserManagerAppController', 'UserManager.Controller');
 App::uses('Space', 'Rooms.Model');
+App::uses('ImportExportBehavior', 'Users.Model/Behavior');
 
 /**
  * UserManager Controller
@@ -42,7 +43,8 @@ class UserManagerController extends UserManagerAppController {
 	public $uses = array(
 		'Auth.AutoUserRegist',
 		'Auth.AutoUserRegistMail',
-		'Users.User'
+		'Users.User',
+		'Users.UserSearch'
 	);
 
 /**
@@ -66,6 +68,7 @@ class UserManagerController extends UserManagerAppController {
 	public $helpers = array(
 		'UserAttributes.UserAttributeLayout',
 		'Users.UserLayout',
+		'NetCommons.TableList'
 	);
 
 /**
@@ -275,10 +278,13 @@ class UserManagerController extends UserManagerAppController {
  * @return void
  */
 	public function import() {
+		$this->set('importHelp', $this->User->getCsvHeader(true));
+
 		if ($this->request->is('post')) {
 			$file = $this->FileUpload->getTemporaryUploadFile('import_csv');
-			if (! $this->User->importUsers($file)) {
+			if (! $this->User->importUsers($file, $this->data['import_type'])) {
 				//バリデーションエラーの場合
+				$this->set('errorMessages', Hash::flatten($this->User->validationErrors));
 				$this->NetCommons->handleValidationError($this->User->validationErrors);
 				return;
 			}
@@ -287,7 +293,24 @@ class UserManagerController extends UserManagerAppController {
 				__d('net_commons', 'Successfully saved.'), array('class' => 'success')
 			);
 			$this->redirect('/user_manager/user_manager/index/');
+		} else {
+			$this->set('errorMessages', null);
 		}
+	}
+
+/**
+ * importファイルフォーマットのダウンロード
+ *
+ * @return void
+ */
+	public function download_import_format() {
+		App::uses('CsvFileWriter', 'Files.Utility');
+
+		$header = $this->User->getCsvHeader();
+		$csvWriter = new CsvFileWriter(array('header' => $header));
+		$csvWriter->close();
+
+		return $csvWriter->download('export_user.csv');
 	}
 
 /**
@@ -296,19 +319,44 @@ class UserManagerController extends UserManagerAppController {
  * @return void
  */
 	public function export() {
-		if (Hash::check($this->request->query, 'pass')) {
+		$this->helpers[] = 'Users.UserSearchForm';
+		$this->helpers[] = 'Users.UserSearch';
+
+		if (Hash::check($this->request->query, 'save')) {
 			App::uses('CsvFileWriter', 'Files.Utility');
 
-			$csvWriter = $this->User->exportUsers();
+			$csvWriter = $this->User->exportUsers(
+				array(
+					'conditions' => array(
+						'space_id' => Space::PRIVATE_SPACE_ID,
+						'User.role_key !=' => UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR,
+						'User.is_deleted' => false,
+					),
+					'joins' => array('Room' => array(
+						'conditions' => array(
+							'Room.page_id_top NOT' => null,
+						)
+					))
+				),
+				$this->request->query
+			);
 			if (! $csvWriter) {
 				//バリデーションエラーの場合
 				$this->NetCommons->handleValidationError($this->User->validationErrors);
 				return;
 			}
-
 			return $csvWriter->zipDownload(
 				'export_user.zip', 'export_user.csv', $this->request->query['pass']
 			);
+
+		} else {
+			$defaultConditions = $this->UserSearch->cleanSearchFields($this->request->query);
+			$this->request->data['UserSearch'] = $defaultConditions;
+
+			$this->set('cancelQuery', $this->request->query);
+			$defaultConditions['search'] = '1';
+			$this->request->query = $defaultConditions;
 		}
 	}
+
 }
