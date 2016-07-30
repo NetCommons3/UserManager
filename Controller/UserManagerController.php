@@ -68,6 +68,7 @@ class UserManagerController extends UserManagerAppController {
 	public $helpers = array(
 		'UserAttributes.UserAttributeLayout',
 		'Users.UserLayout',
+		'NetCommons.TableList'
 	);
 
 /**
@@ -277,6 +278,8 @@ class UserManagerController extends UserManagerAppController {
  * @return void
  */
 	public function import() {
+		$this->set('importHelp', $this->User->getCsvHeader(true));
+
 		if ($this->request->is('post')) {
 			$file = $this->FileUpload->getTemporaryUploadFile('import_csv');
 			if (! $this->User->importUsers($file, $this->data['import_type'])) {
