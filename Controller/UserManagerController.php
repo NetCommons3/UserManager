@@ -278,6 +278,9 @@ class UserManagerController extends UserManagerAppController {
  * @return void
  */
 	public function import() {
+		//タイムアウトはっせいするなら適宜設定
+		set_time_limit(1800);
+
 		$this->set('importHelp', $this->User->getCsvHeader(true));
 
 		if ($this->request->is('post')) {
