@@ -49,7 +49,7 @@ echo $this->NetCommonsHtml->css(array(
 		<?php echo $this->Button->cancelAndSave(
 				__d('net_commons', 'Cancel'),
 				__d('net_commons', 'OK'),
-				array('action' => 'index', '?' => $cancelQuery),
+				NetCommonsUrl::actionUrlAsArray(array('action' => 'index', '?' => $cancelQuery)),
 				array('ng-disabled' => null),
 				array('ng-disabled' => null)
 			); ?>

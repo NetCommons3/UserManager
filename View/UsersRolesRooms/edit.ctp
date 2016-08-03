@@ -37,7 +37,7 @@ echo $this->NetCommonsHtml->script([
 		<?php echo $this->Button->cancelAndSave(
 				__d('net_commons', 'Cancel'),
 				__d('net_commons', 'OK'),
-				$this->NetCommonsHtml->url(['controller' => 'user_manager', 'action' => 'index'])
+				NetCommonsUrl::actionUrlAsArray(['controller' => 'user_manager', 'action' => 'index'])
 			); ?>
 	</div>
 

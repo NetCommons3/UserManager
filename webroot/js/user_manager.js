@@ -8,7 +8,7 @@
  * UserManager controller
  */
 NetCommonsApp.controller('UserManagerController',
-    ['$scope', 'NetCommonsModal', function($scope, NetCommonsModal) {
+    ['$scope', 'NetCommonsModal', 'NC3_URL', function($scope, NetCommonsModal, NC3_URL) {
 
       /**
        * 検索ダイアログ表示
@@ -21,7 +21,7 @@ NetCommonsApp.controller('UserManagerController',
         console.log(callbackUrl);
         NetCommonsModal.show(
             $scope, 'UserManagerSearch',
-            $scope.baseUrl + '/user_manager/user_manager/search/conditions',
+            NC3_URL + '/user_manager/user_manager/search/conditions',
             {
               backdrop: 'static',
               size: 'lg',
@@ -44,7 +44,7 @@ NetCommonsApp.controller('UserManagerController',
       $scope.showUser = function(id) {
         NetCommonsModal.show(
             $scope, 'UserManagerView',
-            $scope.baseUrl + '/user_manager/user_manager/view/' + id + ''
+            NC3_URL + '/user_manager/user_manager/view/' + id + ''
         );
       };
     }]);
@@ -54,8 +54,8 @@ NetCommonsApp.controller('UserManagerController',
  * UserManager search condtion modal controller
  */
 NetCommonsApp.controller('UserManagerSearch',
-    ['$scope', '$http', '$uibModalInstance', '$window', 'options',
-      function($scope, $http, $uibModalInstance, $window, options) {
+    ['$scope', '$http', '$uibModalInstance', '$window', 'options', 'NC3_URL',
+      function($scope, $http, $uibModalInstance, $window, options, NC3_URL) {
 
         /**
          * 検索条件を保持する変数
@@ -85,8 +85,7 @@ NetCommonsApp.controller('UserManagerSearch',
             }
           }, $scope);
 
-          $http.post($scope.baseUrl +
-                              '/user_manager/user_manager/search/result',
+          $http.post(NC3_URL + '/user_manager/user_manager/search/result',
               $.param({_method: 'POST', data: $scope.condtions}),
               {cache: false,
                 headers:
@@ -95,8 +94,7 @@ NetCommonsApp.controller('UserManagerSearch',
           )
             .success(function(data) {
                 //success condition
-                $window.location.href =
-                            $scope.baseUrl + options['callbackUrl'] + '?search';
+                $window.location.href = NC3_URL + options['callbackUrl'] + '?search';
                 //$uibModalInstance.close('success');
               })
             .error(function(data, status) {
