@@ -50,8 +50,8 @@ echo $this->NetCommonsHtml->css(array(
 				__d('net_commons', 'Cancel'),
 				__d('net_commons', 'OK'),
 				NetCommonsUrl::actionUrlAsArray(array('action' => 'index', '?' => $cancelQuery)),
-				array('ng-disabled' => null),
-				array('ng-disabled' => null)
+				array('ng-class' => null),
+				array('ng-class' => null)
 			); ?>
 	</div>
 
