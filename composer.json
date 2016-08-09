@@ -10,15 +10,15 @@
     },
     "require": {
         "cakedc/migrations":            "~2.2",
-        "netcommons/control-panel":     "dev-master",
-        "netcommons/files":             "dev-master",
-        "netcommons/mails":             "dev-master",
-        "netcommons/net-commons":       "dev-master",
-        "netcommons/plugin-manager":    "dev-master",
-        "netcommons/rooms":             "dev-master",
-        "netcommons/user-attributes":   "dev-master",
-        "netcommons/user-roles":        "dev-master",
-        "netcommons/users":             "dev-master"
+        "netcommons/control-panel":     "@dev",
+        "netcommons/files":             "@dev",
+        "netcommons/mails":             "@dev",
+        "netcommons/net-commons":       "@dev",
+        "netcommons/plugin-manager":    "@dev",
+        "netcommons/rooms":             "@dev",
+        "netcommons/user-attributes":   "@dev",
+        "netcommons/user-roles":        "@dev",
+        "netcommons/users":             "@dev"
     },
     "license": "NetCommons License",
     "authors": [
