@@ -89,7 +89,7 @@ class UsersRolesRoomsController extends UserManagerAppController {
 		$this->Rooms->setRoomsForPaginator();
 
 		//** ロールデータセット
-		$this->viewVars['defaultRoles'][''] = __d('users', 'Non members');
+		$this->viewVars['defaultRoleOptions'][''] = __d('users', 'Non members');
 
 		//** ルームロールデータ取得
 		$rolesRooms = $this->Room->getRolesRoomsNotInDraft(array(

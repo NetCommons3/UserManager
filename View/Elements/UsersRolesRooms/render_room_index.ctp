@@ -46,7 +46,7 @@ $domId = $this->NetCommonsHtml->domId('RolesRoomsUser.' . $roomId . '.roles_room
 	</td>
 
 	<?php
-		foreach ($defaultRoles as $key => $name) {
+		foreach ($defaultRoleOptions as $key => $name) {
 			$html = '';
 			$ngClass = '';
 			if (isset($rolesRooms[$roomId])) {
