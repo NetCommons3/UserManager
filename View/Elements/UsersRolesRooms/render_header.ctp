@@ -12,9 +12,9 @@
 
 <tr class="">
 	<th> </th>
-	<?php foreach ($defaultRoles as $key => $name) : ?>
+	<?php foreach ($defaultRoleOptions as $key => $name) : ?>
 		<th class="text-center users-roles-rooms-all-select">
-			<?php echo h($name); ?>
+			<?php echo $this->Rooms->roomRoleName($key, ['help' => true, 'default' => $name]); ?>
 
 			<?php if (! in_array($key, [Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR, Role::ROOM_ROLE_KEY_CHIEF_EDITOR], true)) : ?>
 				<div>
