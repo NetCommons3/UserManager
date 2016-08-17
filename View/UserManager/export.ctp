@@ -24,7 +24,7 @@ echo $this->NetCommonsHtml->css(array(
 </div>
 
 <div class="panel panel-default">
-	<?php echo $this->NetCommonsForm->create(false, array('type' => 'get')); ?>
+	<?php echo $this->NetCommonsForm->create(false, array('type' => 'get', 'ng-submit' => false)); ?>
 
 	<div class="panel-body">
 		<div class="user-export-header">
