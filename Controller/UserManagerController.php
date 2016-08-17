@@ -92,7 +92,7 @@ class UserManagerController extends UserManagerAppController {
 		//ユーザ一覧データ取得
 		$this->UserSearchComp->search([
 			'fields' => self::$displaFields,
-			'conditions' => array('space_id' => Space::PRIVATE_SPACE_ID),
+			'conditions' => array('space_id !=' => Space::PRIVATE_SPACE_ID),
 			'joins' => array('Room' => array(
 				'conditions' => array(
 					'Room.page_id_top NOT' => null,
