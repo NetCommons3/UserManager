@@ -49,7 +49,7 @@
 			<?php
 				echo $this->Button->cancel(
 					__d('net_commons', 'Close'),
-					$this->NetCommonsHtml->url(array('controller' => 'user_manager', 'action' => 'index'))
+					array('controller' => 'user_manager', 'action' => 'index')
 				);
 
 				echo $this->NetCommonsForm->button(
