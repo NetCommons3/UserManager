@@ -40,13 +40,15 @@ echo $this->NetCommonsHtml->script([
 				)
 			); ?>
 
-		<span class="well well-sm btn-workflow user-manager-check-notify">
-			<?php echo $this->NetCommonsForm->checkbox('_UserManager.notify', array(
-					'label' => __d('user_manager', 'To notify the user'),
-					'checked' => true,
-					'inline' => true
-				)); ?>
-		</span>
+		<?php if ($isNotify) : ?>
+			<span class="well well-sm btn-workflow user-manager-check-notify">
+				<?php echo $this->NetCommonsForm->checkbox('_UserManager.notify', array(
+						'label' => __d('user_manager', 'To notify the user'),
+						'checked' => true,
+						'inline' => true
+					)); ?>
+			</span>
+		<?php endif; ?>
 	</div>
 
 <?php echo $this->NetCommonsForm->end();
