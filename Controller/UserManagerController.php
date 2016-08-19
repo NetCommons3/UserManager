@@ -322,6 +322,9 @@ class UserManagerController extends UserManagerAppController {
  * @return void
  */
 	public function export() {
+		//タイムアウトはっせいするなら適宜設定
+		set_time_limit(1800);
+
 		$this->helpers[] = 'Users.UserSearchForm';
 		$this->helpers[] = 'Users.UserSearch';
 
@@ -332,7 +335,10 @@ class UserManagerController extends UserManagerAppController {
 				array(
 					'conditions' => array(
 						'space_id' => Space::PRIVATE_SPACE_ID,
-						'User.role_key !=' => UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR,
+						'User.role_key NOT' => array(
+							UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR,
+							UserRole::USER_ROLE_KEY_ADMINISTRATOR
+						),
 						'User.is_deleted' => false,
 					),
 					'joins' => array('Room' => array(
