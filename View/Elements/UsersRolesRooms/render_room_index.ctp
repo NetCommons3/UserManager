@@ -47,6 +47,10 @@ $domId = $this->NetCommonsHtml->domId('RolesRoomsUser.' . $roomId . '.roles_room
 
 	<?php
 		foreach ($defaultRoleOptions as $key => $name) {
+			if ($room['Space']['id'] === Space::PUBLIC_SPACE_ID && !$key) {
+				continue;
+			}
+
 			$html = '';
 			$ngClass = '';
 			if (isset($rolesRooms[$roomId])) {

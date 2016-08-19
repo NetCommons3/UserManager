@@ -13,6 +13,12 @@
 <tr class="">
 	<th> </th>
 	<?php foreach ($defaultRoleOptions as $key => $name) : ?>
+		<?php
+			if ($space['Space']['id'] === Space::PUBLIC_SPACE_ID && !$key) {
+				continue;
+			}
+		?>
+
 		<th class="text-center users-roles-rooms-all-select">
 			<?php echo $this->Rooms->roomRoleName($key, ['help' => true, 'default' => $name]); ?>
 
