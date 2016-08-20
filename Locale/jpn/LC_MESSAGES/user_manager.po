@@ -43,7 +43,8 @@ msgid "Import"
 msgstr "インポート"
 
 msgid "Click the handle name to read his/her data. And to edit the user data. And delete user data, please go from editing screen."
-msgstr "ハンドル名をクリックすると、会員情報を閲覧および編集できます。会員の削除は、編集画面から行ってください。"
+msgstr "会員の追加、編集、削除、参加ルームの選択ができます。<br>"
+"ハンドルを押すと、会員情報を閲覧できます。参加ルームの選択及び会員の削除は、編集画面から行ってください。"
 
 msgid "Add user"
 msgstr "会員の追加"
