@@ -92,15 +92,15 @@ NetCommonsApp.controller('UserManagerSearch',
                     {'Content-Type': 'application/x-www-form-urlencoded'}
               }
           )
-            .success(function(data) {
+          .success(function(data) {
                 //success condition
                 $window.location.href = NC3_URL + options['callbackUrl'] + '?search';
                 //$uibModalInstance.close('success');
-              })
-            .error(function(data, status) {
+          })
+          .error(function(data, status) {
                 //error condition
                 $uibModalInstance.dismiss('error');
-              });
+          });
         };
 
         /**
