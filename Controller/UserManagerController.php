@@ -382,16 +382,11 @@ class UserManagerController extends UserManagerAppController {
 		$user = $this->User->getUser($userId);
 
 		$fieldName = $this->params['field_name'];
+		$fieldSize = $this->params['size'];
 
 		if (! Hash::get($user, 'UploadFile.' . $fieldName . '.field_name')) {
-			$fieldSize = $this->params['size'];
-			if ($fieldSize === 'thumb') {
-				$noimage = User::AVATAR_THUMB;
-			} else {
-				$noimage = User::AVATAR_IMG;
-			}
 			$this->response->file(
-				App::pluginPath('Users') . DS . 'webroot' . DS . 'img' . DS . $noimage,
+				$this->User->temporaryAvatar($user, $fieldName, $fieldSize),
 				array('name' => 'No Image')
 			);
 			return $this->response;
@@ -399,18 +394,19 @@ class UserManagerController extends UserManagerAppController {
 
 		//以下の場合、アバター表示
 		// * 自動生成画像
-		$this->plugin = 'users';
-		if (Hash::get($user, 'User.is_avatar_auto_created')) {
+		if (Hash::get($user, 'UploadFile.' . $fieldName . '.field_name')) {
+			$this->plugin = 'users';
 			return $this->Download->doDownload($user['User']['id'], array(
 				'field' => $fieldName,
 				'size' => $this->params['size'])
 			);
+		} else {
+			$this->response->file(
+				$this->User->temporaryAvatar($user, $fieldName, $fieldSize),
+				array('name' => 'No Image')
+			);
+			return $this->response;
 		}
-
-		return $this->Download->doDownload($user['User']['id'], array(
-			'field' => $fieldName,
-			'size' => $this->params['size'])
-		);
 	}
 
 }
