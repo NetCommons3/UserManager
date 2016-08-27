@@ -12,12 +12,15 @@
 App::uses('UserManagerAppController', 'UserManager.Controller');
 App::uses('Space', 'Rooms.Model');
 App::uses('ImportExportBehavior', 'Users.Model/Behavior');
+App::uses('User', 'Users.Model');
 
 /**
  * UserManager Controller
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\UserManager\Controller
+ * @SuppressWarnings(PHPMD.TooManyPublicMethods)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class UserManagerController extends UserManagerAppController {
 
@@ -53,6 +56,7 @@ class UserManagerController extends UserManagerAppController {
  * @var array
  */
 	public $components = array(
+		'Files.Download',
 		'Files.FileUpload',
 		'M17n.SwitchLanguage',
 		'Rooms.Rooms',
@@ -366,6 +370,47 @@ class UserManagerController extends UserManagerAppController {
 			$defaultConditions['search'] = '1';
 			$this->request->query = $defaultConditions;
 		}
+	}
+
+/**
+ * アバター表示処理
+ *
+ * @return void
+ */
+	public function download() {
+		$userId = $this->params['user_id'];
+		$user = $this->User->getUser($userId);
+
+		$fieldName = $this->params['field_name'];
+
+		if (! Hash::get($user, 'UploadFile.' . $fieldName . '.field_name')) {
+			$fieldSize = $this->params['size'];
+			if ($fieldSize === 'thumb') {
+				$noimage = User::AVATAR_THUMB;
+			} else {
+				$noimage = User::AVATAR_IMG;
+			}
+			$this->response->file(
+				App::pluginPath('Users') . DS . 'webroot' . DS . 'img' . DS . $noimage,
+				array('name' => 'No Image')
+			);
+			return $this->response;
+		}
+
+		//以下の場合、アバター表示
+		// * 自動生成画像
+		$this->plugin = 'users';
+		if (Hash::get($user, 'User.is_avatar_auto_created')) {
+			return $this->Download->doDownload($user['User']['id'], array(
+				'field' => $fieldName,
+				'size' => $this->params['size'])
+			);
+		}
+
+		return $this->Download->doDownload($user['User']['id'], array(
+			'field' => $fieldName,
+			'size' => $this->params['size'])
+		);
 	}
 
 }
