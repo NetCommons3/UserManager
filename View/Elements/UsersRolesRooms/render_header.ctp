@@ -24,7 +24,13 @@
 
 			<?php if (! in_array($key, [Role::ROOM_ROLE_KEY_ROOM_ADMINISTRATOR, Role::ROOM_ROLE_KEY_CHIEF_EDITOR], true)) : ?>
 				<div>
-					<button class="btn btn-default btn-xs" ng-click="selectAll(<?php echo '\'' . $key . '\', \'' . $space['Space']['id'] . '\''; ?>)" onclick="return false">
+					<?php
+						if ($key === '') {
+							$key = 'delete';
+						}
+					?>
+					<button type="button" class="btn btn-default btn-xs"
+							ng-click="selectAll(<?php echo '\'' . $key . '\', \'' . $space['Space']['id'] . '\''; ?>)">
 						<?php echo __d('net_commons', 'All select'); ?>
 					</button>
 				</div>
