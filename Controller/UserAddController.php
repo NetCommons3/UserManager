@@ -224,7 +224,11 @@ class UserAddController extends UserManagerAppController {
 			}
 		}
 
-		$this->set('isNotify', (bool)Hash::get($this->Session->read('UserAdd'), 'User.email'));
+		if ($this->UserMail->isUserMailSend() && Hash::get($this->Session->read('UserAdd'), 'User.email')) {
+			$this->set('isNotify', true);
+		} else {
+			$this->set('isNotify', false);
+		}
 
 		//** ルームデータセット
 		$this->Rooms->setRoomsForPaginator();

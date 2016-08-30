@@ -144,4 +144,25 @@ class UserMail extends UserManagerAppModel {
 		return true;
 	}
 
+/**
+ * メール設定がされているかどうか
+ *
+ * @return bool
+ */
+	public function isUserMailSend() {
+		$from = SiteSettingUtil::read('Mail.from');
+
+		// Fromが空ならメール未設定のため、メール送らない
+		if (empty($from)) {
+			return false;
+		}
+
+		// cakeコマンドに実行権限なければ、メール送らない
+		if (!MailSend::isExecutableCake()) {
+			return false;
+		}
+
+		return true;
+	}
+
 }
