@@ -9,6 +9,22 @@
  */
 
 Router::connect(
+	'/user_manager/user_add/download/:field_name/:size',
+	['plugin' => 'user_manager', 'controller' => 'user_add', 'action' => 'download'],
+	['user_id' => '[0-9]+', 'size' => 'big|medium|small|thumb']
+);
+Router::connect(
+	'/user_manager/user_add/download/:field_name',
+	[
+		'plugin' => 'user_manager',
+		'controller' => 'user_add',
+		'action' => 'download',
+		'size' => 'medium'
+	],
+	['user_id' => '[0-9]+', 'size' => 'medium']
+);
+
+Router::connect(
 	'/user_manager/user_manager/download/:user_id/:field_name/:size',
 	['plugin' => 'user_manager', 'controller' => 'user_manager', 'action' => 'download'],
 	['user_id' => '[0-9]+', 'size' => 'big|medium|small|thumb']

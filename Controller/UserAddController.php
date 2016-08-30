@@ -174,15 +174,15 @@ class UserAddController extends UserManagerAppController {
 			//表示処理
 			$this->User->languages = $this->viewVars['languages'];
 
-			$tmpName = $this->Session->read('UserAdd.User.' . UserAttribute::AVATAR_FIELD . '.tmp_name');
-			if ($tmpName) {
-				(new File($tmpName))->delete();
-			}
-
-			$referer = Configure::read('App.fullBaseUrl') . '/user_manager/user_add/user_roles_rooms';
-			if ($this->referer() === $referer) {
+			$referer = Router::url('/user_manager/user_add/user_roles_rooms', true);
+			if ($this->referer(true) === $referer) {
 				$this->request->data = $this->Session->read('UserAdd');
 			} else {
+				//アバター削除処理
+				$tmpName = $this->Session->read('UserAdd.User.' . UserAttribute::AVATAR_FIELD . '.tmp_name');
+				if ($tmpName) {
+					(new File($tmpName))->delete();
+				}
 				$this->request->data = $this->User->createUser();
 			}
 		}
@@ -200,6 +200,12 @@ class UserAddController extends UserManagerAppController {
 
 			$user = $this->User->saveUser($data);
 			if ($user) {
+				//アバター削除処理
+				$tmpName = $this->Session->read('UserAdd.User.' . UserAttribute::AVATAR_FIELD . '.tmp_name');
+				if ($tmpName) {
+					(new File($tmpName))->delete();
+				}
+
 				$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array(
 					'class' => 'success',
 				));
@@ -316,6 +322,24 @@ class UserAddController extends UserManagerAppController {
 			$this->request->data['UserMail']['user_id'] = $this->viewVars['user']['id'];
 			$this->request->data['UserMail']['reply_to'] = SiteSettingUtil::read('Mail.from');
 		}
+	}
+
+/**
+ * アバター表示処理
+ *
+ * @return void
+ */
+	public function download() {
+		$fieldName = $this->params['field_name'];
+		$fieldSize = $this->params['size'];
+
+		$tmpName = $this->Session->read('UserAdd.User.' . UserAttribute::AVATAR_FIELD . '.tmp_name');
+		if (! $tmpName) {
+			$tmpName = App::pluginPath('Users') . 'webroot' . DS . 'img' . DS . 'noimage.gif';
+		}
+
+		$this->response->file($tmpName);
+		return $this->response;
 	}
 
 }
