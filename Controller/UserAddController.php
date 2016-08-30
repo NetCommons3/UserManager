@@ -330,9 +330,6 @@ class UserAddController extends UserManagerAppController {
  * @return void
  */
 	public function download() {
-		$fieldName = $this->params['field_name'];
-		$fieldSize = $this->params['size'];
-
 		$tmpName = $this->Session->read('UserAdd.User.' . UserAttribute::AVATAR_FIELD . '.tmp_name');
 		if (! $tmpName) {
 			$tmpName = App::pluginPath('Users') . 'webroot' . DS . 'img' . DS . 'noimage.gif';
