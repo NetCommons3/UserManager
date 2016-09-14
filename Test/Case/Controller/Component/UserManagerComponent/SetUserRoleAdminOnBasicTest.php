@@ -74,7 +74,7 @@ class UserManagerComponentSetUserRoleAdminOnBasicTest extends NetCommonsControll
  *
  * @return void
  */
-	public function testSetUserRoleAdminOnBasicWithSystemAdmin() {
+	public function testSystemAdministrator() {
 		//ログイン
 		TestAuthGeneral::login($this);
 
@@ -128,7 +128,7 @@ class UserManagerComponentSetUserRoleAdminOnBasicTest extends NetCommonsControll
  *
  * @return void
  */
-	public function testSetUserRoleAdminOnBasicWithSiteAdmin() {
+	public function testSiteAdministrator() {
 		//ログイン
 		TestAuthGeneral::login($this, Role::ROOM_ROLE_KEY_CHIEF_EDITOR);
 
