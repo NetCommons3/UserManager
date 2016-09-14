@@ -155,7 +155,7 @@ class UserAddController extends UserManagerAppController {
 				);
 				if ($tmpName) {
 					$destPath = TMP . pathinfo($tmpName, PATHINFO_BASENAME);
-					if (move_uploaded_file($tmpName, $destPath)) {
+					if ($this->UserManager->moveUploadedFile($tmpName, $destPath)) {
 						$this->request->data = Hash::insert(
 							$this->request->data, 'User.' . UserAttribute::AVATAR_FIELD . '.tmp_name', $destPath
 						);

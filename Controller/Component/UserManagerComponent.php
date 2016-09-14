@@ -94,4 +94,16 @@ class UserManagerComponent extends Component {
 			);
 		}
 	}
+
+/**
+ * アップロードファイルの退避
+ * ※Unitテストできるように別メソッドにしておく
+ *
+ * @param string $tmpName アップロードのtmp_nameパス
+ * @param string $destPath TMPの一時退避しておくパス
+ * @return void
+ */
+	public function moveUploadedFile($tmpName, $destPath) {
+		return move_uploaded_file($tmpName, $destPath);
+	}
 }
