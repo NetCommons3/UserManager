@@ -9,13 +9,16 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
+//@codeCoverageIgnoreStart
 App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
+//@codeCoverageIgnoreEnd
 
 /**
  * UserAddController::beforeFilter()のテスト
  *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\UserManager\Test\Case\Controller\UserAddController
+ * @codeCoverageIgnore
  */
 class UserManagerControllerTestCase extends NetCommonsControllerTestCase {
 
