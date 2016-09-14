@@ -96,7 +96,60 @@ class UserAddControllerNotifyTest extends NetCommonsControllerTestCase {
  *
  * @return array リクエストデータ
  */
-	private function __data() {
+	private function __dataPost() {
+		$data = array(
+			'UserMail' => array(
+				'title' => 'User mail title',
+				'body' => 'User mail body',
+				'user_id' => '2',
+				'reply_to' => 'system_admin@exapmle.com'
+			)
+		);
+
+		$this->_mockForReturnTrue('UserManager.UserMail', 'validates');
+
+		$this->controller->mail = $this->getMock(
+			'NetCommonsMail',
+			array('sendMailDirect', 'setReplyTo', 'initPlugin', 'to', 'setFrom'),
+			array(), '', false
+		);
+		$this->controller->mail->mailAssignTag = $this->getMock(
+			'NetCommonsMail',
+			array('setFixedPhraseSubject', 'setFixedPhraseBody', 'initPlugin'),
+			array(), '', false
+		);
+
+		$this->controller->mail->mailAssignTag
+			->expects($this->once())->method('setFixedPhraseSubject')
+			->with($data['UserMail']['title']);
+		$this->controller->mail->mailAssignTag
+			->expects($this->once())->method('setFixedPhraseBody')
+			->with($data['UserMail']['body']);
+		$this->controller->mail->mailAssignTag
+			->expects($this->once())->method('initPlugin')
+			->with('2');
+		$this->controller->mail
+			->expects($this->once())->method('setReplyTo')
+			->with($data['UserMail']['reply_to']);
+		$this->controller->mail
+			->expects($this->once())->method('initPlugin')
+			->with('2');
+		$this->controller->mail
+			->expects($this->once())->method('to')
+			->will($this->returnValue(true));
+		$this->controller->mail
+			->expects($this->once())->method('setFrom')
+			->with('2');
+
+		return $data;
+	}
+
+/**
+ * POSTリクエストデータ生成
+ *
+ * @return array リクエストデータ
+ */
+	private function __dataOnValidationError() {
 		$data = array(
 			'UserMail' => array(
 				'title' => '',
@@ -113,21 +166,69 @@ class UserAddControllerNotifyTest extends NetCommonsControllerTestCase {
  *
  * @return void
  */
-	//public function testNotifyPost() {
-	//	//テスト実行
-	//	$this->_mockForReturnTrue('UserManager.UserMail', 'validates');
-	//
-	//	$this->controller->Components->Session
-	//		->expects($this->once())->method('setFlash')
-	//		->with(__d('user_manager', 'Successfully mail send.'));
-	//
-	//	$this->_testPostAction('post', $this->__data(),
-	//			array('action' => 'notify'), null, 'view');
-	//
-	//	//チェック
-	//	$header = $this->controller->response->header();
-	//	$this->assertNotEmpty($header['Location']);
-	//}
+	public function testNotifyPost() {
+		//テストデータ
+		$data = $this->__dataPost();
+
+		$this->controller->mail
+			->expects($this->once())->method('sendMailDirect')
+			->will($this->returnValue(true));
+
+		$this->controller->Components->Session
+			->expects($this->once())->method('setFlash')
+			->with(__d('user_manager', 'Successfully mail send.'));
+
+		//テスト実行
+		$this->_testPostAction('post', $data, array('action' => 'notify'), null, 'view');
+
+		//チェック
+		$header = $this->controller->response->header();
+		$this->assertNotEmpty($header['Location']);
+	}
+
+/**
+ * notify()アクションのPOSTリクエストで入力値不正のテスト
+ *
+ * @return void
+ */
+	public function testNotifyPostOnBadRequest() {
+		//テストデータ
+		$data = $this->__dataPost();
+
+		$this->controller->mail
+			->expects($this->once())->method('sendMailDirect')
+			->will($this->returnValue(false));
+
+		$this->controller->Components->Session
+			->expects($this->once())->method('setFlash')
+			->with(__d('net_commons', 'Failed on validation errors. Please check the input data.'));
+
+		//テスト実行
+		$this->_testPostAction('post', $data, array('action' => 'notify'), null, 'view');
+	}
+
+/**
+ * notify()アクションのPOSTリクエストで入力値不正のテスト
+ *
+ * @return void
+ */
+	public function testNotifyPostOnMailSettingError() {
+		//テストデータ
+		$data = $this->__dataPost();
+
+		$this->controller->mail
+			->expects($this->once())->method('sendMailDirect')
+			->will($this->returnCallback(function () {
+				throw new BadRequestException();
+			}));
+
+		$this->controller->Components->Session
+			->expects($this->once())->method('setFlash')
+			->with(__d('mails', 'There is errors in the mail settings. It was not able to send mail.'));
+
+		//テスト実行
+		$this->_testPostAction('post', $data, array('action' => 'notify'), null, 'view');
+	}
 
 /**
  * notify()アクションのPOSTリクエストのValidationErrorテスト
@@ -151,7 +252,7 @@ class UserAddControllerNotifyTest extends NetCommonsControllerTestCase {
 		);
 
 		$replyTo = 'aaaaa';
-		$data = $this->__data();
+		$data = $this->__dataOnValidationError();
 		$data = Hash::insert($data, 'UserMail.reply_to', $replyTo);
 
 		//テスト実行
