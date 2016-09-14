@@ -34,24 +34,4 @@ class UserManagerAppController extends AppController {
 		'Security',
 	);
 
-/**
- * 登録処理の前準備
- *
- * @return void
- */
-	protected function _prepareSave() {
-		$this->User->userAttributeData = Hash::combine($this->viewVars['userAttributes'],
-			'{n}.{n}.{n}.UserAttribute.id', '{n}.{n}.{n}'
-		);
-
-		foreach ($this->User->userAttributeData as $attribute) {
-			if ($attribute['UserAttributeSetting']['is_multilingualization']) {
-				$this->SwitchLanguage->fields[] = 'UsersLanguage.' . $attribute['UserAttribute']['key'];
-			}
-		}
-
-		//他言語が入力されていない場合、表示されている言語データをセット
-		$this->SwitchLanguage->setM17nRequestValue();
-	}
-
 }

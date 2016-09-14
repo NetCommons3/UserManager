@@ -52,6 +52,7 @@ class UserAddController extends UserManagerAppController {
 		'M17n.SwitchLanguage',
 		'Rooms.Rooms',
 		'UserAttributes.UserAttributeLayout',
+		'UserManager.UserManager',
 	);
 
 /**
@@ -113,6 +114,14 @@ class UserAddController extends UserManagerAppController {
 			unset($this->helpers['NetCommons.Wizard']['navibar'][self::WIZARD_USERS]['url']);
 			unset($this->helpers['NetCommons.Wizard']['navibar'][self::WIZARD_USERS_ROLES_ROOMS]['url']);
 		}
+
+		//メール通知の場合、NetCommonsMailUtilityをメンバー変数にセットする。Mockであれば、newをしない。
+		//テストでMockに差し替えが必要なための処理であるので、カバレッジレポートから除外する。
+		//@codeCoverageIgnoreStart
+		if ($this->params['action'] === 'notify' && substr(get_class($this->mail), 0, 4) !== 'Mock') {
+			$this->mail = new NetCommonsMail();
+		}
+		//@codeCoverageIgnoreEnd
 	}
 
 /**
@@ -124,29 +133,17 @@ class UserAddController extends UserManagerAppController {
 		$this->helpers[] = 'Users.UserEditForm';
 
 		//システム管理者以外は、選択肢からシステム管理者を除外
-		if (UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR !== Current::read('User.role_key')) {
-			$this->viewVars['userAttributes'] = Hash::remove(
-				$this->viewVars['userAttributes'],
-				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']'
-			);
-		}
+		$this->UserManager->setUserRoleAdminOnBasic();
 
 		//状態の選択肢から承認待ち、承認済みを除外
-		$this->viewVars['userAttributes'] = Hash::remove(
-			$this->viewVars['userAttributes'],
-			'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserAttributeChoice::STATUS_KEY_WAITING . ']'
-		);
-		$this->viewVars['userAttributes'] = Hash::remove(
-			$this->viewVars['userAttributes'],
-			'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserAttributeChoice::STATUS_KEY_APPROVED . ']'
-		);
+		$this->UserManager->setStatusOnBasic(array());
 
 		if ($this->request->is('post')) {
 			//不要パラメータ除去
 			unset($this->request->data['save'], $this->request->data['active_lang_id']);
 
 			//登録処理
-			$this->_prepareSave();
+			$this->UserManager->prepareBasicSave();
 
 			if ($this->User->validateUser($this->request->data)) {
 				//正常の場合
@@ -158,7 +155,7 @@ class UserAddController extends UserManagerAppController {
 				);
 				if ($tmpName) {
 					$destPath = TMP . pathinfo($tmpName, PATHINFO_BASENAME);
-					if (move_uploaded_file($tmpName, $destPath)) {
+					if ($this->UserManager->moveUploadedFile($tmpName, $destPath)) {
 						$this->request->data = Hash::insert(
 							$this->request->data, 'User.' . UserAttribute::AVATAR_FIELD . '.tmp_name', $destPath
 						);
@@ -269,18 +266,25 @@ class UserAddController extends UserManagerAppController {
 			$this->UserMail->set($this->request->data);
 			if ($this->UserMail->validates()) {
 				//メール送信処理
-				$mail = new NetCommonsMail();
-				$mail->mailAssignTag->setFixedPhraseSubject($this->request->data['UserMail']['title']);
-				$mail->mailAssignTag->setFixedPhraseBody($this->request->data['UserMail']['body']);
-				$mail->mailAssignTag->initPlugin(Current::read('Language.id'));
+				$this->mail->mailAssignTag->setFixedPhraseSubject($this->request->data['UserMail']['title']);
+				$this->mail->mailAssignTag->setFixedPhraseBody($this->request->data['UserMail']['body']);
+				$this->mail->mailAssignTag->initPlugin(Current::read('Language.id'));
 
-				$mail->setReplyTo($this->request->data['UserMail']['reply_to']);
-				$mail->initPlugin(Current::read('Language.id'));
+				$this->mail->setReplyTo($this->request->data['UserMail']['reply_to']);
+				$this->mail->initPlugin(Current::read('Language.id'));
 
-				$mail->to($this->viewVars['user']['email']);
-				$mail->setFrom(Current::read('Language.id'));
-				if (! $mail->sendMailDirect()) {
-					return $this->NetCommons->handleValidationError(array('SendMail Error'));
+				$this->mail->to($this->viewVars['user']['email']);
+				try {
+					$this->mail->setFrom(Current::read('Language.id'));
+					if (! $this->mail->sendMailDirect()) {
+						return $this->NetCommons->handleValidationError(array('SendMail Error'));
+					}
+				} catch (Exception $ex) {
+					CakeLog::error($ex);
+					return $this->NetCommons->handleValidationError(
+						array('SendMail Error'),
+						__d('mails', 'There is errors in the mail settings. It was not able to send mail.')
+					);
 				}
 
 				//リダイレクト
@@ -294,25 +298,20 @@ class UserAddController extends UserManagerAppController {
 
 		} else {
 			//ユーザデータ取得
-			$mail = new NetCommonsMail();
-			$mailSetting = $this->UserMail->MailSetting->getMailSettingPlugin(null, 'save_notify');
+			$this->mailSetting = $this->UserMail->MailSetting->getMailSettingPlugin(null, 'save_notify');
 
-			$mail->mailAssignTag->setFixedPhraseSubject(
-				$mailSetting['MailSettingFixedPhrase']['mail_fixed_phrase_subject']
+			$this->mail->mailAssignTag->setFixedPhraseSubject(
+				$this->mailSetting['MailSettingFixedPhrase']['mail_fixed_phrase_subject']
 			);
-			$mail->mailAssignTag->setFixedPhraseBody(
-				$mailSetting['MailSettingFixedPhrase']['mail_fixed_phrase_body']
+			$this->mail->mailAssignTag->setFixedPhraseBody(
+				$this->mailSetting['MailSettingFixedPhrase']['mail_fixed_phrase_body']
 			);
-			$mail->mailAssignTag->initPlugin(Current::read('Language.id'));
+			$this->mail->mailAssignTag->initPlugin(Current::read('Language.id'));
 
-			$password = $this->viewVars['user']['password'];
-			if (! isset($password)) {
-				$password = '';
-			}
-
+			$password = Hash::get($this->viewVars['user'], 'password', '');
 			$passwordUrl = NetCommonsUrl::url('/auth/forgot_pass/request', true) .
 							'?email=' . $this->viewVars['user']['email'];
-			$mail->mailAssignTag->assignTags(array(
+			$this->mail->mailAssignTag->assignTags(array(
 				'X-HANDLENAME' => $this->viewVars['user']['handlename'],
 				'X-USERNAME' => $this->viewVars['user']['username'],
 				'X-PASSWORD' => $password,
@@ -320,10 +319,10 @@ class UserAddController extends UserManagerAppController {
 				'X-EMAIL' => $this->viewVars['user']['email'],
 				'X-URL' => NetCommonsUrl::url('/', true),
 			));
-			$mail->mailAssignTag->assignTagReplace();
+			$this->mail->mailAssignTag->assignTagReplace();
 
-			$this->request->data['UserMail']['title'] = $mail->mailAssignTag->fixedPhraseSubject;
-			$this->request->data['UserMail']['body'] = $mail->mailAssignTag->fixedPhraseBody;
+			$this->request->data['UserMail']['title'] = $this->mail->mailAssignTag->fixedPhraseSubject;
+			$this->request->data['UserMail']['body'] = $this->mail->mailAssignTag->fixedPhraseBody;
 			$this->request->data['UserMail']['user_id'] = $this->viewVars['user']['id'];
 			$this->request->data['UserMail']['reply_to'] = SiteSettingUtil::read('Mail.from');
 		}
