@@ -60,7 +60,7 @@ class UserAddControllerDownloadTest extends UserManagerControllerTestCase {
 			'components' => array('Session' => array('read'))
 		));
 
-		$path = App::pluginPath('UserManager') . DS . 'Test' . DS . 'Fixture' . DS . 'logo.gif';
+		$path = App::pluginPath('UserManager') . 'Test' . DS . 'Fixture' . DS . 'logo.gif';
 		$this->controller->Session
 			->expects($this->once())->method('read')
 			->will($this->returnValue($path));
