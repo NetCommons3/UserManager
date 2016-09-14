@@ -278,9 +278,17 @@ class UserAddController extends UserManagerAppController {
 				$mail->initPlugin(Current::read('Language.id'));
 
 				$mail->to($this->viewVars['user']['email']);
-				$mail->setFrom(Current::read('Language.id'));
-				if (! $mail->sendMailDirect()) {
-					return $this->NetCommons->handleValidationError(array('SendMail Error'));
+				try {
+					$mail->setFrom(Current::read('Language.id'));
+					if (! $mail->sendMailDirect()) {
+						return $this->NetCommons->handleValidationError(array('SendMail Error'));
+					}
+				} catch (Exception $ex) {
+					CakeLog::error($ex);
+					return $this->NetCommons->handleValidationError(
+						array('SendMail Error'),
+						__d('mails', 'There is errors in the mail settings. It was not able to send mail.')
+					);
 				}
 
 				//リダイレクト
