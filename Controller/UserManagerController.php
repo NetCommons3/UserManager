@@ -61,6 +61,7 @@ class UserManagerController extends UserManagerAppController {
 		'M17n.SwitchLanguage',
 		'Rooms.Rooms',
 		'UserAttributes.UserAttributeLayout',
+		'UserManager.UserManager',
 		'Users.UserSearchComp',
 	);
 
@@ -148,12 +149,7 @@ class UserManagerController extends UserManagerAppController {
 		$this->helpers[] = 'Users.UserEditForm';
 
 		//システム管理者以外は、選択肢からシステム管理者を除外
-		if (Current::read('User.role_key') !== UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR) {
-			$this->viewVars['userAttributes'] = Hash::remove(
-				$this->viewVars['userAttributes'],
-				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR . ']'
-			);
-		}
+		$this->UserManager->setUserRoleAdminOnBasic();
 
 		if ($this->request->is('put')) {
 			$userId = $this->data['User']['id'];
@@ -169,25 +165,14 @@ class UserManagerController extends UserManagerAppController {
 		$this->set('canUserDelete', $this->User->canUserDelete($user));
 
 		//状態の選択肢から承認待ち、承認済みを除外
-		if (Hash::get($user, 'User.status') !== UserAttributeChoice::STATUS_CODE_WAITING) {
-			$this->viewVars['userAttributes'] = Hash::remove(
-				$this->viewVars['userAttributes'],
-				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserAttributeChoice::STATUS_KEY_WAITING . ']'
-			);
-		}
-		if (Hash::get($user, 'User.status') !== UserAttributeChoice::STATUS_CODE_APPROVED) {
-			$this->viewVars['userAttributes'] = Hash::remove(
-				$this->viewVars['userAttributes'],
-				'{n}.{n}.{n}.UserAttributeChoice.{n}[key=' . UserAttributeChoice::STATUS_KEY_APPROVED . ']'
-			);
-		}
+		$this->UserManager->setStatusOnBasic($user);
 
 		if ($this->request->is('put')) {
 			//不要パラメータ除去
 			unset($this->request->data['save'], $this->request->data['active_lang_id']);
 
 			//登録処理
-			$this->_prepareSave();
+			$this->UserManager->prepareBasicSave();
 
 			if ($this->User->saveUser($this->request->data)) {
 				$this->NetCommons->setFlashNotification(
