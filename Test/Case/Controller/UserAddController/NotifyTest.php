@@ -211,6 +211,7 @@ class UserAddControllerNotifyTest extends NetCommonsControllerTestCase {
  * notify()アクションのPOSTリクエストで入力値不正のテスト
  *
  * @return void
+ * @throws BadRequestException
  */
 	public function testNotifyPostOnMailSettingError() {
 		//テストデータ
