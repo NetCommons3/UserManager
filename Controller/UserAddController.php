@@ -115,11 +115,13 @@ class UserAddController extends UserManagerAppController {
 			unset($this->helpers['NetCommons.Wizard']['navibar'][self::WIZARD_USERS_ROLES_ROOMS]['url']);
 		}
 
-		//メール通知の場合、NetCommonsMailUtilityをメンバー変数にセットする
-		//Mockであれば、newをしない。
+		//メール通知の場合、NetCommonsMailUtilityをメンバー変数にセットする。Mockであれば、newをしない。
+		//テストでMockに差し替えが必要なための処理であるので、カバレッジレポートから除外する。
+		//@codeCoverageIgnoreStart
 		if ($this->params['action'] === 'notify' && substr(get_class($this->mail), 0, 4) !== 'Mock') {
 			$this->mail = new NetCommonsMail();
 		}
+		//@codeCoverageIgnoreEnd
 	}
 
 /**
@@ -225,7 +227,6 @@ class UserAddController extends UserManagerAppController {
 		} else {
 			$this->set('isNotify', false);
 		}
-		$this->set('isNotify', true);
 
 		//** ルームデータセット
 		$this->Rooms->setRoomsForPaginator();
