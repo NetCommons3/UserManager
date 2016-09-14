@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
+App::uses('UserManagerControllerTestCase', 'UserManager.TestSuite');
 
 /**
  * UserAddController::beforeFilter()のテスト
@@ -17,31 +17,7 @@ App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\UserManager\Test\Case\Controller\UserAddController
  */
-class UserAddControllerBeforeFilterTest extends NetCommonsControllerTestCase {
-
-/**
- * Fixtures
- *
- * @var array
- */
-	public $fixtures = array(
-		'plugin.user_attributes.plugin4test',
-		'plugin.user_attributes.plugins_role4test',
-		'plugin.user_attributes.user_attribute4test',
-		'plugin.user_attributes.user_attribute_choice4test',
-		'plugin.user_attributes.user_attribute_layout',
-		'plugin.user_attributes.user_attribute_setting4test',
-		'plugin.user_attributes.user_attributes_role4test',
-		'plugin.user_roles.user_role',
-		'plugin.mails.mail_setting_fixed_phrase',
-	);
-
-/**
- * Plugin name
- *
- * @var string
- */
-	public $plugin = 'user_manager';
+class UserAddControllerBeforeFilterTest extends UserManagerControllerTestCase {
 
 /**
  * Controller name

@@ -9,7 +9,7 @@
  * @copyright Copyright 2014, NetCommons Project
  */
 
-App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
+App::uses('UserManagerControllerTestCase', 'UserManager.TestSuite');
 
 /**
  * UserManagerComponent::setStatusOnBasic()のテスト
@@ -17,7 +17,7 @@ App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\UserManager\Test\Case\Controller\Component\UserManagerComponent
  */
-class UserManagerComponentSetStatusOnBasicTest extends NetCommonsControllerTestCase {
+class UserManagerComponentSetStatusOnBasicTest extends UserManagerControllerTestCase {
 
 /**
  * Fixtures
