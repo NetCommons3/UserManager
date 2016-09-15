@@ -77,16 +77,6 @@ class UserManagerController extends UserManagerAppController {
 	);
 
 /**
- * beforeFilter
- *
- * @return void
- */
-	public function beforeFilter() {
-		parent::beforeFilter();
-		$this->Security->unlockedActions = array('search');
-	}
-
-/**
  * indexアクション
  *
  * @return void
