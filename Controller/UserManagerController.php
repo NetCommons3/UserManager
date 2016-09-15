@@ -190,14 +190,13 @@ class UserManagerController extends UserManagerAppController {
  * @return void
  */
 	public function delete() {
-		$user = $this->User->getUser($this->data['User']['id']);
-
-		//削除できるかチェック
-		if (! $this->User->canUserDelete($user)) {
+		if (! $this->request->is('delete')) {
 			return $this->throwBadRequest();
 		}
 
-		if (! $this->request->is('delete')) {
+		//削除できるかチェック
+		$user = $this->User->getUser($this->data['User']['id']);
+		if (! $this->User->canUserDelete($user)) {
 			return $this->throwBadRequest();
 		}
 
