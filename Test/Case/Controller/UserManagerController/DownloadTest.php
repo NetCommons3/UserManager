@@ -48,7 +48,6 @@ class UserManagerControllerDownloadTest extends UserManagerControllerTestCase {
 				'Files.Download' => array('doDownload')
 			)
 		));
-
 	}
 
 /**
