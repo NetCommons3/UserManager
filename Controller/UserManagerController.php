@@ -121,6 +121,7 @@ class UserManagerController extends UserManagerAppController {
 		}
 		$this->set('user', $user);
 		$this->set('title', false);
+		$this->set('pluginName', Current::read('Plugin.name'));
 
 		//レイアウトの設定
 		$this->viewClass = 'View';
