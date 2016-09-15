@@ -231,7 +231,7 @@ class UserAddControllerBasicTest extends UserManagerControllerTestCase {
 			'UsersLanguage' => array(
 				0 => array(
 					'user_id' => '',
-					'language_id' => 1,
+					'language_id' => 2,
 					'name' => null,
 					'profile' => null,
 					'search_keywords' => null,
@@ -239,7 +239,7 @@ class UserAddControllerBasicTest extends UserManagerControllerTestCase {
 				),
 				1 => array(
 					'user_id' => '',
-					'language_id' => 2,
+					'language_id' => 1,
 					'name' => null,
 					'profile' => null,
 					'search_keywords' => null,
@@ -366,8 +366,8 @@ class UserAddControllerBasicTest extends UserManagerControllerTestCase {
 		$this->assertInput('input', 'data[User][id]', null, $this->view);
 		$this->assertInput('input', 'data[UsersLanguage][0][id]', null, $this->view);
 		$this->assertInput('input', 'data[UsersLanguage][1][id]', null, $this->view);
-		$this->assertInput('input', 'data[UsersLanguage][0][language_id]', '1', $this->view);
-		$this->assertInput('input', 'data[UsersLanguage][1][language_id]', '2', $this->view);
+		$this->assertInput('input', 'data[UsersLanguage][0][language_id]', '2', $this->view);
+		$this->assertInput('input', 'data[UsersLanguage][1][language_id]', '1', $this->view);
 		$this->assertInput('input', 'data[UsersLanguage][0][user_id]', '', $this->view);
 		$this->assertInput('input', 'data[UsersLanguage][1][user_id]', '', $this->view);
 		$this->assertInput('input', 'data[User][handlename]', '', $this->view);
