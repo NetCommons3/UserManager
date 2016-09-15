@@ -28,6 +28,7 @@ class UserManagerControllerTestCase extends NetCommonsControllerTestCase {
  * @var array
  */
 	public $fixtures = array(
+		'plugin.mails.mail_setting_fixed_phrase',
 		'plugin.user_attributes.plugin4test',
 		'plugin.user_attributes.plugins_role4test',
 		'plugin.user_attributes.user_attribute4test',
@@ -36,7 +37,15 @@ class UserManagerControllerTestCase extends NetCommonsControllerTestCase {
 		'plugin.user_attributes.user_attribute_setting4test',
 		'plugin.user_attributes.user_attributes_role4test',
 		'plugin.user_roles.user_role',
-		'plugin.mails.mail_setting_fixed_phrase',
+		'plugin.users.room4user',
+		'plugin.users.rooms_language4user',
+		'plugin.users.roles_room4user',
+		'plugin.users.roles_rooms_user4user',
+		'plugin.users.upload_file4user',
+		'plugin.users.upload_files_content4user',
+		'plugin.users.user4user',
+		'plugin.users.users_language4user',
+		'plugin.groups.group',
 	);
 
 /**
