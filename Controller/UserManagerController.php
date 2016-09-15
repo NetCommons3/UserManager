@@ -359,23 +359,16 @@ class UserManagerController extends UserManagerAppController {
 		$fieldName = $this->params['field_name'];
 		$fieldSize = $this->params['size'];
 
-		if (! Hash::get($user, 'UploadFile.' . $fieldName . '.field_name')) {
-			$this->response->file(
-				$this->User->temporaryAvatar($user, $fieldName, $fieldSize),
-				array('name' => 'No Image')
-			);
-			return $this->response;
-		}
-
-		//以下の場合、アバター表示
-		// * 自動生成画像
-		if (Hash::get($user, 'UploadFile.' . $fieldName . '.field_name')) {
+		if (! Hash::get($user, 'User.is_deleted') &&
+				Hash::get($user, 'UploadFile.' . $fieldName . '.field_name')) {
 			$this->plugin = 'users';
+			// * アバター表示
 			return $this->Download->doDownload($user['User']['id'], array(
 				'field' => $fieldName,
 				'size' => $this->params['size'])
 			);
 		} else {
+			// * 自動生成画像
 			$this->response->file(
 				$this->User->temporaryAvatar($user, $fieldName, $fieldSize),
 				array('name' => 'No Image')

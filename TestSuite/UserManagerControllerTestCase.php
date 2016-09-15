@@ -41,9 +41,11 @@ class UserManagerControllerTestCase extends NetCommonsControllerTestCase {
 		'plugin.users.rooms_language4user',
 		'plugin.users.roles_room4user',
 		'plugin.users.roles_rooms_user4user',
-		'plugin.groups.group',
+		'plugin.users.upload_file4user',
+		'plugin.users.upload_files_content4user',
 		'plugin.users.user4user',
 		'plugin.users.users_language4user',
+		'plugin.groups.group',
 	);
 
 /**
