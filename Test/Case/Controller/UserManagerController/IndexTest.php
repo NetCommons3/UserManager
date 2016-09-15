@@ -80,10 +80,8 @@ class UserManagerControllerIndexTest extends UserManagerControllerTestCase {
 		$expected = array(
 			0 => array(
 				'User' => array(
-					'id' => '1',
-					'handlename' => 'System Administrator',
-					'role_key' => 'system_administrator',
-					'status' => '1',
+					'id' => '1', 'handlename' => 'System Administrator',
+					'role_key' => 'system_administrator', 'status' => '1',
 					'modified' => '2015-08-15 06:12:30',
 					'last_login' => '2016-09-14 12:18:45',
 				),
@@ -93,10 +91,8 @@ class UserManagerControllerIndexTest extends UserManagerControllerTestCase {
 			),
 			1 => array(
 				'User' => array(
-					'id' => '2',
-					'handlename' => 'Site Manager',
-					'role_key' => 'administrator',
-					'status' => '1',
+					'id' => '2', 'handlename' => 'Site Manager',
+					'role_key' => 'administrator', 'status' => '1',
 					'modified' => '2015-08-15 06:12:30',
 					'last_login' => null,
 				),
@@ -106,10 +102,8 @@ class UserManagerControllerIndexTest extends UserManagerControllerTestCase {
 			),
 			2 => array(
 				'User' => array(
-					'id' => '3',
-					'handlename' => 'Chief Editor',
-					'role_key' => 'common_user',
-					'status' => '1',
+					'id' => '3', 'handlename' => 'Chief Editor',
+					'role_key' => 'common_user', 'status' => '1',
 					'modified' => '2015-08-15 06:12:30',
 					'last_login' => null,
 				),
@@ -119,10 +113,8 @@ class UserManagerControllerIndexTest extends UserManagerControllerTestCase {
 			),
 			3 => array(
 				'User' => array(
-					'id' => '4',
-					'handlename' => 'Editor',
-					'role_key' => 'common_user',
-					'status' => '1',
+					'id' => '4', 'handlename' => 'Editor',
+					'role_key' => 'common_user', 'status' => '1',
 					'modified' => '2015-08-15 06:12:30',
 					'last_login' => null,
 				),
@@ -132,10 +124,8 @@ class UserManagerControllerIndexTest extends UserManagerControllerTestCase {
 			),
 			4 => array(
 				'User' => array(
-					'id' => '5',
-					'handlename' => 'General User',
-					'role_key' => 'common_user',
-					'status' => '1',
+					'id' => '5', 'handlename' => 'General User',
+					'role_key' => 'common_user', 'status' => '1',
 					'modified' => '2015-08-15 06:12:30',
 					'last_login' => null,
 				),
@@ -145,10 +135,8 @@ class UserManagerControllerIndexTest extends UserManagerControllerTestCase {
 			),
 			5 => array(
 				'User' => array(
-					'id' => '6',
-					'handlename' => 'Visitor',
-					'role_key' => 'common_user',
-					'status' => '1',
+					'id' => '6', 'handlename' => 'Visitor',
+					'role_key' => 'common_user', 'status' => '1',
 					'modified' => '2015-08-15 06:12:30',
 					'last_login' => null,
 				),
