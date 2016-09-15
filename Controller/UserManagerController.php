@@ -361,8 +361,8 @@ class UserManagerController extends UserManagerAppController {
 
 		if (! Hash::get($user, 'User.is_deleted') &&
 				Hash::get($user, 'UploadFile.' . $fieldName . '.field_name')) {
-			$this->plugin = 'users';
 			// * アバター表示
+			$this->plugin = 'users';
 			return $this->Download->doDownload($user['User']['id'], array(
 				'field' => $fieldName,
 				'size' => $this->params['size'])
