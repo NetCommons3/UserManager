@@ -51,8 +51,7 @@ class UserManagerControllerViewTest extends UserManagerControllerTestCase {
  * setStatusOnBasic()テストのDataProvider
  *
  * ### 戻り値
- *  - user ステータス
- *  - expected 期待値
+ *  - userId ユーザID
  *
  * @return array データ
  */
