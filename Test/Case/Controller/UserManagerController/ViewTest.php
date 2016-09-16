@@ -253,6 +253,7 @@ class UserManagerControllerViewTest extends UserManagerControllerTestCase {
  *
  * @param int $userId 期待値
  * @return array
+ * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
  */
 	private function __getExpected($userId) {
 		if ($userId === '1') {
@@ -304,13 +305,13 @@ class UserManagerControllerViewTest extends UserManagerControllerTestCase {
 				'UserRoleSetting' => array(
 					'id' => '2',
 				),
-				'UploadFile' =>array(
+				'UploadFile' => array(
 					'avatar' => array(
 						'id' => '1',
 						'content_key' => '2',
 					),
 				),
-				'UploadFile' =>array(
+				'UploadFile' => array(
 					'avatar' => array(
 						'id' => '1',
 						'content_key' => '2',

@@ -67,8 +67,7 @@ App::uses('Space', 'Rooms.Model');
 							array('tooltip' => true, 'iconSize' => ' btn-sm')
 						); ?>
 				</div>
-		<?php endif; ?>
-
+			<?php endif; ?>
 			<?php echo $this->element('Users.Users/view_rooms'); ?>
 		</div>
 	<?php endif; ?>
