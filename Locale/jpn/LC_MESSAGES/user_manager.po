@@ -29,6 +29,16 @@ msgstr "参加ルームの選択"
 msgid "Notify user by e-mail"
 msgstr "メール通知"
 
+#
+# 会員詳細
+#
+
+msgid "All user attributes is displaying. If you want to set of the group, please setting from the handle of the header menu."
+msgstr "すべての会員項目を表示しています。グループ管理は、ヘッダーメニューのハンドルより行ってください。"
+
+msgid "All user attributes is displaying."
+msgstr "すべての会員項目を表示しています。"
+
 
 #
 # 会員一覧

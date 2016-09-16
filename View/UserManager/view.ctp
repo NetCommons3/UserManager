@@ -13,7 +13,7 @@ App::uses('Space', 'Rooms.Model');
 ?>
 
 <?php $this->start('title_for_modal'); ?>
-<?php echo __d('users', 'User information'). ' (' . h($pluginName) . ')'; ?>
+<?php echo __d('users', 'User information') . ' (' . h($pluginName) . ')'; ?>
 <?php $this->end(); ?>
 
 <?php if (isset($rooms)) : ?>
@@ -23,7 +23,6 @@ App::uses('Space', 'Rooms.Model');
 				<?php echo __d('users', 'User information'); ?>
 			</a>
 		</li>
-
 		<li>
 			<a href="#user-rooms" aria-controls="user-rooms" role="tab" data-toggle="tab">
 				<?php echo __d('users', 'Rooms'); ?>
@@ -34,12 +33,26 @@ App::uses('Space', 'Rooms.Model');
 
 <div class="tab-content">
 	<div class="tab-pane active" id="user-information">
+		<?php if (Current::permission('group_creatable') && $user['User']['id'] === Current::read('User.id')) : ?>
+			<?php echo $this->MessageFlash->description(
+				__d('user_manager', 'All user attributes is displaying. ' .
+									'If you want to set of the group, please setting from the handle of the header menu.'),
+				array('class' => 'user-manager-view well well-sm')
+			); ?>
+		<?php else : ?>
+			<?php echo $this->MessageFlash->description(
+				__d('user_manager', 'All user attributes is displaying.'),
+				array('class' => 'user-manager-view well well-sm')
+			); ?>
+		<?php endif; ?>
+
 		<div class="text-right nc-edit-link">
 			<?php echo $this->Button->editLink(__d('net_commons', 'Edit'),
 					array('controller' => 'user_manager', 'action' => 'edit', 'key' => $user['User']['id']),
 					array('iconSize' => ' btn-sm')
 				); ?>
 		</div>
+
 		<?php echo $this->element('Users.Users/view_information', array('editLink' => false)); ?>
 	</div>
 
