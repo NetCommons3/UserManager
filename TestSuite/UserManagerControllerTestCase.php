@@ -38,6 +38,7 @@ class UserManagerControllerTestCase extends NetCommonsControllerTestCase {
 		'plugin.user_attributes.user_attributes_role4test',
 		'plugin.user_roles.user_role',
 		'plugin.users.room4user',
+		'plugin.users.default_role_permission4user',
 		'plugin.users.rooms_language4user',
 		'plugin.users.roles_room4user',
 		'plugin.users.roles_rooms_user4user',
