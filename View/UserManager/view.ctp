@@ -46,24 +46,29 @@ App::uses('Space', 'Rooms.Model');
 			); ?>
 		<?php endif; ?>
 
-		<div class="text-right nc-edit-link">
-			<?php echo $this->Button->editLink(__d('net_commons', 'Edit'),
-					array('controller' => 'user_manager', 'action' => 'edit', 'key' => $user['User']['id']),
-					array('iconSize' => ' btn-sm')
-				); ?>
-		</div>
+		<?php if ($canUserEdit) : ?>
+			<div class="text-right nc-edit-link">
+				<?php echo $this->Button->editLink(__d('net_commons', 'Edit'),
+						array('controller' => 'user_manager', 'action' => 'edit', 'key' => $user['User']['id']),
+						array('iconSize' => ' btn-sm')
+					); ?>
+			</div>
+		<?php endif; ?>
 
 		<?php echo $this->element('Users.Users/view_information', array('editLink' => false)); ?>
 	</div>
 
 	<?php if (isset($rooms)) : ?>
 		<div class="tab-pane" id="user-rooms">
-			<div class="pull-right">
-				<?php echo $this->Button->editLink('',
-						array('controller' => 'users_roles_rooms', 'key' => $user['User']['id']),
-						array('tooltip' => true, 'iconSize' => ' btn-sm')
-					); ?>
-			</div>
+			<?php if ($canUserEdit) : ?>
+				<div class="pull-right">
+					<?php echo $this->Button->editLink('',
+							array('controller' => 'users_roles_rooms', 'key' => $user['User']['id']),
+							array('tooltip' => true, 'iconSize' => ' btn-sm')
+						); ?>
+				</div>
+		<?php endif; ?>
+
 			<?php echo $this->element('Users.Users/view_rooms'); ?>
 		</div>
 	<?php endif; ?>
