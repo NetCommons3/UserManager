@@ -28,6 +28,9 @@ class TestUserManagerComponentController extends AppController {
 		'M17n.SwitchLanguage',
 		'UserAttributes.UserAttributeLayout',
 		'UserManager.UserManager',
+		'NetCommons.Permission' => array(
+			'type' => PermissionComponent::CHECK_TYEP_NOCHECK_PLUGIN,
+		),
 	);
 
 /**

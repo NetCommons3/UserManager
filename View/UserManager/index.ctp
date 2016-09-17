@@ -10,7 +10,7 @@
  */
 
 echo $this->NetCommonsHtml->css(array(
-	//'/user_manager/css/style.css',
+	'/user_manager/css/style.css',
 	'/users/css/style.css',
 ));
 echo $this->NetCommonsHtml->script('/user_manager/js/user_manager.js');

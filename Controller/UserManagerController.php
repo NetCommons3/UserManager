@@ -119,8 +119,11 @@ class UserManagerController extends UserManagerAppController {
 		if (! $user || $user['User']['is_deleted']) {
 			return $this->throwBadRequest();
 		}
+		$this->set('canUserEdit', $this->User->canUserEdit($user));
+
 		$this->set('user', $user);
 		$this->set('title', false);
+		$this->set('pluginName', Current::read('Plugin.name'));
 
 		//レイアウトの設定
 		$this->viewClass = 'View';

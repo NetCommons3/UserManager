@@ -62,7 +62,9 @@ class UsersRolesRoomsController extends UserManagerAppController {
 			$userId = $this->params['user_id'];
 		}
 		$user = $this->User->getUser($userId);
-		if (! $user) {
+
+		//編集できるかどうかチェック
+		if (! $this->User->canUserEdit($user)) {
 			return $this->throwBadRequest();
 		}
 
