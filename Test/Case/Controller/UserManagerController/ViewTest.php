@@ -10,6 +10,7 @@
  */
 
 App::uses('UserManagerControllerTestCase', 'UserManager.TestSuite');
+App::uses('UserAttribute', 'UserAttributes.Model');
 
 /**
  * UserManagerController::view()のテスト
@@ -33,6 +34,7 @@ class UserManagerControllerViewTest extends UserManagerControllerTestCase {
  */
 	public function setUp() {
 		parent::setUp();
+		UserAttribute::$userAttributes = null;
 	}
 
 /**
