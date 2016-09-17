@@ -34,7 +34,6 @@ class UserManagerControllerViewTest extends UserManagerControllerTestCase {
  */
 	public function setUp() {
 		parent::setUp();
-		UserAttribute::$userAttributes = null;
 	}
 
 /**
@@ -43,6 +42,8 @@ class UserManagerControllerViewTest extends UserManagerControllerTestCase {
  * @return void
  */
 	public function tearDown() {
+		UserAttribute::$userAttributes = null;
+
 		//ログアウト
 		TestAuthGeneral::logout($this);
 

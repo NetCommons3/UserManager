@@ -20,29 +20,6 @@ App::uses('UserManagerControllerTestCase', 'UserManager.TestSuite');
 class UserManagerComponentSetUserRoleAdminOnBasicTest extends UserManagerControllerTestCase {
 
 /**
- * Fixtures
- *
- * @var array
- */
-	public $fixtures = array(
-		'plugin.user_attributes.plugin4test',
-		'plugin.user_attributes.plugins_role4test',
-		'plugin.user_attributes.user_attribute4test',
-		'plugin.user_attributes.user_attribute_choice4test',
-		'plugin.user_attributes.user_attribute_layout',
-		'plugin.user_attributes.user_attribute_setting4test',
-		'plugin.user_attributes.user_attributes_role4test',
-		'plugin.user_roles.user_role',
-	);
-
-/**
- * Plugin name
- *
- * @var string
- */
-	public $plugin = 'user_manager';
-
-/**
  * setUp method
  *
  * @return void

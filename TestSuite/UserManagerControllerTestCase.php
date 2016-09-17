@@ -11,6 +11,7 @@
 
 //@codeCoverageIgnoreStart
 App::uses('NetCommonsControllerTestCase', 'NetCommons.TestSuite');
+App::uses('UserAttribute', 'UserAttributes.Model');
 //@codeCoverageIgnoreEnd
 
 /**
@@ -55,5 +56,15 @@ class UserManagerControllerTestCase extends NetCommonsControllerTestCase {
  * @var string
  */
 	public $plugin = 'user_manager';
+
+/**
+ * setUp method
+ *
+ * @return void
+ */
+	public function setUp() {
+		parent::setUp();
+		UserAttribute::$userAttributes = null;
+	}
 
 }
