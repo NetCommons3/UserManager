@@ -26,8 +26,9 @@ echo $this->NetCommonsHtml->script([
 <?php echo $this->element('UserManager.UsersRolesRooms/edit_header'); ?>
 
 <?php echo $this->NetCommonsForm->create('RolesRoomsUser'); ?>
-
-	<?php echo $this->element('UserManager.UsersRolesRooms/edit_content'); ?>
+	<article ng-controller="UsersRolesRooms">
+		<?php echo $this->element('UserManager.UsersRolesRooms/edit_content'); ?>
+	</article>
 
 	<div class="text-center">
 		<?php echo $this->Wizard->buttons(
