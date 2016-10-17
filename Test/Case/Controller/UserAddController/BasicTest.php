@@ -84,8 +84,14 @@ class UserAddControllerBasicTest extends UserManagerControllerTestCase {
 			'components' => array('Session' => array('read'))
 		));
 		$this->controller->Session
-			->expects($this->once())->method('read')
-			->will($this->returnValue($avatarPath));
+			->expects($this->exactly(2))->method('read')
+			->will($this->returnCallback(function ($key) use ($avatarPath) {
+				if ($key === 'UserAdd.User.avatar.tmp_name') {
+					return $avatarPath;
+				} else {
+					return null;
+				}
+			}));
 
 		//テスト実行
 		$this->_testGetAction(array('action' => 'basic'), array('method' => 'assertNotEmpty'), null, 'view');
@@ -109,9 +115,16 @@ class UserAddControllerBasicTest extends UserManagerControllerTestCase {
 		$this->generateNc(Inflector::camelize($this->_controller), array(
 			'components' => array('Session' => array('read'))
 		));
+		$data = $this->__data();
 		$this->controller->Session
-			->expects($this->once())->method('read')
-			->will($this->returnValue($this->__data()));
+			->expects($this->exactly(2))->method('read')
+			->will($this->returnCallback(function ($key) use ($data) {
+				if ($key === 'UserAdd') {
+					return $data;
+				} else {
+					return null;
+				}
+			}));
 
 		//テスト実行
 		$this->_testGetAction(array('action' => 'basic'), array('method' => 'assertNotEmpty'), null, 'view');
