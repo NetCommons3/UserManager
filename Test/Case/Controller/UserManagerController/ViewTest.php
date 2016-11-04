@@ -234,7 +234,7 @@ class UserManagerControllerViewTest extends UserManagerControllerTestCase {
 		$view = preg_replace('/[\s]+</u', '<', $view);
 
 		$this->assertTextContains('<td>Public</td>', $view);
-		$this->assertTextContains('<td>Public room</td>', $view);
+		$this->assertTextContains('<td><span class="rooms-tree"></span>Public room</td>', $view);
 
 		if (Hash::get($expected, 'User.id') === '1' || Hash::get($expected, 'User.id') === '2') {
 			$this->assertTextContains('<td>Community room 1</td>', $view);
