@@ -166,44 +166,44 @@ class UserAddControllerUserRolesRoomsTest extends UserManagerControllerTestCase 
 		$this->view = preg_replace('/[>][\s]+([^a-z])/u', '>$1', $this->view);
 		$this->view = preg_replace('/[\s]+</u', '<', $this->view);
 
-		$expected = array('1', '4', '10', '11');
+		$expected = array('2', '5', '11', '12');
 		$this->assertEquals(array_keys($this->vars['rolesRooms']), $expected);
 
 		$expected = array('1', '2', '3', '4', '5');
-		$this->assertEquals($expected, Hash::extract($this->vars['rolesRooms'], '1.{s}.RolesRoom.id'));
+		$this->assertEquals($expected, Hash::extract($this->vars['rolesRooms'], '2.{s}.RolesRoom.id'));
 
 		$expected = array('12', '13', '14', '15', '16');
-		$this->assertEquals($expected, Hash::extract($this->vars['rolesRooms'], '4.{s}.RolesRoom.id'));
+		$this->assertEquals($expected, Hash::extract($this->vars['rolesRooms'], '5.{s}.RolesRoom.id'));
 
 		$expected = array('22', '23', '24', '25', '26');
-		$this->assertEquals($expected, Hash::extract($this->vars['rolesRooms'], '10.{s}.RolesRoom.id'));
-
-		$expected = array('27', '28', '29', '30', '31');
 		$this->assertEquals($expected, Hash::extract($this->vars['rolesRooms'], '11.{s}.RolesRoom.id'));
 
-		$this->assertEquals('5', Hash::get($this->vars['rolesRoomsUsers'], 'RolesRoomsUser.1.roles_room_id'));
-		$this->assertEquals('6', Hash::get($this->vars['rolesRoomsUsers'], 'RolesRoomsUser.2.roles_room_id'));
-		$this->assertEquals('10', Hash::get($this->vars['rolesRoomsUsers'], 'RolesRoomsUser.3.roles_room_id'));
-		$this->assertEquals('16', Hash::get($this->vars['rolesRoomsUsers'], 'RolesRoomsUser.4.roles_room_id'));
+		$expected = array('27', '28', '29', '30', '31');
+		$this->assertEquals($expected, Hash::extract($this->vars['rolesRooms'], '12.{s}.RolesRoom.id'));
+
+		$this->assertEquals('5', Hash::get($this->vars['rolesRoomsUsers'], 'RolesRoomsUser.2.roles_room_id'));
+		$this->assertEquals('6', Hash::get($this->vars['rolesRoomsUsers'], 'RolesRoomsUser.3.roles_room_id'));
+		$this->assertEquals('10', Hash::get($this->vars['rolesRoomsUsers'], 'RolesRoomsUser.4.roles_room_id'));
+		$this->assertEquals('16', Hash::get($this->vars['rolesRoomsUsers'], 'RolesRoomsUser.5.roles_room_id'));
 
 		$this->assertInput('form', null, '/user_manager/user_add/user_roles_rooms', $this->view);
 		$this->assertInput('input', '_method', 'POST', $this->view);
-		$this->assertInput('input', 'data[RolesRoomsUser][1][id]', null, $this->view);
-		$this->assertInput('input', 'data[RolesRoomsUser][1][room_id]', '1', $this->view);
-		$this->assertInput('input', 'data[RolesRoomsUser][1][user_id]', null, $this->view);
-		$this->assertInput('input', 'data[RolesRoomsUser][4][id]', null, $this->view);
-		$this->assertInput('input', 'data[RolesRoomsUser][4][room_id]', '4', $this->view);
-		$this->assertInput('input', 'data[RolesRoomsUser][4][user_id]', null, $this->view);
-
-		$this->assertInput('input', 'data[RolesRoomsUser][10][id]', null, $this->view);
-		$this->assertInput('input', 'data[RolesRoomsUser][10][room_id]', '10', $this->view);
-		$this->assertInput('input', 'data[RolesRoomsUser][10][user_id]', null, $this->view);
-		$this->assertInput('input', 'data[RolesRoomsUser][10][roles_room_id]', '0', $this->view);
+		$this->assertInput('input', 'data[RolesRoomsUser][2][id]', null, $this->view);
+		$this->assertInput('input', 'data[RolesRoomsUser][2][room_id]', '2', $this->view);
+		$this->assertInput('input', 'data[RolesRoomsUser][2][user_id]', null, $this->view);
+		$this->assertInput('input', 'data[RolesRoomsUser][5][id]', null, $this->view);
+		$this->assertInput('input', 'data[RolesRoomsUser][5][room_id]', '5', $this->view);
+		$this->assertInput('input', 'data[RolesRoomsUser][5][user_id]', null, $this->view);
 
 		$this->assertInput('input', 'data[RolesRoomsUser][11][id]', null, $this->view);
 		$this->assertInput('input', 'data[RolesRoomsUser][11][room_id]', '11', $this->view);
 		$this->assertInput('input', 'data[RolesRoomsUser][11][user_id]', null, $this->view);
 		$this->assertInput('input', 'data[RolesRoomsUser][11][roles_room_id]', '0', $this->view);
+
+		$this->assertInput('input', 'data[RolesRoomsUser][12][id]', null, $this->view);
+		$this->assertInput('input', 'data[RolesRoomsUser][12][room_id]', '12', $this->view);
+		$this->assertInput('input', 'data[RolesRoomsUser][12][user_id]', null, $this->view);
+		$this->assertInput('input', 'data[RolesRoomsUser][12][roles_room_id]', '0', $this->view);
 	}
 
 /**
