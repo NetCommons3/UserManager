@@ -116,8 +116,13 @@ class UserAddControllerBeforeFilterTest extends UserManagerControllerTestCase {
 			'handlename' => '',
 			'username' => '',
 		);
+		if (Configure::read('debug')) {
+			$exactly = 2;
+		} else {
+			$exactly = 1;
+		}
 		$this->controller->Session
-			->expects($this->exactly(2))->method('read')
+			->expects($this->exactly($exactly))->method('read')
 			->will($this->returnCallback(function ($key) use ($user) {
 				if ($key === 'UserAdd') {
 					return array('User' => $user);
