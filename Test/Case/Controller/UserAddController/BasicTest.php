@@ -83,8 +83,13 @@ class UserAddControllerBasicTest extends UserManagerControllerTestCase {
 		$this->generateNc(Inflector::camelize($this->_controller), array(
 			'components' => array('Session' => array('read'))
 		));
+		if (Configure::read('debug')) {
+			$exactly = 2;
+		} else {
+			$exactly = 1;
+		}
 		$this->controller->Session
-			->expects($this->exactly(2))->method('read')
+			->expects($this->exactly($exactly))->method('read')
 			->will($this->returnCallback(function ($key) use ($avatarPath) {
 				if ($key === 'UserAdd.User.avatar.tmp_name') {
 					return $avatarPath;
@@ -116,8 +121,13 @@ class UserAddControllerBasicTest extends UserManagerControllerTestCase {
 			'components' => array('Session' => array('read'))
 		));
 		$data = $this->__data();
+		if (Configure::read('debug')) {
+			$exactly = 2;
+		} else {
+			$exactly = 1;
+		}
 		$this->controller->Session
-			->expects($this->exactly(2))->method('read')
+			->expects($this->exactly($exactly))->method('read')
 			->will($this->returnCallback(function ($key) use ($data) {
 				if ($key === 'UserAdd') {
 					return $data;
