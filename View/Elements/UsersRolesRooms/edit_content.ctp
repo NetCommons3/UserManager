@@ -35,7 +35,7 @@ echo $this->NetCommonsHtml->css('/user_manager/css/style.css');
 
 	<div id="user-manager-room-space" class="tab-pane active">
 		<article class="rooms-manager">
-			<?php echo $this->Rooms->roomsRender(Space::ROOM_SPACE_ID,
+			<?php echo $this->Rooms->roomsRender(Space::COMMUNITY_SPACE_ID,
 					array(
 						'dataElemen' => 'UsersRolesRooms/render_room_index',
 						'headElement' => 'UsersRolesRooms/render_header'
@@ -43,8 +43,8 @@ echo $this->NetCommonsHtml->css('/user_manager/css/style.css');
 					array(
 						'paginator' => false,
 						'displaySpace' => false,
-						'roomTreeList' => $rooms[Space::ROOM_SPACE_ID]['roomTreeList'],
-						'rooms' => $rooms[Space::ROOM_SPACE_ID]['rooms'],
+						'roomTreeList' => $rooms[Space::COMMUNITY_SPACE_ID]['roomTreeList'],
+						'rooms' => $rooms[Space::COMMUNITY_SPACE_ID]['rooms'],
 						'tableClass' => 'table table-hover'
 					)
 				); ?>

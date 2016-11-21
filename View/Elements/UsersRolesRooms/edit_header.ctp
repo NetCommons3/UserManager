@@ -20,7 +20,7 @@ echo $this->NetCommonsHtml->script('/user_manager/js/users_roles_rooms.js');
 	);
 ?>
 
-<?php echo $this->Rooms->spaceTabs(Space::ROOM_SPACE_ID, 'pills', array(
+<?php echo $this->Rooms->spaceTabs(Space::COMMUNITY_SPACE_ID, 'pills', array(
 	Space::PUBLIC_SPACE_ID => array(
 		'url' => '#user-manager-public-space',
 		'attributes' => array(
@@ -29,7 +29,7 @@ echo $this->NetCommonsHtml->script('/user_manager/js/users_roles_rooms.js');
 			'data-toggle' => 'tab',
 		),
 	),
-	Space::ROOM_SPACE_ID => array(
+	Space::COMMUNITY_SPACE_ID => array(
 		'url' => '#user-manager-room-space',
 		'attributes' => array(
 			'aria-controls' => 'user-manage-room-space',

@@ -84,7 +84,9 @@ class UserAddController extends UserManagerAppController {
 				),
 				self::WIZARD_USERS_ROLES_ROOMS => array(
 					'url' => array(
-						'controller' => 'user_add', 'action' => 'user_roles_rooms', 'key2' => Space::ROOM_SPACE_ID,
+						'controller' => 'user_add',
+						'action' => 'user_roles_rooms',
+						'key2' => Space::COMMUNITY_SPACE_ID,
 					),
 					'label' => array('user_manager', 'Select the rooms to join'),
 				),
@@ -236,7 +238,7 @@ class UserAddController extends UserManagerAppController {
 
 		//** ルームロールデータ取得
 		$rolesRooms = $this->Room->getRolesRoomsNotInDraft(array(
-			'Room.space_id' => [Space::PUBLIC_SPACE_ID, Space::ROOM_SPACE_ID]
+			'Room.space_id' => [Space::PUBLIC_SPACE_ID, Space::COMMUNITY_SPACE_ID]
 		));
 		$rolesRooms = Hash::combine($rolesRooms, '{n}.RolesRoom.role_key', '{n}', '{n}.Room.id');
 		$this->set('rolesRooms', $rolesRooms);
