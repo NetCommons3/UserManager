@@ -13,15 +13,297 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: UserManager/View/Elements/setting_tabs.ctp:30
+#: UserManager/Controller/UserAddController.php:295
+#: UserManager/Test/Case/Controller/UserAddController/NotifyTest.php:179
+msgid "Successfully mail send."
+msgstr ""
+
+#: UserManager/Model/UserMail.php:70
+#: UserManager/Test/Case/Controller/UserAddController/NotifyTest.php:251
+#: UserManager/View/UserAdd/notify.ctp:32
+msgid "Reply to mail address"
+msgstr ""
+
+#: UserManager/Model/UserMail.php:81
+#: UserManager/Test/Case/Controller/UserAddController/NotifyTest.php:243
+#: UserManager/View/UserAdd/notify.ctp:37
+msgid "Mail title"
+msgstr ""
+
+#: UserManager/Model/UserMail.php:89
+#: UserManager/Test/Case/Controller/UserAddController/NotifyTest.php:247
+#: UserManager/View/UserAdd/notify.ctp:43
+msgid "Mail body"
+msgstr ""
+
+#: UserManager/Test/Case/Controller/UserManagerController/ViewTest.php:111
+#: UserManager/View/UserManager/view.ctp:38
+msgid "All user attributes is displaying. If you want to set of the group, please setting from the handle of the header menu."
+msgstr ""
+
+#: UserManager/Test/Case/Controller/UserManagerController/ViewTest.php:117;167
+#: UserManager/View/UserManager/view.ctp:44
+msgid "All user attributes is displaying."
+msgstr ""
+
+#: UserManager/View/Elements/setting_tabs.ctp:22
 msgid "General setting"
 msgstr ""
 
-#: UserManager/View/Elements/setting_tabs.ctp:34
+#: UserManager/View/Elements/setting_tabs.ctp:26
 msgid "Select the rooms to join"
 msgstr ""
 
-#: UserManager/View/Elements/setting_tabs.ctp:38
-msgid "Notify user by e-mail"
+#: UserManager/View/Elements/UserManager/import_details.ctp:18
+#: UserManager/View/UserManager/import.ctp:85
+msgid "Item"
+msgstr ""
+
+#: UserManager/View/Elements/UserManager/import_details.ctp:20
+#: UserManager/View/UserManager/import.ctp:87
+msgid "Description"
+msgstr ""
+
+#: UserManager/View/Elements/UsersRolesRooms/edit_header.ctp:18
+msgid "Please choose whether to participate in what role the members in each room, and press the [OK].<br>If you want to exit this screen, please press the [Cancel]."
+msgstr ""
+
+#: UserManager/View/UserAdd/basic.ctp:16
+msgid "Input the user data, and press [NEXT].<br>Required items are marked by <strong class=\"text-danger h4\">*</strong>."
+msgstr ""
+
+#: UserManager/View/UserAdd/notify.ctp:15
+msgid "Press [Send] to notify the user."
+msgstr ""
+
+#: UserManager/View/UserAdd/notify.ctp:24
+msgid "To mail address"
+msgstr ""
+
+#: UserManager/View/UserAdd/notify.ctp:56
+msgid "Send"
+msgstr ""
+
+#: UserManager/View/UserAdd/user_roles_rooms.ctp:47
+msgid "To notify the user"
+msgstr ""
+
+#: UserManager/View/UserManager/edit.ctp:18
+msgid "Input the user data, and press [OK].<br>Required items are marked by <strong class=\"text-danger h4\">*</strong>."
+msgstr ""
+
+#: UserManager/View/UserManager/export.ctp:19
+msgid "Export title"
+msgstr ""
+
+#: UserManager/View/UserManager/export.ctp:23
+msgid "Export description"
+msgstr ""
+
+#: UserManager/View/UserManager/export.ctp:31
+msgid "Search for the export members"
+msgstr ""
+
+#: UserManager/View/UserManager/export.ctp:42
+msgid "Password"
+msgstr ""
+
+#: UserManager/View/UserManager/export.ctp:44
+msgid "If you do not want to assign a password, please leave it blank."
+msgstr ""
+
+#: UserManager/View/UserManager/import.ctp:19
+msgid "Import title"
+msgstr ""
+
+#: UserManager/View/UserManager/import.ctp:23
+#: Users/Console/Command/UsersShell.php:82
+#: Users/Test/Case/Console/Command/UsersShell/GetOptionParserTest.php:69
+msgid "Import description"
+msgstr ""
+
+#: UserManager/View/UserManager/import.ctp:37
+msgid "Format file download"
+msgstr ""
+
+#: UserManager/View/UserManager/import.ctp:50
+msgid "Error if have same datas."
+msgstr ""
+
+#: UserManager/View/UserManager/import.ctp:51
+msgid "Overwrite the same datas."
+msgstr ""
+
+#: UserManager/View/UserManager/import.ctp:52
+msgid "Skip if have same datas."
+msgstr ""
+
+#: UserManager/View/UserManager/import.ctp:54
+msgid "Same datas"
+msgstr ""
+
+#: UserManager/View/UserManager/import.ctp:64
+msgid "Import file"
+msgstr ""
+
+#: UserManager/View/UserManager/import.ctp:71
+msgid "Details of settings from import file"
+msgstr ""
+
+#: UserManager/View/UserManager/import.ctp:74
+msgid "display"
+msgstr ""
+
+#: UserManager/View/UserManager/import.ctp:77
+msgid "hidden"
+msgstr ""
+
+#: UserManager/View/UserManager/import.ctp:98
+msgid "[option]"
+msgstr ""
+
+#: UserManager/View/UserManager/index.ctp:29
+#: Users/View/Helper/UserSearchFormHelper.php:393
+msgid "Export"
+msgstr ""
+
+#: UserManager/View/UserManager/index.ctp:35
+msgid "Import"
+msgstr ""
+
+#: UserManager/View/UserManager/index.ctp:43
+msgid "Click the handle name to read his/her data. And to edit the user data. And delete user data, please go from editing screen."
+msgstr ""
+
+#: UserManager/View/UserManager/index.ctp:47
+msgid "Search for the members"
+msgstr ""
+
+#: UserManager/View/UserManager/index.ctp:50
+msgid "Add user"
+msgstr ""
+
+#: Users/Console/Command/Task/UserImportTask.php:77
+msgid "Import file path."
+msgstr ""
+
+#: Users/Model/UserSearch.php:126
+#: Users/View/Helper/UserSearchFormHelper.php:309
+msgid "Rooms"
+msgstr ""
+
+#: Users/Model/UserSearch.php:138
+#: Users/View/Helper/UserSearchFormHelper.php:339
+msgid "Groups"
+msgstr ""
+
+#: Users/Model/UserSearchAppModel.php:72
+#: Users/View/Helper/UserSearchFormHelper.php:84
+msgid "No avatar."
+msgstr ""
+
+#: Users/Model/UserSearchAppModel.php:73
+#: Users/View/Helper/UserSearchFormHelper.php:85
+msgid "Has avatar."
+msgstr ""
+
+#: Users/Model/UserSearchAppModel.php:83
+msgid "Not logged more than <span style=\"color:#ff0000;\">%s</span>days ago"
+msgstr ""
+
+#: Users/Model/UserSearchAppModel.php:85
+msgid "Have logged in within <span style=\"color:#ff0000;\">%s</span>days"
+msgstr ""
+
+#: Users/Model/UserSearchAppModel.php:89
+msgid "more than <span style=\"color:#ff0000;\">%s</span>days ago"
+msgstr ""
+
+#: Users/Model/UserSearchAppModel.php:91
+msgid "within <span style=\"color:#ff0000;\">%s</span>days"
+msgstr ""
+
+#: Users/Model/Behavior/ImportExportBehavior.php:145
+msgid "Line %s: %s"
+msgstr ""
+
+#: Users/Model/Behavior/ImportExportBehavior.php:423
+msgid "[Public setting]"
+msgstr ""
+
+#: Users/Model/Behavior/ImportExportBehavior.php:428
+msgid "Set public/private status for %s."
+msgstr ""
+
+#: Users/Model/Behavior/ImportExportBehavior.php:434
+msgid "Disclose"
+msgstr ""
+
+#: Users/Model/Behavior/ImportExportBehavior.php:435
+msgid "Do not disclose"
+msgstr ""
+
+#: Users/Model/Behavior/ImportExportBehavior.php:442
+msgid "[Reception setting]"
+msgstr ""
+
+#: Users/Model/Behavior/ImportExportBehavior.php:447
+msgid "Set `%s can/cannot be used` (can/cannot receive) status."
+msgstr ""
+
+#: Users/Model/Behavior/ImportExportBehavior.php:453
+msgid "Receipt (condition when email is received)"
+msgstr ""
+
+#: Users/Model/Behavior/ImportExportBehavior.php:456
+msgid "Non-receipt (condition when email cannot be received)"
+msgstr ""
+
+#: Users/Model/Behavior/ImportExportBehavior.php:473
+msgid "Set %s."
+msgstr ""
+
+#: Users/Model/Behavior/ImportExportBehavior.php:479
+msgid "<span class=\"text-danger\">Required.</span>"
+msgstr ""
+
+#: Users/View/Helper/UserSearchFormHelper.php:140
+msgid "Not specified"
+msgstr ""
+
+#: Users/View/Helper/UserSearchFormHelper.php:186;303;333
+msgid "-- Not specify --"
+msgstr ""
+
+#: Users/View/Helper/UserSearchFormHelper.php:215
+msgid "Not logged more than <span style=\"color:#ff0000;\">X</span>days ago"
+msgstr ""
+
+#: Users/View/Helper/UserSearchFormHelper.php:217
+msgid "Have logged in within <span style=\"color:#ff0000;\">X</span>days"
+msgstr ""
+
+#: Users/View/Helper/UserSearchFormHelper.php:221
+msgid "more than <span style=\"color:#ff0000;\">X</span>days ago"
+msgstr ""
+
+#: Users/View/Helper/UserSearchFormHelper.php:222
+msgid "within <span style=\"color:#ff0000;\">X</span>days"
+msgstr ""
+
+#: Users/View/Helper/UserSearchHelper.php:264
+msgid "Do you approve?"
+msgstr ""
+
+#: Users/View/Helper/UserSearchHelper.php:267
+msgid "Approval"
+msgstr ""
+
+#: Users/View/Helper/UserSearchHelper.php:278
+msgid "Resend"
+msgstr ""
+
+#: Users/View/UserSearch/conditions.ctp:17
+msgid "User search"
 msgstr ""
 
