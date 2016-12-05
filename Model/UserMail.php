@@ -68,7 +68,7 @@ class UserMail extends UserManagerAppModel {
 					'message' => sprintf(
 						__d('net_commons', 'Unauthorized pattern for %s. Please input the data in %s format.'),
 						__d('user_manager', 'Reply to mail address'),
-						__d('net_commons', 'email')
+						__d('net_commons', 'Email')
 					),
 					'required' => false,
 					'allowEmpty' => true
