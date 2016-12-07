@@ -13,11 +13,11 @@ NetCommonsApp.controller('UserManagerController',
       /**
        * 検索ダイアログ表示
        *
-       * @param {array} condtions 条件配列
+       * @param {array} conditions 条件配列
        * @param {string} callbackUrl callbackするURL
        * @return {void}
        */
-      $scope.showUserSearch = function(condtions, callbackUrl) {
+      $scope.showUserSearch = function(conditions, callbackUrl) {
         console.log(callbackUrl);
         NetCommonsModal.show(
             $scope, 'UserManagerSearch',
@@ -27,7 +27,7 @@ NetCommonsApp.controller('UserManagerController',
               size: 'lg',
               resolve: {
                 options: {
-                  condtions: condtions,
+                  conditions: conditions,
                   callbackUrl: callbackUrl
                 }
               }
@@ -60,7 +60,7 @@ NetCommonsApp.controller('UserManagerSearch',
         /**
          * 検索条件を保持する変数
          */
-        $scope.condtions = options['condtions'];
+        $scope.conditions = options['conditions'];
 
         /**
          * 初期処理
@@ -78,15 +78,15 @@ NetCommonsApp.controller('UserManagerSearch',
          */
         $scope.search = function() {
           var element = angular.element('#' + $scope.domId);
-          $scope.condtions = {};
+          $scope.conditions = {};
           angular.forEach(element.serializeArray(), function(input) {
             if (input['value'] !== '') {
-              this.condtions[input['name']] = input['value'];
+              this.conditions[input['name']] = input['value'];
             }
           }, $scope);
 
           $http.post(NC3_URL + '/user_manager/user_manager/search/result',
-              $.param({_method: 'POST', data: $scope.condtions}),
+              $.param({_method: 'POST', data: $scope.conditions}),
               {cache: false,
                 headers:
                     {'Content-Type': 'application/x-www-form-urlencoded'}
