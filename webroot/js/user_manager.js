@@ -91,13 +91,13 @@ NetCommonsApp.controller('UserManagerSearch',
                 headers:
                     {'Content-Type': 'application/x-www-form-urlencoded'}
               }
-          )
-          .success(function(data) {
+          ).then(
+          function(response) {
                 //success condition
                 $window.location.href = NC3_URL + options['callbackUrl'] + '?search';
                 //$uibModalInstance.close('success');
-          })
-          .error(function(data, status) {
+          },
+          function(response) {
                 //error condition
                 $uibModalInstance.dismiss('error');
           });
