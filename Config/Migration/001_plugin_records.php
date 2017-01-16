@@ -44,6 +44,8 @@ class PluginRecords extends NetCommonsMigration {
 			//日本語
 			array(
 				'language_id' => '2',
+				'is_origin' => true,
+				'is_translation' => true,
 				'key' => 'user_manager',
 				'namespace' => 'netcommons/user-manager',
 				'name' => '会員管理',
@@ -56,6 +58,8 @@ class PluginRecords extends NetCommonsMigration {
 			//英語
 			array(
 				'language_id' => '1',
+				'is_origin' => false,
+				'is_translation' => true,
 				'key' => 'user_manager',
 				'namespace' => 'netcommons/user-manager',
 				'name' => 'User Manager',
