@@ -294,7 +294,7 @@ class UserManagerController extends UserManagerAppController {
 		$csvWriter = new CsvFileWriter(array('header' => $header));
 		$csvWriter->close();
 
-		return $csvWriter->download('export_user.csv');
+		return $csvWriter->download('import_file.csv');
 	}
 
 /**
