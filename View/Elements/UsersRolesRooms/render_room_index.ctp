@@ -17,10 +17,23 @@ if (! isset($rolesRoomsUsers['RolesRoomsUser'][$roomId])) {
 	$rolesRoomsUsers['RolesRoomsUser'][$roomId]['user_id'] = $activeUserId;
 }
 $domId = $this->NetCommonsHtml->domId('RolesRoomsUser.' . $roomId . '.roles_room_id');
+
+$parentRoomId = $room['Room']['parent_id'];
+$parentDomId = $this->NetCommonsHtml->domId('RolesRoomsUser.' . $parentRoomId . '.roles_room_id');
+$initValueArgument = '\'' . $domId . '\', ' .
+	'\'' . $rolesRoomsUsers['RolesRoomsUser'][$roomId]['roles_room_id'] . '\'';
+if ($room['Room']['space_id'] === Space::COMMUNITY_SPACE_ID &&
+	$roomId != Space::getRoomIdRoot(Space::COMMUNITY_SPACE_ID)
+) {
+	$initValueArgument .= ', ' .
+		'\'' . $roomId . '\', ' .
+		'\'' . $parentRoomId . '\'';
+}
+
 ?>
 
 <tr class="<?php echo $this->Rooms->statusCss($room, 'text-'); ?>"
-	ng-init="initValue(<?php echo '\'' . $domId . '\', \'' . $rolesRoomsUsers['RolesRoomsUser'][$roomId]['roles_room_id'] . '\''; ?>)">
+	ng-init="initValue(<?php echo $initValueArgument; ?>)">
 
 	<td>
 		<a href="" ng-controller="RoomsController"
@@ -41,6 +54,10 @@ $domId = $this->NetCommonsHtml->domId('RolesRoomsUser.' . $roomId . '.roles_room
 			echo $this->NetCommonsForm->hidden(
 				'RolesRoomsUser.' . $roomId . '.user_id',
 				array('value' => $rolesRoomsUsers['RolesRoomsUser'][$roomId]['user_id'])
+			);
+			echo $this->NetCommonsForm->hidden(
+				'RolesRoomsUser.' . $roomId . '.roles_room_id',
+				array('value' => '0')
 			);
 		?>
 	</td>
@@ -66,8 +83,10 @@ $domId = $this->NetCommonsHtml->domId('RolesRoomsUser.' . $roomId . '.roles_room
 				$html .= '<label for="' . $this->Form->domId('RolesRoomsUser.' . $roomId . '.roles_room_id' . $rolesRoomId) . '">';
 				$html .= $this->Form->radio('RolesRoomsUser.' . $roomId . '.roles_room_id', $options, array(
 					'checked' => ($rolesRoomId === $rolesRoomsUsers['RolesRoomsUser'][$roomId]['roles_room_id']),
+					'ng-checked' => $domId . ' === \'' . $rolesRoomId . '\'',
+					'ng-disabled' => $parentDomId . ' === \'0\'',
 					'hiddenField' => false,
-					'ng-click' => $domId . ' = \'' . $rolesRoomId . '\'',
+					'ng-click' => 'setRoleRoomId(\'' . $domId . '\', \'' . $rolesRoomId . '\', \'' . $roomId . '\')',
 					'label' => false,
 					'data-input-key' => $key . '_' . $room['Space']['id'],
 					'data-dom-id' => $domId

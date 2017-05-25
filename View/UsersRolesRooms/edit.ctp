@@ -22,23 +22,25 @@ echo $this->NetCommonsHtml->script([
 ?>
 
 <?php echo $this->element('UserManager.setting_tabs'); ?>
-<?php echo $this->element('UserManager.subtitle'); ?>
-<?php echo $this->element('UserManager.UsersRolesRooms/edit_header'); ?>
+<div ng-cloak>
+	<?php echo $this->element('UserManager.subtitle'); ?>
+	<?php echo $this->element('UserManager.UsersRolesRooms/edit_header'); ?>
 
-<?php echo $this->NetCommonsForm->create('RolesRoomsUser'); ?>
+	<?php echo $this->NetCommonsForm->create('RolesRoomsUser'); ?>
 
-	<?php echo $this->NetCommonsForm->hidden('User.id', array('value' => $activeUserId)); ?>
+		<?php echo $this->NetCommonsForm->hidden('User.id', array('value' => $activeUserId)); ?>
 
-	<article ng-controller="UsersRolesRooms">
-		<?php echo $this->element('UserManager.UsersRolesRooms/edit_content'); ?>
-	</article>
+		<article ng-controller="UsersRolesRooms">
+			<?php echo $this->element('UserManager.UsersRolesRooms/edit_content'); ?>
+		</article>
 
-	<div class="text-center">
-		<?php echo $this->Button->cancelAndSave(
-				__d('net_commons', 'Cancel'),
-				__d('net_commons', 'OK'),
-				NetCommonsUrl::actionUrlAsArray(['controller' => 'user_manager', 'action' => 'index'])
-			); ?>
-	</div>
+		<div class="text-center">
+			<?php echo $this->Button->cancelAndSave(
+					__d('net_commons', 'Cancel'),
+					__d('net_commons', 'OK'),
+					NetCommonsUrl::actionUrlAsArray(['controller' => 'user_manager', 'action' => 'index'])
+				); ?>
+		</div>
 
-<?php echo $this->NetCommonsForm->end();
+	<?php echo $this->NetCommonsForm->end(); ?>
+</div>

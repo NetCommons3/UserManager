@@ -11,14 +11,23 @@
  * @param {function($scope, $http, $window)} Controller
  */
 NetCommonsApp.controller('UsersRolesRooms', ['$scope', '$http', function($scope, $http) {
+  $scope.domIdListAsParentIdKey = {};
 
   /**
    * initialize
    *
    * @return {void}
    */
-  $scope.initValue = function(domId, value) {
-    $scope[domId] = value;
+  $scope.initValue = function(domId, roleRoomId, roomId, parentRoomId) {
+    $scope[domId] = roleRoomId;
+
+    if (!roomId) {
+      return;
+    }
+    if (!$scope.domIdListAsParentIdKey[parentRoomId]) {
+      $scope.domIdListAsParentIdKey[parentRoomId] = [];
+    }
+    $scope.domIdListAsParentIdKey[parentRoomId].push(domId);
   };
 
   /**
@@ -35,6 +44,25 @@ NetCommonsApp.controller('UsersRolesRooms', ['$scope', '$http', function($scope,
       var domId = el.attr('data-dom-id');
       var value = el.attr('value');
       $scope[domId] = value;
+    });
+  };
+
+  /**
+   * Set RolesRoom.id
+   *
+   * @return {void}
+   */
+  $scope.setRoleRoomId = function(domId, roleRoomId, roomId) {
+    $scope[domId] = roleRoomId;
+
+    if (roleRoomId !== '0' ||
+        !$scope.domIdListAsParentIdKey[roomId]
+    ) {
+      return;
+    }
+
+    angular.forEach($scope.domIdListAsParentIdKey[roomId], function(domId) {
+      $scope[domId] = '0';
     });
   };
 
