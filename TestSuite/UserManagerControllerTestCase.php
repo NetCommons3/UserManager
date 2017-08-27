@@ -21,7 +21,7 @@ App::uses('UserAttribute', 'UserAttributes.Model');
  * @package NetCommons\UserManager\Test\Case\Controller\UserAddController
  * @codeCoverageIgnore
  */
-class UserManagerControllerTestCase extends NetCommonsControllerTestCase {
+abstract class UserManagerControllerTestCase extends NetCommonsControllerTestCase {
 
 /**
  * Fixtures
