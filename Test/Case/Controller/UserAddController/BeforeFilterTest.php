@@ -110,6 +110,9 @@ class UserAddControllerBeforeFilterTest extends UserManagerControllerTestCase {
 			'components' => array('Session' => array('read'))
 		));
 
+		//ログイン
+		TestAuthGeneral::login($this);
+
 		$user = array(
 			'id' => '',
 			'email' => '',

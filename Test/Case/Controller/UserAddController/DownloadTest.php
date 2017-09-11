@@ -60,6 +60,9 @@ class UserAddControllerDownloadTest extends UserManagerControllerTestCase {
 			'components' => array('Session' => array('read'))
 		));
 
+		//ログイン
+		TestAuthGeneral::login($this);
+
 		$path = App::pluginPath('UserManager') . 'Test' . DS . 'Fixture' . DS . 'logo.gif';
 		$this->controller->Session
 			->expects($this->once())->method('read')
@@ -81,6 +84,9 @@ class UserAddControllerDownloadTest extends UserManagerControllerTestCase {
 		$this->generateNc(Inflector::camelize($this->_controller), array(
 			'components' => array('Session' => array('read'))
 		));
+
+		//ログイン
+		TestAuthGeneral::login($this);
 
 		$this->controller->Session
 			->expects($this->once())->method('read')

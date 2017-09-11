@@ -34,6 +34,10 @@ class UserAddControllerUserRolesRoomsTest extends UserManagerControllerTestCase 
 	public function setUp() {
 		parent::setUp();
 
+		$this->generateNc(Inflector::camelize($this->_controller), array('components' => array(
+			'Flash' => array('set')
+		)));
+
 		//ログイン
 		TestAuthGeneral::login($this);
 	}
@@ -218,8 +222,8 @@ class UserAddControllerUserRolesRoomsTest extends UserManagerControllerTestCase 
 			->expects($this->exactly(2))->method('delete')
 			->will($this->returnValue(true));
 
-		$this->controller->Components->Session
-			->expects($this->once())->method('setFlash')
+		$this->controller->Flash->expects($this->once())
+			->method('set')
 			->with(__d('net_commons', 'Successfully saved.'));
 
 		$this->_mockForReturnTrue('Users.User', 'saveUser');
@@ -257,8 +261,8 @@ class UserAddControllerUserRolesRoomsTest extends UserManagerControllerTestCase 
 				return Hash::get($user, $name);
 			}));
 
-		$this->controller->Components->Session
-			->expects($this->once())->method('setFlash')
+		$this->controller->Flash->expects($this->once())
+			->method('set')
 			->with(__d('net_commons', 'Successfully saved.'));
 
 		$this->controller->Components->Session
@@ -327,6 +331,10 @@ class UserAddControllerUserRolesRoomsTest extends UserManagerControllerTestCase 
 		$this->generateNc(Inflector::camelize($this->_controller), array(
 			'components' => array('NetCommons.NetCommons' => array('handleValidationError'))
 		));
+
+		//ログイン
+		TestAuthGeneral::login($this);
+
 		$this->_mockForReturnFalse('Users.User', 'saveUser');
 
 		$this->controller->NetCommons

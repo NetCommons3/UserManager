@@ -51,6 +51,10 @@ class UserAddControllerNotifyTest extends NetCommonsControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
+		$this->generateNc(Inflector::camelize($this->_controller), array('components' => array(
+			'Flash' => array('set')
+		)));
+
 		//ログイン
 		TestAuthGeneral::login($this);
 
@@ -174,8 +178,8 @@ class UserAddControllerNotifyTest extends NetCommonsControllerTestCase {
 			->expects($this->once())->method('sendMailDirect')
 			->will($this->returnValue(true));
 
-		$this->controller->Components->Session
-			->expects($this->once())->method('setFlash')
+		$this->controller->Flash->expects($this->once())
+			->method('set')
 			->with(__d('user_manager', 'Successfully mail send.'));
 
 		//テスト実行
@@ -199,8 +203,8 @@ class UserAddControllerNotifyTest extends NetCommonsControllerTestCase {
 			->expects($this->once())->method('sendMailDirect')
 			->will($this->returnValue(false));
 
-		$this->controller->Components->Session
-			->expects($this->once())->method('setFlash')
+		$this->controller->Flash->expects($this->once())
+			->method('set')
 			->with(__d('net_commons', 'Failed on validation errors. Please check the input data.'));
 
 		//テスト実行
@@ -223,8 +227,8 @@ class UserAddControllerNotifyTest extends NetCommonsControllerTestCase {
 				throw new BadRequestException();
 			}));
 
-		$this->controller->Components->Session
-			->expects($this->once())->method('setFlash')
+		$this->controller->Flash->expects($this->once())
+			->method('set')
 			->with(__d('mails', 'There is errors in the mail settings. It was not able to send mail.'));
 
 		//テスト実行

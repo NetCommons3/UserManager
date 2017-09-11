@@ -83,15 +83,15 @@ class UserManagerControllerDeleteTest extends UserManagerControllerTestCase {
  * @return void
  */
 	public function testDelete() {
-		//ログイン
-		TestAuthGeneral::login($this);
-
 		//テストデータ
 		$this->generateNc(Inflector::camelize($this->_controller), array(
 			'components' => array(
 				'NetCommons.NetCommons' => array('setFlashNotification'),
 			)
 		));
+
+		//ログイン
+		TestAuthGeneral::login($this);
 
 		$userId = '2';
 		$this->_mockForReturnTrue('Users.User', 'deleteUser');

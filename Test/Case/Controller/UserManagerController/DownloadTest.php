@@ -34,9 +34,6 @@ class UserManagerControllerDownloadTest extends UserManagerControllerTestCase {
 	public function setUp() {
 		parent::setUp();
 
-		//ログイン
-		TestAuthGeneral::login($this);
-
 		//事前準備
 		$this->_testApp = App::pluginPath('Users') . DS . 'Test' . DS . 'test_app' . DS;
 		$this->_testWebroot = $this->_testApp . 'webroot' . DS;
@@ -48,6 +45,9 @@ class UserManagerControllerDownloadTest extends UserManagerControllerTestCase {
 				'Files.Download' => array('doDownload')
 			)
 		));
+
+		//ログイン
+		TestAuthGeneral::login($this);
 	}
 
 /**
