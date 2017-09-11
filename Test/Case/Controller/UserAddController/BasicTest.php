@@ -83,6 +83,9 @@ class UserAddControllerBasicTest extends UserManagerControllerTestCase {
 		$this->generateNc(Inflector::camelize($this->_controller), array(
 			'components' => array('Session' => array('read'))
 		));
+		//ログイン
+		TestAuthGeneral::login($this);
+
 		if (Configure::read('debug')) {
 			$exactly = 2;
 		} else {
@@ -120,6 +123,9 @@ class UserAddControllerBasicTest extends UserManagerControllerTestCase {
 		$this->generateNc(Inflector::camelize($this->_controller), array(
 			'components' => array('Session' => array('read'))
 		));
+		//ログイン
+		TestAuthGeneral::login($this);
+
 		$data = $this->__data();
 		if (Configure::read('debug')) {
 			$exactly = 2;
@@ -153,6 +159,8 @@ class UserAddControllerBasicTest extends UserManagerControllerTestCase {
 		$this->generateNc(Inflector::camelize($this->_controller), array(
 			'components' => array('Session' => array('write'))
 		));
+		//ログイン
+		TestAuthGeneral::login($this);
 
 		//テストデータ
 		$this->_mockForReturnTrue('Users.User', 'validateUser');
@@ -182,6 +190,9 @@ class UserAddControllerBasicTest extends UserManagerControllerTestCase {
 				)
 			)
 		));
+
+		//ログイン
+		TestAuthGeneral::login($this);
 
 		//事前準備
 		$uploadPath = TMP . 'uploads';
