@@ -29,7 +29,7 @@ class TestUserManagerComponentController extends AppController {
 		'UserAttributes.UserAttributeLayout',
 		'UserManager.UserManager',
 		'NetCommons.Permission' => array(
-			'type' => PermissionComponent::CHECK_TYEP_NOCHECK_PLUGIN,
+			'type' => PermissionComponent::CHECK_TYPE_NOCHECK_PLUGIN,
 		),
 	);
 
