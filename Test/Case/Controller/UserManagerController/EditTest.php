@@ -246,12 +246,16 @@ class UserManagerControllerEditTest extends UserManagerControllerTestCase {
 
 		//テスト実行
 		$this->_testPostAction('put', $this->__data($userId),
-				array('action' => 'edit'), null, 'view');
+				array('action' => 'edit', 'key' => $userId), null, 'view');
 
 		//チェック
-		$header = $this->controller->response->header();
-		$pattern = '/user_manager/user_manager/index';
-		$this->assertTextContains($pattern, $header['Location']);
+		// 同じ画面にとどまっていることを確認する
+		// 改行コードや微妙な空白などの混在がチェック混乱するのでそのあたりの文字削除
+		$check = preg_replace('/\n|\r|\r\n|\t|\s/', '', $this->view);
+		$this->assertTextContains(
+			'<liclass="active"><ahref="/var/www/app/app/Console/user_manager/user_manager/edit/2">',
+			$check
+		);
 	}
 
 /**

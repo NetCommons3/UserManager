@@ -89,6 +89,10 @@ msgstr "会員の基本項目を入力して[次へ]を押してください。<
 msgid "Input the user data, and press [OK].<br>Required items are marked by <strong class="text-danger h4">*</strong>."
 msgstr "会員の基本項目を入力して[決定]を押してください。<br><strong class="text-danger h4">*</strong> 印の項目は必須入力項目です。"
 
+msgid "Back to list"
+msgstr "一覧に戻る"
+msgid "Back to search result list"
+msgstr "絞り込み一覧に戻る"
 
 #
 # 参加ルームの選択

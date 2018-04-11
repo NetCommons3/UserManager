@@ -25,10 +25,15 @@
 	<?php echo $this->element('Users.Users/edit_form', array('element' => 'UserManager.UserManager/render_edit_row')); ?>
 
 	<div class="panel-footer text-center">
-		<?php echo $this->Button->cancelAndSave(
-				__d('net_commons', 'Cancel'),
+		<?php
+			$backTitle = 'Back to list';
+			if (! empty($query)) {
+				$backTitle = 'Back to search result list';
+			}
+			echo $this->Button->cancelAndSave(
+				__d('user_manager', $backTitle),
 				__d('net_commons', 'OK'),
-				NetCommonsUrl::actionUrlAsArray(array('action' => 'index'))
+				NetCommonsUrl::actionUrlAsArray(array('action' => 'index', '?' => $query))
 			); ?>
 	</div>
 

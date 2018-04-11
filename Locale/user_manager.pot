@@ -91,6 +91,10 @@ msgstr ""
 #: UserManager/View/UserManager/edit.ctp:18
 msgid "Input the user data, and press [OK].<br>Required items are marked by <strong class=\"text-danger h4\">*</strong>."
 msgstr ""
+msgid "Back to list"
+msgstr ""
+msgid "Back to search result list"
+msgstr ""
 
 #: UserManager/View/UserManager/export.ctp:19
 msgid "Export title"
