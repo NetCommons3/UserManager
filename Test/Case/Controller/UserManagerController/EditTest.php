@@ -252,8 +252,8 @@ class UserManagerControllerEditTest extends UserManagerControllerTestCase {
 		// 同じ画面にとどまっていることを確認する
 		// 改行コードや微妙な空白などの混在がチェック混乱するのでそのあたりの文字削除
 		$check = preg_replace('/\n|\r|\r\n|\t|\s/', '', $this->view);
-		$this->assertTextContains(
-			'<liclass="active"><ahref="/var/www/app/app/Console/user_manager/user_manager/edit/2">',
+		$this->assertRegExp(
+			'/<liclass="active"><ahref=".*?\/user_manager\/user_manager\/edit\/2">/',
 			$check
 		);
 	}
