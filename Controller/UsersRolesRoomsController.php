@@ -80,7 +80,6 @@ class UsersRolesRoomsController extends UserManagerAppController {
 				$this->NetCommons->setFlashNotification(__d('net_commons', 'Successfully saved.'), array(
 					'class' => 'success',
 				));
-				return $this->redirect('/user_manager/user_manager/index');
 			} else {
 				//異常処理
 				$this->NetCommons->handleValidationError($this->RolesRoomsUser->validationErrors);
@@ -108,6 +107,9 @@ class UsersRolesRoomsController extends UserManagerAppController {
 			$rolesRoomsUsers, '{n}.RolesRoomsUser.room_id', '{n}.RolesRoomsUser'
 		);
 		$this->set('rolesRoomsUsers', $rolesRoomsUsers);
+
+		//** 絞り込み条件
+		$this->set('query', $this->Session->read(self::USER_MANAGER_SEARCH_CONDITIONS));
 	}
 
 }

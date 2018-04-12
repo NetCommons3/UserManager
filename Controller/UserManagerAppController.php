@@ -21,6 +21,13 @@ App::uses('Space', 'Rooms.Model');
 class UserManagerAppController extends AppController {
 
 /**
+ * session name
+ *
+ * @var string
+ */
+	const USER_MANAGER_SEARCH_CONDITIONS = 'UserManagerSearchConditions';
+
+/**
  * use component
  *
  * @var array

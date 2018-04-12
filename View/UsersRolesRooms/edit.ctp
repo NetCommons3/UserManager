@@ -35,10 +35,15 @@ echo $this->NetCommonsHtml->script([
 		</article>
 
 		<div class="text-center">
-			<?php echo $this->Button->cancelAndSave(
-					__d('net_commons', 'Cancel'),
+			<?php 
+				$backTitle = 'Back to list';
+				if (! empty($query)) {
+					$backTitle = 'Back to search result list';
+				}
+				echo $this->Button->cancelAndSave(
+					__d('user_manager', $backTitle),
 					__d('net_commons', 'OK'),
-					NetCommonsUrl::actionUrlAsArray(['controller' => 'user_manager', 'action' => 'index'])
+					NetCommonsUrl::actionUrlAsArray(['controller' => 'user_manager', 'action' => 'index', '?' => $query])
 				); ?>
 		</div>
 

@@ -95,6 +95,13 @@ class UserManagerController extends UserManagerAppController {
 			))
 		]);
 
+		$queries = $this->request->query;
+		if (! empty($queries)) {
+			$this->Session->write(self::USER_MANAGER_SEARCH_CONDITIONS, $queries);
+		} else {
+			$this->Session->delete(self::USER_MANAGER_SEARCH_CONDITIONS);
+		}
+
 		$this->helpers[] = 'Users.UserSearch';
 	}
 
@@ -171,16 +178,20 @@ class UserManagerController extends UserManagerAppController {
 				$this->NetCommons->setFlashNotification(
 					__d('net_commons', 'Successfully saved.'), array('class' => 'success')
 				);
-				return $this->redirect('/user_manager/user_manager/index');
+				$user = $this->User->getUser($userId);
+			} else {
+				$this->NetCommons->handleValidationError($this->User->validationErrors);
+				$this->request->data = Hash::merge($user, $this->request->data);
 			}
-			$this->NetCommons->handleValidationError($this->User->validationErrors);
-			$this->request->data = Hash::merge($user, $this->request->data);
 
 		} else {
 			//表示処理
 			$this->User->languages = $this->viewVars['languages'];
 			$this->request->data = $user;
 		}
+
+		// 絞り込み条件
+		$this->set('query', $this->Session->read(self::USER_MANAGER_SEARCH_CONDITIONS));
 
 		$this->set('user', $user['User']);
 		$this->set('userName', $this->request->data['User']['handlename']);
