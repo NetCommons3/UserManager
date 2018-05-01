@@ -24,7 +24,7 @@ class UserManagerControllerDownloadTest extends UserManagerControllerTestCase {
  *
  * @var string
  */
-	protected $_controller = 'user_manager';
+	protected $_controller = 'user_manager_avatar';
 
 /**
  * setUp method
@@ -42,7 +42,7 @@ class UserManagerControllerDownloadTest extends UserManagerControllerTestCase {
 
 		$this->generateNc(Inflector::camelize($this->_controller), array(
 			'components' => array(
-				'Files.Download' => array('doDownload')
+				'Files.Download' => array('doDownload', 'doDownloadByUploadFileId')
 			)
 		));
 
@@ -73,8 +73,8 @@ class UserManagerControllerDownloadTest extends UserManagerControllerTestCase {
 			$avatarPath = $this->_testUploadPath .
 					'1' . DS . 'thumb_38bfb11bf48fc2f56d2ca2d796d0b0af.gif';
 
-			$this->controller->Download->expects($this->at(0))->method('doDownload')
-				->with($userId, array('field' => 'avatar', 'size' => 'thumb'))
+			$this->controller->Download->expects($this->at(0))->method('doDownloadByUploadFileId')
+				->with('1', array('size' => 'thumb'))
 				->will($this->returnCallback(function () {
 					$this->controller->response->file(
 						$this->_testUploadPath . '1' . DS . 'thumb_38bfb11bf48fc2f56d2ca2d796d0b0af.gif'
@@ -122,6 +122,22 @@ class UserManagerControllerDownloadTest extends UserManagerControllerTestCase {
 		//テストデータ
 		$userId = '2';
 		$avatarPath = $this->__getAvatarPath($userId);
+
+		$user = [
+			'User' => [
+				'id' => $userId,
+			],
+			'UploadFile' => [
+				'id' => '1'
+			],
+		];
+		$this->_mockForReturn(
+			'Users.User', 'find', $user
+		);
+
+		$this->_mockForReturn(
+			'PluginManager.PluginsRole', 'find', 2
+		);
 
 		//テスト実行
 		$this->_testGetAction(
