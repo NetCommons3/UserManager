@@ -271,14 +271,6 @@ msgstr ""
 msgid "<span class=\"text-danger\">Required.</span>"
 msgstr ""
 
-#: Users/View/Helper/UserSearchFormHelper.php:140
-msgid "Not specified"
-msgstr ""
-
-#: Users/View/Helper/UserSearchFormHelper.php:186;303;333
-msgid "-- Not specify --"
-msgstr ""
-
 #: Users/View/Helper/UserSearchFormHelper.php:215
 msgid "Not logged more than <span style=\"color:#ff0000;\">X</span>days ago"
 msgstr ""
