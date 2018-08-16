@@ -26,14 +26,14 @@ Router::connect(
 
 Router::connect(
 	'/user_manager/user_manager/download/:user_id/:field_name/:size',
-	['plugin' => 'user_manager', 'controller' => 'user_manager', 'action' => 'download'],
+	['plugin' => 'user_manager', 'controller' => 'user_manager_avatar', 'action' => 'download'],
 	['user_id' => '[0-9]+', 'size' => 'big|medium|small|thumb']
 );
 Router::connect(
 	'/user_manager/user_manager/download/:user_id/:field_name',
 	[
 		'plugin' => 'user_manager',
-		'controller' => 'user_manager',
+		'controller' => 'user_manager_avatar',
 		'action' => 'download',
 		'size' => 'medium'
 	],

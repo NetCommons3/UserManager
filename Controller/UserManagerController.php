@@ -360,34 +360,4 @@ class UserManagerController extends UserManagerAppController {
 		}
 	}
 
-/**
- * アバター表示処理
- *
- * @return void
- */
-	public function download() {
-		$userId = $this->params['user_id'];
-		$user = $this->User->getUser($userId);
-
-		$fieldName = $this->params['field_name'];
-		$fieldSize = $this->params['size'];
-
-		if (! Hash::get($user, 'User.is_deleted') &&
-				Hash::get($user, 'UploadFile.' . $fieldName . '.field_name')) {
-			// * アバター表示
-			$this->plugin = 'users';
-			return $this->Download->doDownload($user['User']['id'], array(
-				'field' => $fieldName,
-				'size' => $this->params['size'])
-			);
-		} else {
-			// * 自動生成画像
-			$this->response->file(
-				$this->User->temporaryAvatar($user, $fieldName, $fieldSize),
-				array('name' => 'No Image')
-			);
-			return $this->response;
-		}
-	}
-
 }
