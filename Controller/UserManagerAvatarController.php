@@ -142,7 +142,7 @@ class UserManagerAvatarController extends Controller {
 					'className' => 'UploadFile',
 					'foreignKey' => false,
 					'conditions' => [
-						'UploadFile.plugin_key' => $this->plugin,
+						'UploadFile.plugin_key' => 'users',
 						'UploadFile.content_key = User.id',
 						'UploadFile.field_name' => $this->request->params['field_name'],
 					],
@@ -183,7 +183,7 @@ class UserManagerAvatarController extends Controller {
 		$query = [
 			'conditions' => [
 				'PluginsRole.role_key' => AuthComponent::user('role_key'),
-				'PluginsRole.plugin_key' => $this->plugin,
+				'PluginsRole.plugin_key' => 'user_manager',
 			],
 			'recursive' => -1,
 			'callbacks' => false,
