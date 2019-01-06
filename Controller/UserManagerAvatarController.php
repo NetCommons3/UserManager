@@ -75,7 +75,7 @@ class UserManagerAvatarController extends Controller {
 		//会員管理が使えない場合、NoImageを出力する
 		$PluginsRole = $this->_getSimpleModel('PluginsRole');
 		$query = $this->_getQueryForPluginsRole();
-		if (! $PluginsRole->find('count', $query)) {
+		if (! $PluginsRole->cacheFindQuery('count', $query)) {
 			return $this->_downloadNoImage($User, $user);
 		}
 
@@ -127,6 +127,9 @@ class UserManagerAvatarController extends Controller {
 		$Model->unbindModel($params);
 		$Model->Behaviors->unload('Trackable');
 
+		if ($modelName === 'PluginsRole') {
+			$Model->Behaviors->load('NetCommons.NetCommonsCache');
+		}
 		return $Model;
 	}
 
