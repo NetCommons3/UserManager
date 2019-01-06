@@ -27,6 +27,7 @@ class UserAddControllerNotifyTest extends NetCommonsControllerTestCase {
 	public $fixtures = array(
 		'plugin.mails.mail_setting_fixed_phrase',
 		'plugin.user_attributes.user_attribute_layout',
+		'plugin.user_attributes.plugins_role4test',
 	);
 
 /**
