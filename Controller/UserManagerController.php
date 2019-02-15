@@ -326,7 +326,7 @@ class UserManagerController extends UserManagerAppController {
 			$csvWriter = $this->User->exportUsers(
 				array(
 					'conditions' => array(
-						'space_id' => Space::PRIVATE_SPACE_ID,
+						'space_id !=' => Space::PRIVATE_SPACE_ID,
 						'User.role_key NOT' => array(
 							UserRole::USER_ROLE_KEY_SYSTEM_ADMINISTRATOR,
 							UserRole::USER_ROLE_KEY_ADMINISTRATOR
