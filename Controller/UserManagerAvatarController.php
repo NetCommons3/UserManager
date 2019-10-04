@@ -117,7 +117,19 @@ class UserManagerAvatarController extends Controller {
 	protected function _getSimpleModel($modelName) {
 		// TestでAvatarBehavior::temporaryAvatar をMock にしているため、removeObjectしない。
 		// ClassRegistry::removeObject($modelName);
-		$Model = ClassRegistry::init($modelName);
+
+		//@codeCoverageIgnoreStart
+		if (empty($this->$modelName) ||
+				substr(get_class($this->$modelName), 0, 5) !== 'Mock_') {
+			$Model = ClassRegistry::init($modelName);
+		} else {
+			$Model = $this->$modelName;
+			if (! ClassRegistry::getObject($modelName)) {
+				ClassRegistry::addObject($modelName, $Model);
+			}
+		}
+		//@codeCoverageIgnoreEnd
+
 		$params = [
 			'belongsTo' => [
 				'TrackableCreator',
