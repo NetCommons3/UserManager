@@ -86,13 +86,8 @@ class UserAddControllerBasicTest extends UserManagerControllerTestCase {
 		//ログイン
 		TestAuthGeneral::login($this);
 
-		if (Configure::read('debug')) {
-			$exactly = 2;
-		} else {
-			$exactly = 1;
-		}
 		$this->controller->Session
-			->expects($this->exactly($exactly))->method('read')
+			->expects($this->any())->method('read')
 			->will($this->returnCallback(function ($key) use ($avatarPath) {
 				if ($key === 'UserAdd.User.avatar.tmp_name') {
 					return $avatarPath;
@@ -127,13 +122,9 @@ class UserAddControllerBasicTest extends UserManagerControllerTestCase {
 		TestAuthGeneral::login($this);
 
 		$data = $this->__data();
-		if (Configure::read('debug')) {
-			$exactly = 2;
-		} else {
-			$exactly = 1;
-		}
+
 		$this->controller->Session
-			->expects($this->exactly($exactly))->method('read')
+			->expects($this->any())->method('read')
 			->will($this->returnCallback(function ($key) use ($data) {
 				if ($key === 'UserAdd') {
 					return $data;
