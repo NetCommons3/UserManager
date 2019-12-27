@@ -261,7 +261,7 @@ class UserManagerController extends UserManagerAppController {
 			), 400);
 		}
 
-		$this->redirect($this->request->referer());
+		$this->redirect($this->request->referer(true));
 	}
 
 /**
