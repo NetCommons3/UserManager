@@ -137,7 +137,7 @@ class UserAddControllerBasicTest extends UserManagerControllerTestCase {
 		$this->_testGetAction(array('action' => 'basic'), array('method' => 'assertNotEmpty'), null, 'view');
 
 		//チェック
-		$this->assertEquals($this->controller->data, $this->__data());
+		$this->__assertCreateUser();
 		$this->__assertInputs();
 	}
 
