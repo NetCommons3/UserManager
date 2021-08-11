@@ -171,7 +171,9 @@ class UserAddControllerUserRolesRoomsTest extends UserManagerControllerTestCase 
 		$this->view = preg_replace('/[\s]+</u', '<', $this->view);
 
 		$expected = array('2', '5', '11', '12');
-		$this->assertEquals(array_keys($this->vars['rolesRooms']), $expected);
+		$actual = array_keys($this->vars['rolesRooms']);
+		sort($actual);
+		$this->assertEquals($actual, $expected);
 
 		$expected = array('1', '2', '3', '4', '5');
 		$this->assertEquals($expected, Hash::extract($this->vars['rolesRooms'], '2.{s}.RolesRoom.id'));
