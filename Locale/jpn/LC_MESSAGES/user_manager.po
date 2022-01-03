@@ -79,6 +79,28 @@ msgid "Do you approve?"
 msgstr "承認しますか。"
 
 
+msgid "Delete"
+msgstr "削除する"
+
+msgid "Change to nonactive"
+msgstr "利用不可にする"
+
+msgid "Selected row ..."
+msgstr "選択した行を・・・"
+
+msgid "Selected members"
+msgstr "選択した会員"
+
+msgid "Is it really okay to delete it?"
+msgstr "削除すると元に戻すことは出来ません。本当に削除して良いですか。"
+
+msgid "Nonactive the %s. Are you sure to proceed?"
+msgstr "%sを利用不可に設定します。本当によろしいですか。"
+
+msgid "Not found the select user."
+msgstr "一つも選択されていません。"
+
+
 #
 # 入力画面
 #

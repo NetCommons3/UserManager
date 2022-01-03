@@ -17,6 +17,19 @@ App::uses('User', 'Users.Model');
 /**
  * UserManager Controller
  *
+ * @property AutoUserRegist $AutoUserRegist
+ * @property AutoUserRegistMail $AutoUserRegistMail
+ * @property User $User
+ * @property UserSearch $UserSearch
+ * @property DownloadComponent $Download
+ * @property FileUploadComponent $FileUpload
+ * @property SwitchLanguageComponent $SwitchLanguage
+ * @property RoomsComponent $Rooms
+ * @property UserAttributeLayoutComponent $UserAttributeLayout
+ * @property UserManagerComponent $UserManager
+ * @property UserManagerBulkComponent $UserManagerBulk
+ * @property UserSearchCompComponent $UserSearchComp
+ *
  * @author Shohei Nakajima <nakajimashouhei@gmail.com>
  * @package NetCommons\UserManager\Controller
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
@@ -62,6 +75,7 @@ class UserManagerController extends UserManagerAppController {
 		'Rooms.Rooms',
 		'UserAttributes.UserAttributeLayout',
 		'UserManager.UserManager',
+		'UserManager.UserManagerBulk',
 		'Users.UserSearchComp',
 	);
 
@@ -86,7 +100,8 @@ class UserManagerController extends UserManagerAppController {
 
 		//ユーザ一覧データ取得
 		$this->UserSearchComp->search([
-			'fields' => self::$displaFields,
+			'fields' => array_merge(['origin_role_key'], self::$displaFields),
+			'displayFields' => self::$displaFields,
 			'conditions' => array('space_id !=' => Space::PRIVATE_SPACE_ID),
 			'joins' => array('Room' => array(
 				'conditions' => array(
@@ -357,6 +372,30 @@ class UserManagerController extends UserManagerAppController {
 			$this->set('cancelQuery', $this->request->query);
 			$defaultConditions['search'] = '1';
 			$this->request->query = $defaultConditions;
+		}
+	}
+
+/**
+ * bulkアクション
+ *
+ * @return void
+ */
+	public function bulk() {
+		//タイムアウト発生するなら適宜設定
+		set_time_limit(1800);
+		if (! $this->request->is('post')) {
+			return $this->throwBadRequest();
+		}
+
+		if ($this->request->data['UserManagerBulk']['submit'] === 'nonactive') {
+			//利用不可に設定
+			return $this->UserManagerBulk->bulkNonactive();
+		} elseif ($this->request->data['UserManagerBulk']['submit'] === 'delete') {
+			//削除する
+			return $this->UserManagerBulk->bulkDelete();
+		} else {
+			//それ以外
+			return $this->throwBadRequest();
 		}
 	}
 

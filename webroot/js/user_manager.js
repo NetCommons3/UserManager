@@ -11,6 +11,106 @@ NetCommonsApp.controller('UserManagerController',
     ['$scope', 'NetCommonsModal', 'NC3_URL', function($scope, NetCommonsModal, NC3_URL) {
 
       /**
+       * 選択したIDリスト
+       */
+      $scope.checkedIds = [];
+
+      /**
+       * チェックボックスの全選択・全解除
+       */
+      $scope.allCheck = function($event) {
+        var elements = $('input[type="checkbox"]');
+
+        for (var i = 0; i < elements.length; i++) {
+          if (elements[i].name) {
+            $scope._changeCheck(elements[i], $event.currentTarget.checked);
+          }
+        }
+      };
+
+      /**
+       * チェックボックスクリック
+       */
+      $scope.check = function($event) {
+        $scope._changeCheck($event.currentTarget, $event.currentTarget.checked);
+      };
+
+      /**
+       * チェックボックス変更処理
+       */
+      $scope._changeCheck = function(element, checked) {
+        var id = element.value;
+        var domId = element.id;
+        element.checked = checked;
+        $scope.checkedIds[id] = checked;
+
+        var trElement = $('#Tr' + domId);
+
+        if (checked) {
+          if (trElement.hasClass('warning')) {
+            trElement.removeClass('warning');
+            trElement.addClass('_warning');
+          } else if (trElement.hasClass('danger')) {
+            trElement.removeClass('danger');
+            trElement.addClass('_danger');
+          }
+
+          if (! trElement.hasClass('success')) {
+            trElement.addClass('success');
+          }
+        } else {
+          if (trElement.hasClass('_warning')) {
+            trElement.removeClass('_warning');
+            trElement.addClass('warning');
+          } else if (trElement.hasClass('_danger')) {
+            trElement.removeClass('_danger');
+            trElement.addClass('danger');
+          }
+
+          if (trElement.hasClass('success')) {
+            trElement.removeClass('success');
+          }
+        }
+      };
+
+      /**
+       * 一括登録処理
+       */
+      $scope.bulk = function($event, action, firstMessage, secondMessage, notSelectMessage) {
+        var checkedIds = [];
+        angular.forEach($scope.checkedIds, function(checked, id) {
+          if (checked) {
+            checkedIds.push(id);
+          }
+        }, checkedIds);
+        if (! checkedIds.length) {
+          alert(notSelectMessage);
+          $event.preventDefault();
+          return;
+        }
+
+        if (! confirm(firstMessage)) {
+          $event.preventDefault();
+          return;
+        }
+
+        if (secondMessage && ! confirm(secondMessage)) {
+          $event.preventDefault();
+          return;
+        }
+
+        var checkedElement = $('#UserManagerBulkCheckedIds');
+        checkedElement[0].value = checkedIds.join(',');
+
+        var submitElement = $('#UserManagerBulkSubmit');
+        submitElement[0].value = action;
+
+        $scope.sending = true;
+        var formElement = $('#UserManagerBulkBulkForm');
+        formElement.submit();
+      };
+
+      /**
        * 検索ダイアログ表示
        *
        * @param {array} conditions 条件配列
