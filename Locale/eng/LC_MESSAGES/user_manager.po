@@ -291,6 +291,28 @@ msgstr ""
 msgid "Do you approve?"
 msgstr ""
 
+
+msgid "Delete"
+msgstr ""
+
+msgid "Change to nonactive"
+msgstr ""
+
+msgid "Selected row ..."
+msgstr ""
+
+msgid "Selected members"
+msgstr ""
+
+msgid "Is it really okay to delete it?"
+msgstr ""
+
+msgid "Nonactive the %s. Are you sure to proceed?"
+msgstr ""
+
+msgid "Not found the select user."
+msgstr ""
+
 #: Users/View/Helper/UserSearchHelper.php:267
 msgid "Approval"
 msgstr ""

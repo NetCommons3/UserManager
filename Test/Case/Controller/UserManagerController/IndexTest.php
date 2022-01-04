@@ -54,6 +54,7 @@ class UserManagerControllerIndexTest extends UserManagerControllerTestCase {
  * index()アクションのGetリクエストテスト
  *
  * @return void
+ * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
  */
 	public function testIndexGet() {
 		//テスト実行
@@ -85,6 +86,9 @@ class UserManagerControllerIndexTest extends UserManagerControllerTestCase {
 					'modified' => '2015-08-15 06:12:30',
 					'last_login' => '2016-09-14 12:18:45',
 				),
+				'UserRoleSetting' => [
+					'origin_role_key' => 'system_administrator'
+				],
 				'UsersLanguage' => array(
 					'name' => 'System Administrator Name',
 				),
@@ -96,6 +100,9 @@ class UserManagerControllerIndexTest extends UserManagerControllerTestCase {
 					'modified' => '2015-08-15 06:12:30',
 					'last_login' => null,
 				),
+				'UserRoleSetting' => [
+					'origin_role_key' => 'administrator'
+				],
 				'UsersLanguage' => array(
 					'name' => 'Site Manager Name',
 				),
@@ -107,6 +114,9 @@ class UserManagerControllerIndexTest extends UserManagerControllerTestCase {
 					'modified' => '2015-08-15 06:12:30',
 					'last_login' => null,
 				),
+				'UserRoleSetting' => [
+					'origin_role_key' => 'common_user'
+				],
 				'UsersLanguage' => array(
 					'name' => 'Chief Editor Name',
 				),
@@ -118,6 +128,9 @@ class UserManagerControllerIndexTest extends UserManagerControllerTestCase {
 					'modified' => '2015-08-15 06:12:30',
 					'last_login' => null,
 				),
+				'UserRoleSetting' => [
+					'origin_role_key' => 'common_user'
+				],
 				'UsersLanguage' => array(
 					'name' => 'Editor Name',
 				),
@@ -129,6 +142,9 @@ class UserManagerControllerIndexTest extends UserManagerControllerTestCase {
 					'modified' => '2015-08-15 06:12:30',
 					'last_login' => null,
 				),
+				'UserRoleSetting' => [
+					'origin_role_key' => 'common_user'
+				],
 				'UsersLanguage' => array(
 					'name' => 'General User Name',
 				),
@@ -140,6 +156,9 @@ class UserManagerControllerIndexTest extends UserManagerControllerTestCase {
 					'modified' => '2015-08-15 06:12:30',
 					'last_login' => null,
 				),
+				'UserRoleSetting' => [
+					'origin_role_key' => 'common_user'
+				],
 				'UsersLanguage' => array(
 					'name' => 'Visitor Name',
 				),
