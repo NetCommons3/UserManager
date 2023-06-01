@@ -83,7 +83,7 @@ class UserManagerAvatarController extends Controller {
 			'size' => $this->params['size'],
 		];
 
-		return $this->Download->doDownloadByUploadFileId($user['UploadFile']['id'], $options);
+		return $this->Download->doDownloadByUploadFileId($user['UploadFile']['id'], $options, 'users');
 	}
 
 /**
