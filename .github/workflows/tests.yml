@@ -3,12 +3,10 @@ on:
     branches:
       - main
       - master
-      - availability
   pull_request:
     branches:
       - main
       - master
-      - availability
 
 name: tests
 
@@ -19,6 +17,7 @@ jobs:
     steps:
       - name: Slack Notification on Start
         uses: rtCamp/action-slack-notify@v2.2.0
+        if: env.SLACK_WEBHOOK != ''
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_TESTS }}
           SLACK_CHANNEL: notify-nc3-tests
@@ -128,15 +127,14 @@ jobs:
           docker-compose exec -T nc3app bash /opt/scripts/phpunit.sh
           sudo -s chmod a+w -R ${NC3_BUILD_DIR}/build
 
-#      - name: push coveralls
-#        if: success()
-#        env:
-#          COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#          COVERALLS_FLAG_NAME: ${{ matrix.php }}
-#        run: |
-#          cd ${NC3_BUILD_DIR}
-#          ls -la ${NC3_BUILD_DIR}
-#          vendors/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
+#       - name: push coveralls
+#         env:
+#           COVERALLS_REPO_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#           COVERALLS_FLAG_NAME: ${{ matrix.php }}
+#         run: |
+#           cd ${NC3_BUILD_DIR}
+#           ls -la ${NC3_BUILD_DIR}
+#           vendors/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v
 
       - name: docker-compose remove
         if: always()
@@ -147,7 +145,7 @@ jobs:
       # テスト失敗時はこちらのステップが実行される
       - name: Slack Notification on Failure
         uses: rtCamp/action-slack-notify@v2.2.0
-        if: failure()
+        if: env.SLACK_WEBHOOK != '' && failure()
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_TESTS }}
           SLACK_CHANNEL: notify-nc3-tests
@@ -161,8 +159,8 @@ jobs:
     steps:
       # テスト成功時はこちらのステップが実行される
       - name: Slack Notification on Success
-        if: success()
         uses: rtCamp/action-slack-notify@v2.2.0
+        if: env.SLACK_WEBHOOK != '' && success()
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK_TESTS }}
           SLACK_CHANNEL: notify-nc3-tests
